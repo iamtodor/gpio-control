@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group>
+        <item
+            android:id="@+id/show_device_id"
+            android:checkable="true"
+            android:title="@string/show_device_id"/>
+    </group>
+    <group>
+        <item
+            android:id="@+id/all_ports"
+            android:title="@string/all_ports"/>
+        <item
+            android:id="@+id/ungrouped"
+            android:title="@string/ungrouped"/>
+    </group>
+</menu>

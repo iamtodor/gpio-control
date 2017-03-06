@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">GPIO control</string>
+    <string name="action_settings">Settings</string>
+    <string name="show_device_id">Show device id</string>
+    <string name="all_ports">All ports</string>
+    <string name="ungrouped">Ungrouped</string>
+</resources>
