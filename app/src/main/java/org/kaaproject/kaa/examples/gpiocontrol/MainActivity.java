@@ -5,6 +5,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import org.kaaproject.kaa.examples.gpiocontrol.Screen.DeviceList.DeviceListFragment;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import gpiocontol.examples.kaa.kaaproject.org.gpiocontrol.R;

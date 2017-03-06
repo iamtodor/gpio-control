@@ -4,4 +4,8 @@
     <string name="show_device_id">Show device id</string>
     <string name="all_ports">All ports</string>
     <string name="ungrouped">Ungrouped</string>
+    <string name="folder">folder</string>
+    <string name="swap_group_state">swap_groupd_state</string>
+    <string name="alarm_for_group">alarm_for_group</string>
+    <string name="group_lock">group_lock</string>
 </resources>
