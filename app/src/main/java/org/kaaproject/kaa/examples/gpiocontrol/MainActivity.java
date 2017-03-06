@@ -1,15 +1,16 @@
 package org.kaaproject.kaa.examples.gpiocontrol;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import org.kaaproject.kaa.examples.gpiocontrol.Screen.DeviceList.DeviceListFragment;
+import org.kaaproject.kaa.examples.gpiocontrol.Screen.SignIn.SingInActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import gpiocontol.examples.kaa.kaaproject.org.gpiocontrol.R;
 
 public class MainActivity extends BaseActivity {
 
@@ -21,7 +22,8 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-        showFragment(new DeviceListFragment());
+//        showFragment(new DeviceListFragment());
+        startActivity(new Intent(MainActivity.this, SingInActivity.class));
     }
 
     @Override

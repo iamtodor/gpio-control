@@ -5,9 +5,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
-import gpiocontol.examples.kaa.kaaproject.org.gpiocontrol.R;
-
 public class BaseActivity extends AppCompatActivity {
+
+    protected final String TAG = this.getClass().getSimpleName();
 
     protected void showFragment(Fragment fragment) {
         showFragment(fragment, null);

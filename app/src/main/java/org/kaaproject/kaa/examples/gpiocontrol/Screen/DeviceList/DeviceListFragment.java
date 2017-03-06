@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.kaaproject.kaa.examples.gpiocontrol.MainActivity;
+import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.GroupPin;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.Utils;
 
@@ -18,7 +19,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import gpiocontol.examples.kaa.kaaproject.org.gpiocontrol.R;
 
 public class DeviceListFragment extends Fragment implements DeviceListAdapter.OnItemClickListener {
 
