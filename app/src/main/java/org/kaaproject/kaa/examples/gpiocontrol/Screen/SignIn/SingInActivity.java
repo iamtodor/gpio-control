@@ -15,7 +15,9 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.kaaproject.kaa.examples.gpiocontrol.BaseActivity;
+import org.kaaproject.kaa.examples.gpiocontrol.MainActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
+import org.kaaproject.kaa.examples.gpiocontrol.utils.PreferencesImpl;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -52,16 +54,23 @@ public class SingInActivity extends BaseActivity implements GoogleApiClient.OnCo
         if (requestCode == SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
-                GoogleSignInAccount acct = result.getSignInAccount();
-                // Get account information
-                String mFullName = acct.getDisplayName();
-                String mEmail = acct.getEmail();
-                Log.d(TAG, "onActivityResult: " + mFullName + " " + mEmail);
+                GoogleSignInAccount account = result.getSignInAccount();
+                PreferencesImpl.getInstance().saveEmail(account.getEmail());
+                showMainActivity();
+            } else {
+                Log.e(TAG, "result was delivered with error");
             }
         }
     }
 
-    @Override public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+    private void showMainActivity() {
+        Intent intent = new Intent(SingInActivity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
 
+    @Override public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Log.e(TAG, connectionResult.getErrorMessage());
     }
 }
