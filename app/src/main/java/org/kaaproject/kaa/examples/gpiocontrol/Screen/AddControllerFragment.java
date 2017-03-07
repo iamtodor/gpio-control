@@ -32,7 +32,7 @@ public class AddControllerFragment extends Fragment {
     @BindView(R.id.image_spinner) protected Spinner imageSpinner;
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.add_controller_dialog, container, false);
+        View view = inflater.inflate(R.layout.add_controller_fragment, container, false);
         ButterKnife.bind(this, view);
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getContext(),
