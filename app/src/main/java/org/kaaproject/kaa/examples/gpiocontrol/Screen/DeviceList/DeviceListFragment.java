@@ -1,17 +1,21 @@
 package org.kaaproject.kaa.examples.gpiocontrol.Screen.DeviceList;
 
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import org.kaaproject.kaa.examples.gpiocontrol.BaseFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.MainActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
+import org.kaaproject.kaa.examples.gpiocontrol.Screen.AddControllerFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.model.GroupPin;
+import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.Utils;
 
 import java.util.List;
@@ -20,9 +24,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class DeviceListFragment extends Fragment implements DeviceListAdapter.OnItemClickListener {
+public class DeviceListFragment extends BaseFragment implements DeviceListAdapter.OnItemClickListener {
 
-    @BindView(R.id.recyclerView) protected RecyclerView recyclerView;
+    @BindView(R.id.recycler_view) protected RecyclerView recyclerView;
+    @BindView(R.id.no_device_message) protected TextView noDeviceMessage;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,18 +43,44 @@ public class DeviceListFragment extends Fragment implements DeviceListAdapter.On
         recyclerView.setLayoutManager(layoutManager);
 
         List<GroupPin> groupPinList = Utils.getMockedGroupList();
+
         DeviceListAdapter deviceListAdapter = new DeviceListAdapter(groupPinList, this);
         recyclerView.setAdapter(deviceListAdapter);
+
+//        if (groupPinList.isEmpty()) {
+        showNoDevices();
+//        } else {
+//            showDevices();
+//        }
 
         return view;
     }
 
     @OnClick(R.id.fab)
     public void onFabClick() {
-
+        DialogFactory.getAddDeviceDialog(getContext(), new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                Log.e("fragment", "group");
+            }
+        }, new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                getBaseActivity().showFragment(new AddControllerFragment());
+            }
+        }).show();
     }
 
     @Override public void onItemClick(GroupPin groupPin) {
 
     }
+
+    private void showNoDevices() {
+        recyclerView.setVisibility(View.GONE);
+        noDeviceMessage.setVisibility(View.VISIBLE);
+    }
+
+    private void showDevices() {
+        recyclerView.setVisibility(View.VISIBLE);
+        noDeviceMessage.setVisibility(View.GONE);
+    }
+
 }

@@ -8,4 +8,20 @@
     <string name="swap_group_state">swap_groupd_state</string>
     <string name="alarm_for_group">alarm_for_group</string>
     <string name="group_lock">group_lock</string>
+    <string name="there_is_no_device_please_connect_at_least_one">There is no device. Please, connect at least one.</string>
+    <string name="add_controller_dialog">Add controller</string>
+    <string name="add_group_dialog">Add group</string>
+    <string name="select_picture">Select picture</string>
+    <string name="add_controller">Add controller</string>
+    <string name="controller_id">Controller ID</string>
+    <string name="name_for_ports">Name for ports</string>
+    <string name="cancel">Cancel</string>
+    <string name="image_for_ports">Image for ports</string>
+
+    <string-array name="image_options_array">
+        <item>Image from templates</item>
+        <item>Image from gallery</item>
+        <item>Take a photo</item>
+    </string-array>
+
 </resources>
