@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 import org.kaaproject.kaa.examples.gpiocontrol.BaseFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.MainActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
-import org.kaaproject.kaa.examples.gpiocontrol.Screen.AddControllerFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.model.GroupPin;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.Utils;
@@ -58,15 +56,7 @@ public class DeviceListFragment extends BaseFragment implements DeviceListAdapte
 
     @OnClick(R.id.fab)
     public void onFabClick() {
-        DialogFactory.getAddDeviceDialog(getContext(), new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                Log.e("fragment", "group");
-            }
-        }, new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                getBaseActivity().showFragment(new AddControllerFragment());
-            }
-        }).show();
+        DialogFactory.showAddDeviceDialog(getBaseActivity());
     }
 
     @Override public void onItemClick(GroupPin groupPin) {

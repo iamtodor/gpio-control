@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -20,6 +19,7 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
+import org.kaaproject.kaa.examples.gpiocontrol.BaseFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 
 import java.io.File;
@@ -30,7 +30,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AddControllerFragment extends Fragment {
+public class AddControllerFragment extends BaseFragment {
 
     private static final int REQUEST_IMAGE_PICK = 200;
     private static final int REQUEST_IMAGE_CAPTURE = 201;
@@ -85,14 +85,16 @@ public class AddControllerFragment extends Fragment {
                 Bundle extras = data.getExtras();
                 Bitmap bitmap = (Bitmap) extras.get("data");
                 Uri path = Uri.fromFile(getFile(bitmap));
-                Picasso.with(getContext()).load(path).fit().centerCrop().into(imageForPorts);
-//                startCropping(Uri.fromFile(Utils.getFile(this, bitmap)));
+                loadPicture(path);
             } else if (requestCode == REQUEST_IMAGE_PICK) {
                 Uri imageUri = data.getData();
-//                startCropping(imageUri);
-                Picasso.with(getContext()).load(imageUri).into(imageForPorts);
+                loadPicture(imageUri);
             }
         }
+    }
+
+    private void loadPicture(Uri path) {
+        Picasso.with(getContext()).load(path).fit().centerCrop().into(imageForPorts);
     }
 
     private void pickImageFromTemplates() {
