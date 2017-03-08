@@ -17,6 +17,10 @@
     <string name="name_for_ports">Name for ports</string>
     <string name="cancel">Cancel</string>
     <string name="image_for_ports">Image for ports</string>
+    <string name="group_picture">Picture for group</string>
+    <string name="image_from_templates">Image from templates</string>
+    <string name="image_from_gallery">Image from gallery</string>
+    <string name="take_photo">Take photo</string>
 
     <string-array name="image_options_array">
         <item>Image from templates</item>

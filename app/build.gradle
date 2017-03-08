@@ -20,9 +20,10 @@ android {
     }
 }
 ext {
-    supportLibraryVersion = "25.2.0"
-    butterKnifeVersion = "8.5.1"
+    supportLibraryVersion = '25.2.0'
+    butterKnifeVersion = '8.5.1'
     playServicesVersion = '10.2.0'
+    picassoVersion = '2.5.2'
 }
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -40,5 +41,7 @@ dependencies {
 
     compile "com.jakewharton:butterknife:$butterKnifeVersion"
     annotationProcessor "com.jakewharton:butterknife-compiler:$butterKnifeVersion"
+
+    compile "com.squareup.picasso:picasso:$picassoVersion"
 }
 apply plugin: 'com.google.gms.google-services'

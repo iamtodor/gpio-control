@@ -17,8 +17,6 @@
             style="@style/AddDeviceTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/add_group"
-            android:drawableTint="@color/lightBlueActiveElement"
             android:text="@string/add_group_dialog"/>
 
     </LinearLayout>
@@ -35,7 +33,6 @@
             style="@style/AddDeviceTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/add_controller"
             android:text="@string/add_controller_dialog"/>
 
     </LinearLayout>
