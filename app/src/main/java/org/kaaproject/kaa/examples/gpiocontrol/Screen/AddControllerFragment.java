@@ -85,11 +85,12 @@ public class AddControllerFragment extends Fragment {
                 Bundle extras = data.getExtras();
                 Bitmap bitmap = (Bitmap) extras.get("data");
                 Uri path = Uri.fromFile(getFile(bitmap));
-                Picasso.with(getContext()).load(path).into(imageForPorts);
+                Picasso.with(getContext()).load(path).fit().centerCrop().into(imageForPorts);
 //                startCropping(Uri.fromFile(Utils.getFile(this, bitmap)));
             } else if (requestCode == REQUEST_IMAGE_PICK) {
                 Uri imageUri = data.getData();
 //                startCropping(imageUri);
+                Picasso.with(getContext()).load(imageUri).into(imageForPorts);
             }
         }
     }

@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_margin="16dp"
+              android:gravity="center_vertical"
               android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16sp"
         android:text="@string/add_controller"
+        android:textColor="@android:color/black"
         android:textSize="20sp"/>
 
     <android.support.design.widget.TextInputLayout
@@ -48,12 +49,11 @@
         android:textSize="20sp"/>
 
     <ImageView
+        android:id="@+id/image_for_ports"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_gravity="center_horizontal"
-        android:id="@+id/image_for_ports"
-        app:srcCompat="@drawable/question_mark_button"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="16dp"
+        app:srcCompat="@drawable/question_mark_button"/>
 
     <LinearLayout
         android:layout_width="match_parent"
