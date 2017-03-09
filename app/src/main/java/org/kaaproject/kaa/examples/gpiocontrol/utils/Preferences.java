@@ -7,5 +7,6 @@ public interface Preferences {
     String getEmail();
     boolean isEmailExists();
     void removeEmail();
+    void cleanUp();
 
 }

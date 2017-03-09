@@ -1,6 +1,8 @@
 package org.kaaproject.kaa.examples.gpiocontrol.utils;
 
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.support.graphics.drawable.VectorDrawableCompat;
@@ -100,5 +102,12 @@ public class DialogFactory {
         refrigerator.setOnClickListener(onClickListener);
         wash.setOnClickListener(onClickListener);
         window.setOnClickListener(onClickListener);
+    }
+
+    public static AlertDialog.Builder getConfirmationDialog(Context context, String message, DialogInterface.OnClickListener listener) {
+        return new AlertDialog.Builder(context)
+                .setMessage(message)
+                .setPositiveButton(R.string.log_out, listener)
+                .setNegativeButton(R.string.cancel, null);
     }
 }

@@ -1,5 +1,6 @@
 package org.kaaproject.kaa.examples.gpiocontrol.screen;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,6 +19,7 @@ import org.kaaproject.kaa.examples.gpiocontrol.screen.editLockPassword.EditLockP
 import org.kaaproject.kaa.examples.gpiocontrol.screen.pinManagement.PinManagementFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.pinSwitchManagement.PinSwitchManagementFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.resetDevices.ResetDevicesFragment;
+import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.PreferencesImpl;
 
 import butterknife.BindView;
@@ -52,11 +54,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             navigationView.getMenu().getItem(0).setChecked(true);
             showFragment(new PinManagementFragment());
         } else {
-            Intent intent = new Intent(MainActivity.this, SingInActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            finish();
+            showSignInActivity();
         }
+    }
+
+    private void showSignInActivity() {
+        Intent intent = new Intent(MainActivity.this, SingInActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
     }
 
     @Override
@@ -97,11 +103,20 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         } else if (id == R.id.reset_devices) {
             showFragment(new ResetDevicesFragment());
         } else if (id == R.id.log_out) {
-
+            showLogoutDialog();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void showLogoutDialog() {
+        DialogFactory.getConfirmationDialog(this, "Log out?", new DialogInterface.OnClickListener() {
+            @Override public void onClick(DialogInterface dialog, int which) {
+                PreferencesImpl.getInstance().cleanUp();
+                showSignInActivity();
+            }
+        }).show();
     }
 }

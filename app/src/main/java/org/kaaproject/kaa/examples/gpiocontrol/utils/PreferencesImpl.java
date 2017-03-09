@@ -48,4 +48,9 @@ public class PreferencesImpl implements Preferences {
         preferences.edit().remove(KEY_EMAIL).apply();
     }
 
+    @Override public void cleanUp() {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear().apply();
+    }
+
 }
