@@ -32,5 +32,11 @@
     <string name="edit_lock_password">Edit lock password</string>
     <string name="pin_management">Pin management</string>
     <string name="pin_switch_management">Pin switch management</string>
+    <string name="change_password">Change password</string>
+    <string name="input_password">Input password</string>
+    <string name="create_password_title">Create password</string>
+    <string name="create_password_message">This is the first lock in this system. You need to create a password. In the future you can change it.</string>
+    <string name="change_password_title">Change password</string>
+    <string name="change_password_message">"Your current password: "</string>
 
 </resources>

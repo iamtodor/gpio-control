@@ -10,7 +10,10 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
@@ -20,6 +23,9 @@ import org.kaaproject.kaa.examples.gpiocontrol.screen.addController.ImagePortsDr
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseActivity;
 
 public class DialogFactory {
+
+    //Default screen margins, per the Android Design guidelines.
+    private static final int SIDE_MARGIN = 16;
 
     public static void showAddDeviceDialog(final BaseActivity activity) {
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity);
@@ -108,6 +114,25 @@ public class DialogFactory {
         return new AlertDialog.Builder(context)
                 .setMessage(message)
                 .setPositiveButton(R.string.log_out, listener)
+                .setNegativeButton(R.string.cancel, null);
+    }
+
+    public static AlertDialog.Builder getChangePasswordDialog(Context context, String title, String message, DialogInterface.OnClickListener listener) {
+        final EditText editText = new EditText(context);
+        FrameLayout container = new FrameLayout(context);
+        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        float margin = ViewUtils.dpToPx(context, SIDE_MARGIN);
+        lp.setMargins(Math.round(margin), 0, Math.round(margin), 0);
+        editText.setLayoutParams(lp);
+        editText.setHint(R.string.input_password);
+        container.addView(editText);
+        return new AlertDialog.Builder(context)
+                .setMessage(message)
+                .setTitle(title)
+                .setView(container)
+                .setPositiveButton(R.string.change_password, listener)
                 .setNegativeButton(R.string.cancel, null);
     }
 }

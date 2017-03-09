@@ -8,6 +8,7 @@ public class PreferencesImpl implements Preferences {
 
     private static final String PREF_NAME = "org.kaaproject.kaa.examples.gpiocontrol";
     private static final String KEY_EMAIL = "email";
+    private static final String KEY_PASSWORD = "password";
 
     private static PreferencesImpl instance;
     private final SharedPreferences preferences;
@@ -30,9 +31,9 @@ public class PreferencesImpl implements Preferences {
         return instance;
     }
 
-    @Override public void saveEmail(final String token) {
+    @Override public void saveEmail(final String email) {
         preferences.edit()
-                .putString(KEY_EMAIL, token)
+                .putString(KEY_EMAIL, email)
                 .apply();
     }
 
@@ -51,6 +52,16 @@ public class PreferencesImpl implements Preferences {
     @Override public void cleanUp() {
         SharedPreferences.Editor editor = preferences.edit();
         editor.clear().apply();
+    }
+
+    @Override public void savePassword(String password) {
+        preferences.edit()
+                .putString(KEY_EMAIL, password)
+                .apply();
+    }
+
+    @Override public String getPassword() {
+        return preferences.getString(KEY_PASSWORD, null);
     }
 
 }

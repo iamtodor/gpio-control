@@ -9,13 +9,13 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.SignIn.SingInActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseActivity;
-import org.kaaproject.kaa.examples.gpiocontrol.screen.editLockPassword.EditLockPasswordFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.pinManagement.PinManagementFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.pinSwitchManagement.PinSwitchManagementFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.resetDevices.ResetDevicesFragment;
@@ -99,7 +99,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         } else if (id == R.id.pin_management) {
             showFragment(new PinManagementFragment());
         } else if (id == R.id.edit_lock_password) {
-            showFragment(new EditLockPasswordFragment());
+            showEditPasswordDialog();
         } else if (id == R.id.reset_devices) {
             showFragment(new ResetDevicesFragment());
         } else if (id == R.id.log_out) {
@@ -109,6 +109,26 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void showEditPasswordDialog() {
+        String currentPassword = PreferencesImpl.getInstance().getPassword();
+        String dialogTitle;
+        String dialogMessage;
+        if (TextUtils.isEmpty(currentPassword)) {
+            dialogTitle = getString(R.string.create_password_title);
+            dialogMessage = getString(R.string.create_password_message);
+        } else {
+            dialogTitle = getString(R.string.change_password_title);
+            dialogMessage = getString(R.string.change_password_message) + currentPassword;
+        }
+
+        DialogFactory.getChangePasswordDialog(this, dialogTitle, dialogMessage, new DialogInterface.OnClickListener() {
+            @Override public void onClick(DialogInterface dialog, int which) {
+                PreferencesImpl.getInstance().cleanUp();
+                showSignInActivity();
+            }
+        }).show();
     }
 
     private void showLogoutDialog() {
