@@ -1,4 +1,4 @@
-package org.kaaproject.kaa.examples.gpiocontrol.Screen.SignIn;
+package org.kaaproject.kaa.examples.gpiocontrol.screen.SignIn;
 
 
 import android.content.Intent;

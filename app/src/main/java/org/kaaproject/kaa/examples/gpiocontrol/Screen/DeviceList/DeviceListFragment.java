@@ -1,4 +1,4 @@
-package org.kaaproject.kaa.examples.gpiocontrol.Screen.DeviceList;
+package org.kaaproject.kaa.examples.gpiocontrol.screen.DeviceList;
 
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;

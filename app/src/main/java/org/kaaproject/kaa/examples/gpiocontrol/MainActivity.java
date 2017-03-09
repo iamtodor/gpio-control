@@ -6,8 +6,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import org.kaaproject.kaa.examples.gpiocontrol.Screen.DeviceList.DeviceListFragment;
-import org.kaaproject.kaa.examples.gpiocontrol.Screen.SignIn.SingInActivity;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.DeviceList.DeviceListFragment;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.SignIn.SingInActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.PreferencesImpl;
 
 import butterknife.BindView;
