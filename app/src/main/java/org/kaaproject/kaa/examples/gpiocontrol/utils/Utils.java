@@ -1,9 +1,16 @@
 package org.kaaproject.kaa.examples.gpiocontrol.utils;
 
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
+
 import org.kaaproject.kaa.examples.gpiocontrol.model.GroupPin;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Pin;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +40,22 @@ public class Utils {
             }
         }
         return groupPinList;
+    }
+
+    @NonNull
+    public static File getFile(Context context, Bitmap bitmap) {
+        File file = new File(context.getCacheDir().getPath(), String.valueOf(System.currentTimeMillis()));
+        FileOutputStream out;
+        try {
+            if (!file.exists())
+                file.createNewFile();
+            out = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return file;
     }
 
 }

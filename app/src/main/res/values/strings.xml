@@ -21,6 +21,7 @@
     <string name="image_from_templates">Image from templates</string>
     <string name="image_from_gallery">Image from gallery</string>
     <string name="take_photo">Take photo</string>
+    <string name="choose_image">Choose image</string>
 
     <string-array name="image_options_array">
         <item>Image from templates</item>

@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -21,10 +20,8 @@ import com.squareup.picasso.Picasso;
 
 import org.kaaproject.kaa.examples.gpiocontrol.BaseFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
+import org.kaaproject.kaa.examples.gpiocontrol.utils.Utils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -84,7 +81,7 @@ public class AddControllerFragment extends BaseFragment {
             if (requestCode == REQUEST_IMAGE_CAPTURE) {
                 Bundle extras = data.getExtras();
                 Bitmap bitmap = (Bitmap) extras.get("data");
-                Uri path = Uri.fromFile(getFile(bitmap));
+                Uri path = Uri.fromFile(Utils.getFile(getContext(), bitmap));
                 loadPicture(path);
             } else if (requestCode == REQUEST_IMAGE_PICK) {
                 Uri imageUri = data.getData();
@@ -98,7 +95,7 @@ public class AddControllerFragment extends BaseFragment {
     }
 
     private void pickImageFromTemplates() {
-
+        DialogFactory.showChooseTemplateImageDialog(getBaseActivity(), imageForPorts);
     }
 
     private void pickPictureFromGallery() {
@@ -117,19 +114,4 @@ public class AddControllerFragment extends BaseFragment {
         }
     }
 
-    @NonNull
-    public File getFile(Bitmap bitmap) {
-        File file = new File(getContext().getCacheDir().getPath(), String.valueOf(System.currentTimeMillis()));
-        FileOutputStream out;
-        try {
-            if (!file.exists())
-                file.createNewFile();
-            out = new FileOutputStream(file);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-            out.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return file;
-    }
 }
