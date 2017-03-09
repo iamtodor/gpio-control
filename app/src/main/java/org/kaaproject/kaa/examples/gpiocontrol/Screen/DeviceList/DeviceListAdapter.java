@@ -53,7 +53,7 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.Vi
         private GroupPin item;
 
         static ViewHolderPinGroupItem create(LayoutInflater inflater, ViewGroup parent, OnItemClickListener clickListener) {
-            return new ViewHolderPinGroupItem(inflater.inflate(R.layout.group_pin_item, parent, false), clickListener);
+            return new ViewHolderPinGroupItem(inflater.inflate(R.layout.device_item, parent, false), clickListener);
         }
 
         ViewHolderPinGroupItem(View itemView, OnItemClickListener clickListener) {
