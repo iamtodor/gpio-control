@@ -13,7 +13,11 @@ public class AddControllerImageTemplateMapper {
         GAS_STOVE(R.id.gas_stove, R.drawable.gas_stove),
         COND(R.id.cond, R.drawable.cond),
         LAMP(R.id.lamp, R.drawable.lamp),
-        TABLE_LAMP(R.id.table_lamp, R.drawable.table_lamp);
+        TABLE_LAMP(R.id.table_lamp, R.drawable.table_lamp),
+        FAN(R.id.fan, R.drawable.fan),
+        REFRIGERATOR(R.id.refrigerator, R.drawable.refrigerator),
+        WASH(R.id.wash, R.drawable.wash),
+        WINDOW(R.id.window, R.drawable.window);
 
         private int viewId;
         private int drawableId;

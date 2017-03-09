@@ -3,8 +3,8 @@
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:padding="16dp"
-              android:orientation="vertical">
+              android:orientation="vertical"
+              android:padding="16dp">
 
     <TextView
         android:layout_width="match_parent"
@@ -23,31 +23,31 @@
             android:layout_height="wrap_content">
 
             <ImageView
+                android:id="@+id/no_image_selected"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
-                android:id="@+id/no_image_selected"
                 app:srcCompat="@drawable/no_image_selected"/>
 
             <ImageView
+                android:id="@+id/flat_tv"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
-                android:id="@+id/flat_tv"
                 app:srcCompat="@drawable/flat_tv"/>
 
             <ImageView
+                android:id="@+id/microwave"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
-                android:id="@+id/microwave"
                 app:srcCompat="@drawable/microwave"/>
 
             <ImageView
+                android:id="@+id/kitchen"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
-                android:id="@+id/kitchen"
                 app:srcCompat="@drawable/kitchen"/>
         </TableRow>
 
@@ -57,28 +57,32 @@
             android:layout_marginTop="16dp">
 
             <ImageView
+                android:id="@+id/window"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/no_image_selected"/>
+                app:srcCompat="@drawable/window"/>
 
             <ImageView
+                android:id="@+id/fan"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/no_image_selected"/>
+                app:srcCompat="@drawable/fan"/>
 
             <ImageView
+                android:id="@+id/refrigerator"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/no_image_selected"/>
+                app:srcCompat="@drawable/refrigerator"/>
 
             <ImageView
+                android:id="@+id/wash"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/no_image_selected"/>
+                app:srcCompat="@drawable/wash"/>
         </TableRow>
 
         <TableRow
@@ -87,31 +91,31 @@
             android:layout_marginTop="16dp">
 
             <ImageView
+                android:id="@+id/gas_stove"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
-                android:id="@+id/gas_stove"
                 app:srcCompat="@drawable/gas_stove"/>
 
             <ImageView
+                android:id="@+id/cond"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
-                android:id="@+id/cond"
                 app:srcCompat="@drawable/cond"/>
 
             <ImageView
+                android:id="@+id/lamp"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
-                android:id="@+id/lamp"
                 app:srcCompat="@drawable/lamp"/>
 
             <ImageView
+                android:id="@+id/table_lamp"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
-                android:id="@+id/table_lamp"
                 app:srcCompat="@drawable/table_lamp"/>
         </TableRow>
 

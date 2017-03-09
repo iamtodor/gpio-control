@@ -70,6 +70,10 @@ public class DialogFactory {
         final ImageView cond = (ImageView) view.findViewById(R.id.cond);
         final ImageView lamp = (ImageView) view.findViewById(R.id.lamp);
         final ImageView tableLamp = (ImageView) view.findViewById(R.id.table_lamp);
+        final ImageView fan = (ImageView) view.findViewById(R.id.fan);
+        final ImageView refrigerator = (ImageView) view.findViewById(R.id.refrigerator);
+        final ImageView wash = (ImageView) view.findViewById(R.id.wash);
+        final ImageView window = (ImageView) view.findViewById(R.id.window);
 
         final AlertDialog dialog = dialogBuilder.show();
 
@@ -92,5 +96,9 @@ public class DialogFactory {
         cond.setOnClickListener(onClickListener);
         lamp.setOnClickListener(onClickListener);
         tableLamp.setOnClickListener(onClickListener);
+        fan.setOnClickListener(onClickListener);
+        refrigerator.setOnClickListener(onClickListener);
+        wash.setOnClickListener(onClickListener);
+        window.setOnClickListener(onClickListener);
     }
 }
