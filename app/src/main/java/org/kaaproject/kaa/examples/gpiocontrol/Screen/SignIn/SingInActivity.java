@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.widget.RelativeLayout;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -17,8 +19,10 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import org.kaaproject.kaa.examples.gpiocontrol.BaseActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.MainActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
+import org.kaaproject.kaa.examples.gpiocontrol.utils.NetworkUtils;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.PreferencesImpl;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -26,6 +30,8 @@ public class SingInActivity extends BaseActivity implements GoogleApiClient.OnCo
 
     private static final int SIGN_IN = 777;
     private GoogleApiClient mGoogleApiClient;
+
+    @BindView(R.id.content_main) protected RelativeLayout mainLayout;
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +50,11 @@ public class SingInActivity extends BaseActivity implements GoogleApiClient.OnCo
 
     @OnClick(R.id.sign_in_button)
     public void singInClick() {
+        if (!NetworkUtils.isOn(this)) {
+            Snackbar.make(mainLayout, R.string.no_internet_connection, Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, SIGN_IN);
     }

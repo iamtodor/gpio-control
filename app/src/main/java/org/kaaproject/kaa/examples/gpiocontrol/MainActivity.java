@@ -23,8 +23,7 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-//        defineApplicationFlow();
-        showFragment(new DeviceListFragment());
+        defineApplicationFlow();
     }
 
     private void defineApplicationFlow() {

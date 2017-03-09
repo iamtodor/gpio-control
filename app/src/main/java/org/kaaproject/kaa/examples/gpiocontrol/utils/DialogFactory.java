@@ -14,8 +14,8 @@ import android.widget.TextView;
 import org.kaaproject.kaa.examples.gpiocontrol.BaseActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.mapper.AddControllerImageTemplateMapper;
-import org.kaaproject.kaa.examples.gpiocontrol.screen.AddControllerFragment;
-import org.kaaproject.kaa.examples.gpiocontrol.screen.ImagePortsDrawableListener;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.AddControllerFragment.AddControllerFragment;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.AddControllerFragment.ImagePortsDrawableListener;
 
 public class DialogFactory {
 

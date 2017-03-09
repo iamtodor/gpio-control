@@ -1,4 +1,4 @@
-package org.kaaproject.kaa.examples.gpiocontrol.screen;
+package org.kaaproject.kaa.examples.gpiocontrol.screen.AddControllerFragment;
 
 
 import android.app.Activity;

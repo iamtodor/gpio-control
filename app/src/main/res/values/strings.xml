@@ -22,6 +22,7 @@
     <string name="image_from_gallery">Image from gallery</string>
     <string name="take_photo">Take photo</string>
     <string name="choose_image">Choose image</string>
+    <string name="no_internet_connection">You have no internet connection</string>
 
     <string-array name="image_options_array">
         <item>Image from templates</item>
