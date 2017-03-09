@@ -1,4 +1,4 @@
-package org.kaaproject.kaa.examples.gpiocontrol.screen.DeviceList;
+package org.kaaproject.kaa.examples.gpiocontrol.screen.pinManagement;
 
 
 import android.support.v7.widget.RecyclerView;
@@ -14,13 +14,13 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 
-public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.ViewHolderPinGroupItem> {
+public class PinManagementAdapter extends RecyclerView.Adapter<PinManagementAdapter.ViewHolderPinGroupItem> {
 
     private LayoutInflater inflater;
     private List<GroupPin> groupPinList = new ArrayList<>();
     private final OnItemClickListener clickListener;
 
-    public DeviceListAdapter(List<GroupPin> groupPinList, OnItemClickListener clickListener) {
+    public PinManagementAdapter(List<GroupPin> groupPinList, OnItemClickListener clickListener) {
         this.clickListener = clickListener;
         updateAdapter(groupPinList);
     }
@@ -31,7 +31,7 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.Vi
         notifyDataSetChanged();
     }
 
-    @Override public DeviceListAdapter.ViewHolderPinGroupItem onCreateViewHolder(ViewGroup parent, int viewType) {
+    @Override public PinManagementAdapter.ViewHolderPinGroupItem onCreateViewHolder(ViewGroup parent, int viewType) {
         if (inflater == null) {
             inflater = LayoutInflater.from(parent.getContext());
         }

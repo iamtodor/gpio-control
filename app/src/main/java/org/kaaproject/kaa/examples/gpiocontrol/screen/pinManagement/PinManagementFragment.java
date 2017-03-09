@@ -1,4 +1,4 @@
-package org.kaaproject.kaa.examples.gpiocontrol.screen.DeviceList;
+package org.kaaproject.kaa.examples.gpiocontrol.screen.pinManagement;
 
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -22,7 +22,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class DeviceListFragment extends BaseFragment implements DeviceListAdapter.OnItemClickListener {
+public class PinManagementFragment extends BaseFragment implements PinManagementAdapter.OnItemClickListener {
 
     @BindView(R.id.recycler_view) protected RecyclerView recyclerView;
     @BindView(R.id.no_device_message) protected TextView noDeviceMessage;
@@ -42,8 +42,8 @@ public class DeviceListFragment extends BaseFragment implements DeviceListAdapte
 
         List<GroupPin> groupPinList = Utils.getMockedGroupList();
 
-        DeviceListAdapter deviceListAdapter = new DeviceListAdapter(groupPinList, this);
-        recyclerView.setAdapter(deviceListAdapter);
+        PinManagementAdapter pinManagementAdapter = new PinManagementAdapter(groupPinList, this);
+        recyclerView.setAdapter(pinManagementAdapter);
 
 //        if (groupPinList.isEmpty()) {
         showNoDevices();

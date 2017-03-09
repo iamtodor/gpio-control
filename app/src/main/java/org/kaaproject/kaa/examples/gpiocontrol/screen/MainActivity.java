@@ -12,9 +12,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
-import org.kaaproject.kaa.examples.gpiocontrol.screen.DeviceList.DeviceListFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.SignIn.SingInActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseActivity;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.editLockPassword.EditLockPasswordFragment;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.pinManagement.PinManagementFragment;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.pinSwitchManagement.PinSwitchManagementFragment;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.resetDevices.ResetDevicesFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.PreferencesImpl;
 
 import butterknife.BindView;
@@ -23,6 +26,7 @@ import butterknife.ButterKnife;
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     @BindView(R.id.toolbar) protected Toolbar toolbar;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +41,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         defineApplicationFlow();
@@ -45,7 +49,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     private void defineApplicationFlow() {
         if (PreferencesImpl.getInstance().isEmailExists()) {
-            showFragment(new DeviceListFragment());
+            navigationView.getMenu().getItem(0).setChecked(true);
+            showFragment(new PinManagementFragment());
         } else {
             Intent intent = new Intent(MainActivity.this, SingInActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -84,13 +89,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         int id = item.getItemId();
 
         if (id == R.id.pin_switch_management) {
-
+            showFragment(new PinSwitchManagementFragment());
         } else if (id == R.id.pin_management) {
-
+            showFragment(new PinManagementFragment());
         } else if (id == R.id.edit_lock_password) {
-
+            showFragment(new EditLockPasswordFragment());
         } else if (id == R.id.reset_devices) {
-
+            showFragment(new ResetDevicesFragment());
         } else if (id == R.id.log_out) {
 
         }
