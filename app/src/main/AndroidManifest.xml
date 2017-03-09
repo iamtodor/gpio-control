@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="org.kaaproject.kaa.examples.gpiocontrol.MainActivity"
+            android:name="org.kaaproject.kaa.examples.gpiocontrol.screen.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

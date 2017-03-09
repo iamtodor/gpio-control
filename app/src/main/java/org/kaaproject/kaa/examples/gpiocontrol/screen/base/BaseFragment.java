@@ -1,4 +1,4 @@
-package org.kaaproject.kaa.examples.gpiocontrol;
+package org.kaaproject.kaa.examples.gpiocontrol.screen.base;
 
 
 import android.support.v4.app.Fragment;

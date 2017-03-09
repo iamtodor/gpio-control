@@ -1,4 +1,4 @@
-package org.kaaproject.kaa.examples.gpiocontrol.screen.AddControllerFragment;
+package org.kaaproject.kaa.examples.gpiocontrol.screen.addController;
 
 
 import android.app.Activity;
@@ -19,9 +19,9 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
-import org.kaaproject.kaa.examples.gpiocontrol.BaseFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.Utils;
 

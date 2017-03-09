@@ -16,9 +16,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
-import org.kaaproject.kaa.examples.gpiocontrol.BaseActivity;
-import org.kaaproject.kaa.examples.gpiocontrol.MainActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.MainActivity;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.NetworkUtils;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.PreferencesImpl;
 

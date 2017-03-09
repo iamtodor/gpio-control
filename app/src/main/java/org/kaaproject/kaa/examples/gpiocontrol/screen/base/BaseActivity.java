@@ -1,9 +1,11 @@
-package org.kaaproject.kaa.examples.gpiocontrol;
+package org.kaaproject.kaa.examples.gpiocontrol.screen.base;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+
+import org.kaaproject.kaa.examples.gpiocontrol.R;
 
 public class BaseActivity extends AppCompatActivity {
 

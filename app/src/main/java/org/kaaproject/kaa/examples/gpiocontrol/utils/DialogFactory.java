@@ -11,11 +11,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.kaaproject.kaa.examples.gpiocontrol.BaseActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.mapper.AddControllerImageTemplateMapper;
-import org.kaaproject.kaa.examples.gpiocontrol.screen.AddControllerFragment.AddControllerFragment;
-import org.kaaproject.kaa.examples.gpiocontrol.screen.AddControllerFragment.ImagePortsDrawableListener;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.addController.AddControllerFragment;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.addController.ImagePortsDrawableListener;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseActivity;
 
 public class DialogFactory {
 
