@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/pin_switch_management"
+            android:title="@string/pin_switch_management"/>
+        <item
+            android:id="@+id/pin_management"
+            android:title="@string/pin_management"/>
+        <item
+            android:id="@+id/edit_lock_password"
+            android:title="@string/edit_lock_password"/>
+        <item
+            android:id="@+id/reset_devices"
+            android:title="@string/reset_devices"/>
+    </group>
+
+    <item android:title="@string/account">
+        <menu>
+            <item
+                android:id="@+id/log_out"
+                android:title="@string/log_out"/>
+        </menu>
+    </item>
+
+</menu>

@@ -24,10 +24,13 @@
     <string name="choose_image">Choose image</string>
     <string name="no_internet_connection">You have no internet connection</string>
 
-    <string-array name="image_options_array">
-        <item>Image from templates</item>
-        <item>Image from gallery</item>
-        <item>Take a photo</item>
-    </string-array>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="account">Account</string>
+    <string name="log_out">Log out</string>
+    <string name="reset_devices">Reset devices</string>
+    <string name="edit_lock_password">Edit lock password</string>
+    <string name="pin_management">Pin management</string>
+    <string name="pin_switch_management">Pin switch management</string>
 
 </resources>
