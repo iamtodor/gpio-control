@@ -57,14 +57,14 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/text_view_options"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginRight="16dp"
-        android:gravity="end"
-        android:text="&#8942;"
-        android:textAppearance="?android:textAppearanceLarge"/>
+    <ImageView
+        android:id="@+id/menu"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_weight="0.1"
+        android:layout_gravity="center_vertical"
+        android:alpha="0.54"
+        android:contentDescription="@string/menu"
+        app:srcCompat="@drawable/menu_for_device_management_black"/>
 
 </LinearLayout>

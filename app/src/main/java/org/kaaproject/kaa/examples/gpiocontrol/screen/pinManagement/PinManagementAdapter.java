@@ -77,7 +77,7 @@ class PinManagementAdapter extends RecyclerView.Adapter<PinManagementAdapter.Vie
         @BindView(R.id.name) TextView name;
         @BindView(R.id.port) TextView port;
         @BindView(R.id.switch_active) SwitchCompat switchCompat;
-        @BindView(R.id.text_view_options) TextView textViewOptions;
+        @BindView(R.id.menu) ImageView textViewOptions;
 
         static ViewHolderPinGroupItem create(LayoutInflater inflater, ViewGroup parent, OnItemClickListener clickListener) {
             return new ViewHolderPinGroupItem(inflater.inflate(R.layout.device_item_pin_management, parent, false), clickListener);
@@ -116,7 +116,7 @@ class PinManagementAdapter extends RecyclerView.Adapter<PinManagementAdapter.Vie
         }
 
         @Override public void onClick(View view) {
-            if (view.getId() == R.id.text_view_options) {
+            if (view.getId() == R.id.menu) {
                 popup.show();
             } else if (clickListener != null) {
                 clickListener.onItemClick(item);

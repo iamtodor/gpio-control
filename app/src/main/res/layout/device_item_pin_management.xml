@@ -21,10 +21,10 @@
         <ImageView
             android:id="@+id/image"
             android:layout_width="48dp"
-            android:alpha="0.54"
             android:layout_height="48dp"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="8dp"
+            android:alpha="0.54"
             android:contentDescription="@string/folder"
             app:srcCompat="@drawable/no_image_selected"/>
 
@@ -37,9 +37,9 @@
 
             <TextView
                 android:id="@+id/name"
-                android:alpha="0.87"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:alpha="0.87"
                 android:textColor="@android:color/black"
                 android:textStyle="bold"
                 tools:text="Some name"/>
@@ -48,8 +48,8 @@
                 android:id="@+id/port"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/black"
                 android:alpha="0.54"
+                android:textColor="@android:color/black"
                 tools:text="Some port"/>
 
         </LinearLayout>
@@ -60,28 +60,26 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_weight="0.4"
-        android:gravity="center">
+        android:layout_weight="0.3"
+        android:gravity="end">
 
         <android.support.v7.widget.SwitchCompat
             android:id="@+id/switch_active"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:alpha="0.87"
-            android:background="@null"
-            android:theme="@style/SwitchStyle"/>
-
-        <TextView
-            android:id="@+id/text_view_options"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:clickable="true"
-            android:gravity="end"
-            android:paddingRight="32dp"
-            android:text="&#8942;"
-            android:textAppearance="?android:textAppearanceLarge"/>
+            android:alpha="0.87"
+            android:background="@null"
+            android:layout_marginRight="24dp"
+            android:theme="@style/SwitchStyle"/>
+
+        <ImageView
+            android:id="@+id/menu"
+            android:layout_width="24dp"
+            android:layout_gravity="center_vertical"
+            android:layout_height="24dp"
+            android:alpha="0.54"
+            android:contentDescription="@string/menu"
+            app:srcCompat="@drawable/menu_for_device_management_black"/>
 
     </LinearLayout>
 
