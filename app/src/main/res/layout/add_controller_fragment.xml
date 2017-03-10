@@ -10,6 +10,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:alpha="0.87"
         android:text="@string/add_controller"
         android:textColor="@android:color/black"
         android:textSize="20sp"/>
@@ -44,6 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16sp"
+        android:alpha="0.87"
         android:text="@string/image_for_ports"
         android:textColor="@android:color/black"
         android:textSize="20sp"/>
@@ -52,6 +54,7 @@
         android:id="@+id/image_for_ports"
         android:layout_width="48dp"
         android:layout_height="48dp"
+        android:alpha="0.54"
         android:layout_marginTop="8dp"
         app:srcCompat="@drawable/no_image_selected"/>
 
