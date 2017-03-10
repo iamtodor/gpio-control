@@ -39,5 +39,8 @@
     <string name="change_password_title">Change password</string>
     <string name="change_password_message">"Your current password: "</string>
     <string name="edit_text_cant_be_empty_error">Can\'t be empty</string>
+    <string name="edit_image">Edit image</string>
+    <string name="edit_name">Edit name</string>
+    <string name="add_to_group">Add to group</string>
 
 </resources>

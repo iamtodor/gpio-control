@@ -30,7 +30,7 @@ public class PinManagementFragment extends BaseFragment implements PinManagement
         View view = inflater.inflate(R.layout.device_list_fragment, container, false);
 
         ButterKnife.bind(this, view);
-        getSupportActionBar().setTitle("Device switch management");
+        getSupportActionBar().setTitle("Device management");
 
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
         recyclerView.setItemAnimator(itemAnimator);

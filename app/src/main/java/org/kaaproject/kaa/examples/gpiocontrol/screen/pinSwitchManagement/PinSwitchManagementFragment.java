@@ -44,11 +44,11 @@ public class PinSwitchManagementFragment extends BaseFragment implements PinSwit
         PinSwitchManagementAdapter pinSwitchManagementAdapter = new PinSwitchManagementAdapter(groupPinList, this);
         recyclerView.setAdapter(pinSwitchManagementAdapter);
 
-//        if (groupPinList.isEmpty()) {
+        if (groupPinList.isEmpty()) {
         showNoDevices();
-//        } else {
-//            showDevices();
-//        }
+        } else {
+            showDevices();
+        }
 
         return view;
     }

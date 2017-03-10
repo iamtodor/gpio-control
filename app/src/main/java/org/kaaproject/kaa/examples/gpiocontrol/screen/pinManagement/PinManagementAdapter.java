@@ -1,11 +1,14 @@
 package org.kaaproject.kaa.examples.gpiocontrol.screen.pinManagement;
 
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.graphics.drawable.VectorDrawableCompat;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -26,6 +29,7 @@ class PinManagementAdapter extends RecyclerView.Adapter<PinManagementAdapter.Vie
     private LayoutInflater inflater;
     private List<Controller> controllerList = new ArrayList<>();
     private final OnItemClickListener clickListener;
+    private Context context;
 
     PinManagementAdapter(List<Controller> controllerList, OnItemClickListener clickListener) {
         this.clickListener = clickListener;
@@ -40,15 +44,16 @@ class PinManagementAdapter extends RecyclerView.Adapter<PinManagementAdapter.Vie
 
     @Override public PinManagementAdapter.ViewHolderPinGroupItem onCreateViewHolder(ViewGroup parent, int viewType) {
         if (inflater == null) {
+            context = parent.getContext();
             inflater = LayoutInflater.from(parent.getContext());
         }
         return ViewHolderPinGroupItem.create(inflater, parent, clickListener);
     }
 
-    @Override public void onBindViewHolder(ViewHolderPinGroupItem holder, int position) {
+    @Override public void onBindViewHolder(final ViewHolderPinGroupItem holder, int position) {
         Controller controller = controllerList.get(position);
 
-        Drawable drawable = VectorDrawableCompat.create(holder.checkBox.getContext().getResources(),
+        Drawable drawable = VectorDrawableCompat.create(context.getResources(),
                 controller.getImagePortsDrawableId(), null);
         holder.imageView.setImageDrawable(drawable);
         holder.name.setText(controller.getControllerId());
@@ -65,6 +70,7 @@ class PinManagementAdapter extends RecyclerView.Adapter<PinManagementAdapter.Vie
     static class ViewHolderPinGroupItem extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private final OnItemClickListener clickListener;
+        private final PopupMenu popup;
         private Controller item;
         @BindView(R.id.image) ImageView imageView;
         @BindView(R.id.checkbox) CheckBox checkBox;
@@ -82,14 +88,37 @@ class PinManagementAdapter extends RecyclerView.Adapter<PinManagementAdapter.Vie
             ButterKnife.bind(this, itemView);
             this.clickListener = clickListener;
             itemView.setOnClickListener(this);
+            textViewOptions.setOnClickListener(this);
+
+            popup = new PopupMenu(itemView.getContext(), textViewOptions);
+            popup.inflate(R.menu.device_item_popup_menu);
+            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.edit_image:
+                            // TODO: 3/10/17 add edit image
+                            break;
+                        case R.id.edit_name:
+                            // TODO: 3/10/17 add edit name
+                            break;
+                        case R.id.add_to_group:
+                            // TODO: 3/10/17 add add to group
+                            break;
+                    }
+                    return false;
+                }
+            });
         }
 
         void bind(Controller item) {
             this.item = item;
         }
 
-        @Override public void onClick(View v) {
-            if (clickListener != null) {
+        @Override public void onClick(View view) {
+            if (view.getId() == R.id.text_view_options) {
+                popup.show();
+            } else if (clickListener != null) {
                 clickListener.onItemClick(item);
             }
         }
