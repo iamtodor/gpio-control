@@ -21,7 +21,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class PinManagementFragment extends BaseFragment implements PinManagementAdapter.OnItemClickListener {
+public class PinManagementFragment extends BaseFragment {
 
     @BindView(R.id.recycler_view) protected RecyclerView recyclerView;
     @BindView(R.id.no_device_message) protected TextView noDeviceMessage;
@@ -40,20 +40,16 @@ public class PinManagementFragment extends BaseFragment implements PinManagement
 
         List<Controller> groupPinList = Utils.getMockedControllerList();
 
-        PinManagementAdapter pinManagementAdapter = new PinManagementAdapter(groupPinList, this);
+        PinManagementAdapter pinManagementAdapter = new PinManagementAdapter(groupPinList);
         recyclerView.setAdapter(pinManagementAdapter);
 
         if (groupPinList.isEmpty()) {
-        showNoDevices();
+            showNoDevices();
         } else {
             showDevices();
         }
 
         return view;
-    }
-
-    @Override public void onItemClick(Controller controller) {
-
     }
 
     private void showNoDevices() {

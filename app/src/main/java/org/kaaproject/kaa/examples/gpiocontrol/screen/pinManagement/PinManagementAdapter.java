@@ -28,11 +28,9 @@ class PinManagementAdapter extends RecyclerView.Adapter<PinManagementAdapter.Vie
 
     private LayoutInflater inflater;
     private List<Controller> controllerList = new ArrayList<>();
-    private final OnItemClickListener clickListener;
     private Context context;
 
-    PinManagementAdapter(List<Controller> controllerList, OnItemClickListener clickListener) {
-        this.clickListener = clickListener;
+    PinManagementAdapter(List<Controller> controllerList) {
         updateAdapter(controllerList);
     }
 
@@ -47,7 +45,7 @@ class PinManagementAdapter extends RecyclerView.Adapter<PinManagementAdapter.Vie
             context = parent.getContext();
             inflater = LayoutInflater.from(parent.getContext());
         }
-        return ViewHolderPinGroupItem.create(inflater, parent, clickListener);
+        return ViewHolderPinGroupItem.create(inflater, parent);
     }
 
     @Override public void onBindViewHolder(final ViewHolderPinGroupItem holder, int position) {
@@ -59,8 +57,6 @@ class PinManagementAdapter extends RecyclerView.Adapter<PinManagementAdapter.Vie
         holder.name.setText(controller.getControllerId());
         holder.port.setText(controller.getPortName());
         holder.switchCompat.setChecked(controller.isActive());
-
-        holder.bind(controller);
     }
 
     @Override public int getItemCount() {
@@ -69,9 +65,8 @@ class PinManagementAdapter extends RecyclerView.Adapter<PinManagementAdapter.Vie
 
     static class ViewHolderPinGroupItem extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private final OnItemClickListener clickListener;
         private final PopupMenu popup;
-        private Controller item;
+
         @BindView(R.id.image) ImageView imageView;
         @BindView(R.id.checkbox) CheckBox checkBox;
         @BindView(R.id.name) TextView name;
@@ -79,14 +74,13 @@ class PinManagementAdapter extends RecyclerView.Adapter<PinManagementAdapter.Vie
         @BindView(R.id.switch_active) SwitchCompat switchCompat;
         @BindView(R.id.menu) ImageView textViewOptions;
 
-        static ViewHolderPinGroupItem create(LayoutInflater inflater, ViewGroup parent, OnItemClickListener clickListener) {
-            return new ViewHolderPinGroupItem(inflater.inflate(R.layout.device_item_pin_management, parent, false), clickListener);
+        static ViewHolderPinGroupItem create(LayoutInflater inflater, ViewGroup parent) {
+            return new ViewHolderPinGroupItem(inflater.inflate(R.layout.device_item_pin_management, parent, false));
         }
 
-        ViewHolderPinGroupItem(View itemView, OnItemClickListener clickListener) {
+        ViewHolderPinGroupItem(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            this.clickListener = clickListener;
             itemView.setOnClickListener(this);
             textViewOptions.setOnClickListener(this);
 
@@ -111,21 +105,13 @@ class PinManagementAdapter extends RecyclerView.Adapter<PinManagementAdapter.Vie
             });
         }
 
-        void bind(Controller item) {
-            this.item = item;
-        }
-
         @Override public void onClick(View view) {
             if (view.getId() == R.id.menu) {
                 popup.show();
-            } else if (clickListener != null) {
-                clickListener.onItemClick(item);
+            } else {
+                checkBox.setChecked(!checkBox.isChecked());
             }
         }
-    }
-
-    interface OnItemClickListener {
-        void onItemClick(Controller groupPin);
     }
 
 }

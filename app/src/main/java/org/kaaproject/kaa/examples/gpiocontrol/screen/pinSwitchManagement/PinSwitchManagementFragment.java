@@ -21,7 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class PinSwitchManagementFragment extends BaseFragment implements PinSwitchManagementAdapter.OnItemClickListener {
+public class PinSwitchManagementFragment extends BaseFragment {
 
     @BindView(R.id.recycler_view) protected RecyclerView recyclerView;
     @BindView(R.id.no_device_message) protected TextView noDeviceMessage;
@@ -41,11 +41,11 @@ public class PinSwitchManagementFragment extends BaseFragment implements PinSwit
 
         List<GroupPin> groupPinList = Utils.getMockedGroupList();
 
-        PinSwitchManagementAdapter pinSwitchManagementAdapter = new PinSwitchManagementAdapter(groupPinList, this);
+        PinSwitchManagementAdapter pinSwitchManagementAdapter = new PinSwitchManagementAdapter(groupPinList);
         recyclerView.setAdapter(pinSwitchManagementAdapter);
 
         if (groupPinList.isEmpty()) {
-        showNoDevices();
+            showNoDevices();
         } else {
             showDevices();
         }
@@ -56,10 +56,6 @@ public class PinSwitchManagementFragment extends BaseFragment implements PinSwit
     @OnClick(R.id.fab)
     public void onFabClick() {
         DialogFactory.showAddDeviceDialog(getBaseActivity());
-    }
-
-    @Override public void onItemClick(GroupPin groupPin) {
-
     }
 
     private void showNoDevices() {

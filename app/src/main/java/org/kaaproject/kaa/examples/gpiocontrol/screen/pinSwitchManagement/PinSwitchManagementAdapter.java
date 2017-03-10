@@ -18,10 +18,8 @@ class PinSwitchManagementAdapter extends RecyclerView.Adapter<PinSwitchManagemen
 
     private LayoutInflater inflater;
     private List<GroupPin> groupPinList = new ArrayList<>();
-    private final OnItemClickListener clickListener;
 
-    PinSwitchManagementAdapter(List<GroupPin> groupPinList, OnItemClickListener clickListener) {
-        this.clickListener = clickListener;
+    PinSwitchManagementAdapter(List<GroupPin> groupPinList) {
         updateAdapter(groupPinList);
     }
 
@@ -35,12 +33,11 @@ class PinSwitchManagementAdapter extends RecyclerView.Adapter<PinSwitchManagemen
         if (inflater == null) {
             inflater = LayoutInflater.from(parent.getContext());
         }
-        return ViewHolderPinGroupItem.create(inflater, parent, clickListener);
+        return ViewHolderPinGroupItem.create(inflater, parent);
     }
 
     @Override public void onBindViewHolder(ViewHolderPinGroupItem holder, int position) {
         GroupPin groupPin = groupPinList.get(position);
-        holder.bind(groupPin);
     }
 
     @Override public int getItemCount() {
@@ -49,33 +46,19 @@ class PinSwitchManagementAdapter extends RecyclerView.Adapter<PinSwitchManagemen
 
     static class ViewHolderPinGroupItem extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private final OnItemClickListener clickListener;
-        private GroupPin item;
-
-        static ViewHolderPinGroupItem create(LayoutInflater inflater, ViewGroup parent, OnItemClickListener clickListener) {
-            return new ViewHolderPinGroupItem(inflater.inflate(R.layout.device_item_pin_switch_mangement, parent, false), clickListener);
+        static ViewHolderPinGroupItem create(LayoutInflater inflater, ViewGroup parent) {
+            return new ViewHolderPinGroupItem(inflater.inflate(R.layout.device_item_pin_switch_mangement, parent, false));
         }
 
-        ViewHolderPinGroupItem(View itemView, OnItemClickListener clickListener) {
+        ViewHolderPinGroupItem(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            this.clickListener = clickListener;
             itemView.setOnClickListener(this);
         }
 
-        void bind(GroupPin item) {
-            this.item = item;
-        }
-
         @Override public void onClick(View v) {
-            if (clickListener != null) {
-                clickListener.onItemClick(item);
-            }
-        }
-    }
 
-    interface OnItemClickListener {
-        void onItemClick(GroupPin groupPin);
+        }
     }
 
 }
