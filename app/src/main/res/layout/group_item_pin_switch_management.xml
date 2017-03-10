@@ -26,7 +26,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="8dp"
             android:contentDescription="@string/folder"
-            app:srcCompat="@drawable/no_image_selected"/>
+            app:srcCompat="@drawable/empty_group_icon"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -36,7 +36,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/group_name"
+                android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
@@ -44,11 +44,11 @@
                 tools:text="Some group"/>
 
             <TextView
-                android:id="@+id/group_status"
+                android:id="@+id/status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/darker_gray"
-                tools:text="Some group"/>
+                tools:text="3/12 activated"/>
 
         </LinearLayout>
 
@@ -62,7 +62,7 @@
         android:gravity="center">
 
         <android.support.v7.widget.SwitchCompat
-            android:id="@+id/group_switch"
+            android:id="@+id/switch_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -70,22 +70,22 @@
             android:theme="@style/SwitchStyle"/>
 
         <ImageView
-            android:id="@+id/clock"
+            android:id="@+id/group_swap_state"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginLeft="16dp"
+            android:layout_weight="1"
+            android:contentDescription="@string/swap_group_state"
+            app:srcCompat="@drawable/toggle_active"/>
+
+        <ImageView
+            android:id="@+id/alarm"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginLeft="16dp"
             android:layout_weight="1"
             android:contentDescription="@string/alarm_for_group"
             app:srcCompat="@drawable/alarm_activated"/>
-
-        <ImageView
-            android:id="@+id/lock"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginLeft="16dp"
-            android:layout_weight="1"
-            android:contentDescription="@string/group_lock"
-            android:src="@android:drawable/arrow_down_float"/>
 
     </LinearLayout>
 

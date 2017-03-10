@@ -1,6 +1,8 @@
 package org.kaaproject.kaa.examples.gpiocontrol.screen.pinManagement;
 
+
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,29 +12,25 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
-import org.kaaproject.kaa.examples.gpiocontrol.model.GroupPin;
+import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseFragment;
-import org.kaaproject.kaa.examples.gpiocontrol.screen.main.MainActivity;
-import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.Utils;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class PinManagementFragment extends BaseFragment implements PinManagementAdapter.OnItemClickListener {
 
     @BindView(R.id.recycler_view) protected RecyclerView recyclerView;
     @BindView(R.id.no_device_message) protected TextView noDeviceMessage;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.device_list_fragment, container, false);
+
         ButterKnife.bind(this, view);
-        ((MainActivity) getActivity()).getSupportActionBar().setTitle("Device switch management");
+        getSupportActionBar().setTitle("Device switch management");
 
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
         recyclerView.setItemAnimator(itemAnimator);
@@ -40,26 +38,21 @@ public class PinManagementFragment extends BaseFragment implements PinManagement
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        List<GroupPin> groupPinList = Utils.getMockedGroupList();
+        List<Controller> groupPinList = Utils.getMockedControllerList();
 
         PinManagementAdapter pinManagementAdapter = new PinManagementAdapter(groupPinList, this);
         recyclerView.setAdapter(pinManagementAdapter);
 
-//        if (groupPinList.isEmpty()) {
+        if (groupPinList.isEmpty()) {
         showNoDevices();
-//        } else {
-//            showDevices();
-//        }
+        } else {
+            showDevices();
+        }
 
         return view;
     }
 
-    @OnClick(R.id.fab)
-    public void onFabClick() {
-        DialogFactory.showAddDeviceDialog(getBaseActivity());
-    }
-
-    @Override public void onItemClick(GroupPin groupPin) {
+    @Override public void onItemClick(Controller controller) {
 
     }
 
@@ -72,5 +65,4 @@ public class PinManagementFragment extends BaseFragment implements PinManagement
         recyclerView.setVisibility(View.VISIBLE);
         noDeviceMessage.setVisibility(View.GONE);
     }
-
 }

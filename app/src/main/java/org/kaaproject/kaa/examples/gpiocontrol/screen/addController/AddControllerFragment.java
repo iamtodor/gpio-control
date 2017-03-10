@@ -117,7 +117,7 @@ public class AddControllerFragment extends BaseFragment {
 
     private void addController() {
         Controller controller = new Controller(controllerId.getText().toString(),
-                portsName.getText().toString(), imagePortsDrawableId);
+                portsName.getText().toString(), imagePortsDrawableId, false);
     }
 
     private boolean isInfoValid() {
