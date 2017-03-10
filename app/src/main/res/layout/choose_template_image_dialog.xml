@@ -27,6 +27,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
+                android:alpha="0.54"
                 app:srcCompat="@drawable/no_image_selected"/>
 
             <ImageView
@@ -34,6 +35,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
+                android:alpha="0.54"
                 app:srcCompat="@drawable/flat_tv"/>
 
             <ImageView
@@ -41,6 +43,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
+                android:alpha="0.54"
                 app:srcCompat="@drawable/microwave"/>
 
             <ImageView
@@ -48,6 +51,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
+                android:alpha="0.54"
                 app:srcCompat="@drawable/kitchen"/>
         </TableRow>
 
@@ -61,6 +65,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
+                android:alpha="0.54"
                 app:srcCompat="@drawable/window"/>
 
             <ImageView
@@ -68,6 +73,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
+                android:alpha="0.54"
                 app:srcCompat="@drawable/fan"/>
 
             <ImageView
@@ -75,6 +81,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
+                android:alpha="0.54"
                 app:srcCompat="@drawable/refrigerator"/>
 
             <ImageView
@@ -82,6 +89,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
+                android:alpha="0.54"
                 app:srcCompat="@drawable/wash"/>
         </TableRow>
 
@@ -95,6 +103,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
+                android:alpha="0.54"
                 app:srcCompat="@drawable/gas_stove"/>
 
             <ImageView
@@ -102,6 +111,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
+                android:alpha="0.54"
                 app:srcCompat="@drawable/cond"/>
 
             <ImageView
@@ -109,6 +119,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
+                android:alpha="0.54"
                 app:srcCompat="@drawable/lamp"/>
 
             <ImageView
@@ -116,6 +127,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
+                android:alpha="0.54"
                 app:srcCompat="@drawable/table_lamp"/>
         </TableRow>
 

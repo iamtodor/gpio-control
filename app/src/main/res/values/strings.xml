@@ -5,7 +5,7 @@
     <string name="all_ports">All ports</string>
     <string name="ungrouped">Ungrouped</string>
     <string name="folder">folder</string>
-    <string name="swap_group_state">swap_groupd_state</string>
+    <string name="swap_group_state">swap_group_state</string>
     <string name="alarm_for_group">alarm_for_group</string>
     <string name="group_lock">group_lock</string>
     <string name="there_is_no_device_please_connect_at_least_one">There is no device. Please, connect at least one.</string>
