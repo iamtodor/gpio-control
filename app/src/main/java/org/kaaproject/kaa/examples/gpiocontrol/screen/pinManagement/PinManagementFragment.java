@@ -11,8 +11,8 @@ import android.widget.TextView;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.GroupPin;
-import org.kaaproject.kaa.examples.gpiocontrol.screen.MainActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseFragment;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.main.MainActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.Utils;
 

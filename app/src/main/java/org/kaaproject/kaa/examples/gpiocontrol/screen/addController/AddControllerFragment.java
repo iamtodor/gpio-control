@@ -122,10 +122,10 @@ public class AddControllerFragment extends BaseFragment {
 
     private boolean isInfoValid() {
         if (TextUtils.isEmpty(controllerId.getText().toString())) {
-            controllerId.setError("Can't be empty");
+            controllerId.setError(getString(R.string.edit_text_cant_be_empty_error));
             return false;
         } else if (TextUtils.isEmpty(portsName.getText().toString())) {
-            portsName.setError("Can't be empty");
+            portsName.setError(getString(R.string.edit_text_cant_be_empty_error));
             return false;
         }
         return true;

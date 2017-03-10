@@ -1,4 +1,4 @@
-package org.kaaproject.kaa.examples.gpiocontrol.screen;
+package org.kaaproject.kaa.examples.gpiocontrol.screen.main;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -123,10 +123,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             dialogMessage = getString(R.string.change_password_message) + currentPassword;
         }
 
-        DialogFactory.getChangePasswordDialog(this, dialogTitle, dialogMessage, new DialogInterface.OnClickListener() {
-            @Override public void onClick(DialogInterface dialog, int which) {
-                PreferencesImpl.getInstance().cleanUp();
-                showSignInActivity();
+        DialogFactory.getChangePasswordDialog(this, dialogTitle, dialogMessage, new ChangePasswordListener() {
+            @Override public void onChanged(String newPassword) {
+                PreferencesImpl.getInstance().savePassword(newPassword);
             }
         }).show();
     }

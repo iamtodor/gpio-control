@@ -10,6 +10,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -21,6 +22,7 @@ import org.kaaproject.kaa.examples.gpiocontrol.model.mapper.AddControllerImageTe
 import org.kaaproject.kaa.examples.gpiocontrol.screen.addController.AddControllerFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.addController.ImagePortsDrawableListener;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseActivity;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.main.ChangePasswordListener;
 
 public class DialogFactory {
 
@@ -110,17 +112,20 @@ public class DialogFactory {
         window.setOnClickListener(onClickListener);
     }
 
-    public static AlertDialog.Builder getConfirmationDialog(Context context, String message, DialogInterface.OnClickListener listener) {
+    public static AlertDialog.Builder getConfirmationDialog(final Context context, final String message,
+                                                            final DialogInterface.OnClickListener listener) {
         return new AlertDialog.Builder(context)
                 .setMessage(message)
                 .setPositiveButton(R.string.log_out, listener)
                 .setNegativeButton(R.string.cancel, null);
     }
 
-    public static AlertDialog.Builder getChangePasswordDialog(Context context, String title, String message, DialogInterface.OnClickListener listener) {
+    public static AlertDialog getChangePasswordDialog(final Context context, final String title,
+                                                      final String message,
+                                                      final ChangePasswordListener listener) {
         final EditText editText = new EditText(context);
-        FrameLayout container = new FrameLayout(context);
-        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
+        final FrameLayout container = new FrameLayout(context);
+        final FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT);
         float margin = ViewUtils.dpToPx(context, SIDE_MARGIN);
@@ -128,11 +133,36 @@ public class DialogFactory {
         editText.setLayoutParams(lp);
         editText.setHint(R.string.input_password);
         container.addView(editText);
-        return new AlertDialog.Builder(context)
+        final AlertDialog builder = new AlertDialog.Builder(context)
                 .setMessage(message)
                 .setTitle(title)
+                .setCancelable(false)
                 .setView(container)
-                .setPositiveButton(R.string.change_password, listener)
-                .setNegativeButton(R.string.cancel, null);
+                .setNegativeButton(R.string.cancel, null)
+                .setPositiveButton(R.string.change_password, null)
+                .create();
+
+        builder.setOnShowListener(new DialogInterface.OnShowListener() {
+
+            @Override
+            public void onShow(final DialogInterface dialog) {
+
+                Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                button.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View view) {
+                        if (editText.getText().toString().isEmpty()) {
+                            editText.setError(context.getString(R.string.edit_text_cant_be_empty_error));
+                        } else {
+                            listener.onChanged(editText.getText().toString());
+                            dialog.dismiss();
+                        }
+                    }
+                });
+            }
+        });
+
+        return builder;
     }
 }

@@ -56,7 +56,7 @@ public class PreferencesImpl implements Preferences {
 
     @Override public void savePassword(String password) {
         preferences.edit()
-                .putString(KEY_EMAIL, password)
+                .putString(KEY_PASSWORD, password)
                 .apply();
     }
 
