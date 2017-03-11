@@ -4,11 +4,9 @@ package org.kaaproject.kaa.examples.gpiocontrol.screen.alarm;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.graphics.drawable.VectorDrawableCompat;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -63,9 +61,7 @@ class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolderPinGroupI
         return controllerList.size();
     }
 
-    static class ViewHolderPinGroupItem extends RecyclerView.ViewHolder implements View.OnClickListener {
-
-        private final PopupMenu popup;
+    static class ViewHolderPinGroupItem extends RecyclerView.ViewHolder {
 
         @BindView(R.id.image) ImageView imageView;
         @BindView(R.id.checkbox) CheckBox checkBox;
@@ -81,36 +77,6 @@ class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolderPinGroupI
         ViewHolderPinGroupItem(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            itemView.setOnClickListener(this);
-            textViewOptions.setOnClickListener(this);
-
-            popup = new PopupMenu(itemView.getContext(), textViewOptions);
-            popup.inflate(R.menu.device_item_popup_menu);
-            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    switch (item.getItemId()) {
-                        case R.id.edit_image:
-                            // TODO: 3/10/17 add edit image
-                            break;
-                        case R.id.edit_name:
-                            // TODO: 3/10/17 add edit name
-                            break;
-                        case R.id.add_to_group:
-                            // TODO: 3/10/17 add add to group
-                            break;
-                    }
-                    return false;
-                }
-            });
-        }
-
-        @Override public void onClick(View view) {
-            if (view.getId() == R.id.menu) {
-                popup.show();
-            } else {
-                checkBox.setChecked(!checkBox.isChecked());
-            }
         }
     }
 

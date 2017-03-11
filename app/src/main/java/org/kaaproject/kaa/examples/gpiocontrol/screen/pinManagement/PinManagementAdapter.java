@@ -72,7 +72,7 @@ class PinManagementAdapter extends RecyclerView.Adapter<PinManagementAdapter.Vie
         @BindView(R.id.name) TextView name;
         @BindView(R.id.port) TextView port;
         @BindView(R.id.switch_active) SwitchCompat switchCompat;
-        @BindView(R.id.menu) ImageView textViewOptions;
+        @BindView(R.id.menu) ImageView imageViewOptions;
 
         static ViewHolderPinGroupItem create(LayoutInflater inflater, ViewGroup parent) {
             return new ViewHolderPinGroupItem(inflater.inflate(R.layout.device_item_pin_management, parent, false));
@@ -82,9 +82,9 @@ class PinManagementAdapter extends RecyclerView.Adapter<PinManagementAdapter.Vie
             super(itemView);
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
-            textViewOptions.setOnClickListener(this);
+            imageViewOptions.setOnClickListener(this);
 
-            popup = new PopupMenu(itemView.getContext(), textViewOptions);
+            popup = new PopupMenu(itemView.getContext(), imageViewOptions);
             popup.inflate(R.menu.device_item_popup_menu);
             popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
