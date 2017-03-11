@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".screen.SignIn.SingInActivity"
+            android:name=".screen.signIn.SingInActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 

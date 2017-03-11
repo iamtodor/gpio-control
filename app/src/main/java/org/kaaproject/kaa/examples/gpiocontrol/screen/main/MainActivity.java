@@ -13,11 +13,11 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
-import org.kaaproject.kaa.examples.gpiocontrol.screen.SignIn.SingInActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.pinManagement.PinManagementFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.pinSwitchManagement.PinSwitchManagementFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.resetDevices.ResetDevicesFragment;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.signIn.SingInActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.PreferencesImpl;
 

@@ -42,5 +42,6 @@
     <string name="edit_image">Edit image</string>
     <string name="edit_name">Edit name</string>
     <string name="add_to_group">Add to group</string>
+    <string name="there_is_no_alarm_please_add_at_least_one">There is no alarm. Please, add at least one.</string>
 
 </resources>

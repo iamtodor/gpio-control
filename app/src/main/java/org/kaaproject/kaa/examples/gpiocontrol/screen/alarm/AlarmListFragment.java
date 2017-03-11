@@ -1,10 +1,8 @@
-package org.kaaproject.kaa.examples.gpiocontrol.screen.pinManagement;
+package org.kaaproject.kaa.examples.gpiocontrol.screen.alarm;
 
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +11,7 @@ import android.widget.TextView;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
-import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseFragment;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseListFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.Utils;
 
@@ -23,7 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class PinManagementFragment extends BaseFragment {
+public class AlarmListFragment extends BaseListFragment {
 
     @BindView(R.id.recycler_view) protected RecyclerView recyclerView;
     @BindView(R.id.no_device_message) protected TextView noDeviceMessage;
@@ -33,31 +31,15 @@ public class PinManagementFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.device_list_fragment, container, false);
 
         ButterKnife.bind(this, view);
-        getSupportActionBar().setTitle("Device management");
-
-        RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
-        recyclerView.setItemAnimator(itemAnimator);
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
+        getSupportActionBar().setTitle("Alarm settings");
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setupRecyclerView(recyclerView, fab);
 
         List<Controller> groupPinList = Utils.getMockedControllerList();
 
-        PinManagementAdapter pinManagementAdapter = new PinManagementAdapter(groupPinList);
+        AlarmAdapter pinManagementAdapter = new AlarmAdapter(groupPinList);
         recyclerView.setAdapter(pinManagementAdapter);
-
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (dy > 0 && fab.isShown()) {
-                    fab.hide();
-                } else if (dy < 0 && !fab.isShown()) {
-                    fab.show();
-                }
-                super.onScrolled(recyclerView, dx, dy);
-            }
-        });
 
         if (groupPinList.isEmpty()) {
             showNoDevices();
