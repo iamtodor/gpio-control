@@ -34,6 +34,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:alpha="0.87"
+                    android:maxLength="5"
+                    android:maxLines="1"
                     android:textColor="@android:color/black"
                     android:textSize="20sp"
                     android:textStyle="bold"
@@ -43,9 +45,11 @@
                     android:id="@+id/action"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:alpha="0.54"
                     android:gravity="center_horizontal"
-                    android:layout_gravity="center_horizontal"
+                    android:maxLength="10"
+                    android:maxLines="1"
                     android:textColor="@android:color/black"
                     android:textSize="16sp"
                     tools:text="Turn on"/>
@@ -64,19 +68,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:alpha="0.87"
+                    android:maxLength="20"
+                    android:maxLines="1"
                     android:textColor="@android:color/black"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    tools:text="Alarm name"/>
+                    tools:text="Very very long alarm name"/>
 
                 <TextView
                     android:id="@+id/iteration"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:alpha="0.54"
+                    android:maxLength="25"
+                    android:maxLines="1"
                     android:textColor="@android:color/black"
                     android:textSize="16sp"
-                    tools:text="Once day"/>
+                    tools:text="Every friday, saturday, sunday"/>
 
             </LinearLayout>
 

@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
-import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
+import org.kaaproject.kaa.examples.gpiocontrol.model.Alarm;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseListFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.Utils;
@@ -36,7 +36,7 @@ public class AlarmListFragment extends BaseListFragment {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setupRecyclerView(recyclerView, fab);
 
-        List<Controller> groupPinList = Utils.getMockedControllerList();
+        List<Alarm> groupPinList = Utils.getMockedAlarmList();
 
         AlarmAdapter pinManagementAdapter = new AlarmAdapter(groupPinList);
         recyclerView.setAdapter(pinManagementAdapter);

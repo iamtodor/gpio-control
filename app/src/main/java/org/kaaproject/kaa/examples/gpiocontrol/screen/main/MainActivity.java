@@ -51,7 +51,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private void defineApplicationFlow() {
         if (PreferencesImpl.getInstance().isEmailExists()) {
             navigationView.getMenu().getItem(0).setChecked(true);
-            showFragment(new PinManagementFragment());
+            showFragment(new PinSwitchManagementFragment());
         } else {
             showSignInActivity();
         }

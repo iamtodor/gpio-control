@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
+import org.kaaproject.kaa.examples.gpiocontrol.model.Alarm;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
 import org.kaaproject.kaa.examples.gpiocontrol.model.GroupPin;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Pin;
@@ -47,11 +48,11 @@ public class Utils {
     public static List<Controller> getMockedControllerList() {
         List<Controller> controllerList = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
-            if(i%2==0) {
+            if (i % 2 == 0) {
                 controllerList.add(new Controller("Controller " + i, "Port name " + i, R.drawable.flat_tv, true));
-            } else if(i%3==0){
+            } else if (i % 3 == 0) {
                 controllerList.add(new Controller("Controller " + i, "Port name " + i, R.drawable.kitchen, true));
-            }else {
+            } else {
                 controllerList.add(new Controller("Controller " + i, "Port name " + i, R.drawable.fan, false));
             }
         }
@@ -72,6 +73,20 @@ public class Utils {
             e.printStackTrace();
         }
         return file;
+    }
+
+    public static List<Alarm> getMockedAlarmList() {
+        List<Alarm> arrayList = new ArrayList<>();
+        for (int i = 1; i < 5; i++) {
+            if (i % 2 == 0) {
+                arrayList.add(new Alarm("12:" + i * 10, "Turn on", "Alarm " + i,
+                        "Every sunday", true));
+            } else {
+                arrayList.add(new Alarm("12:" + i * 10, "Turn off", "Alarm " + i,
+                        "Once", false));
+            }
+        }
+        return arrayList;
     }
 
 }
