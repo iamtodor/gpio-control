@@ -28,6 +28,9 @@
         <activity
             android:name=".screen.alarm.AlarmListActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".screen.alarm.AddAlarmActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>
