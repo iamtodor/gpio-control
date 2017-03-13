@@ -59,6 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:checked="true"
+            android:tag="@string/power_on"
             android:text="@string/power_on"/>
 
         <RadioButton
@@ -66,6 +67,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:tag="@string/power_off"
             android:text="@string/power_off"/>
 
         <RadioButton
@@ -73,6 +75,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:tag="@string/toggle"
             android:text="@string/toggle"/>
 
     </RadioGroup>
@@ -102,45 +105,59 @@
         android:visibility="gone">
 
         <CheckBox
+            android:id="@+id/sunday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:tag="Sunday"
             android:text="S"/>
 
         <CheckBox
+            android:id="@+id/monday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:tag="Monday"
             android:text="M"/>
 
         <CheckBox
+            android:id="@+id/tuesday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:tag="Tuesday"
             android:text="T"/>
 
         <CheckBox
+            android:id="@+id/wednesday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:tag="Wednesday"
             android:text="W"/>
 
         <CheckBox
+            android:id="@+id/thursday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:tag="Thursday"
             android:text="T"/>
 
         <CheckBox
+            android:id="@+id/friday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:tag="Friday"
             android:text="F"/>
 
         <CheckBox
+            android:id="@+id/saturday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:tag="Saturday"
             android:text="S"/>
 
     </LinearLayout>
