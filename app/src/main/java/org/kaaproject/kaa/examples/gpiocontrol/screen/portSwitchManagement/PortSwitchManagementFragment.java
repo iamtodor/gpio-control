@@ -2,8 +2,6 @@ package org.kaaproject.kaa.examples.gpiocontrol.screen.portSwitchManagement;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +10,7 @@ import android.widget.TextView;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.GroupPort;
-import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseFragment;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseListFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.Utils;
 
@@ -22,7 +20,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class PortSwitchManagementFragment extends BaseFragment {
+public class PortSwitchManagementFragment extends BaseListFragment {
 
     @BindView(R.id.recycler_view) protected RecyclerView recyclerView;
     @BindView(R.id.no_device_message) protected TextView noDeviceMessage;
@@ -35,24 +33,7 @@ public class PortSwitchManagementFragment extends BaseFragment {
         ButterKnife.bind(this, view);
         getSupportActionBar().setTitle("Device switch management");
 
-        RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
-        recyclerView.setItemAnimator(itemAnimator);
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
-
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (dy > 0 && fab.isShown()) {
-                    fab.hide();
-                } else if (dy < 0 && !fab.isShown()) {
-                    fab.show();
-                }
-                super.onScrolled(recyclerView, dx, dy);
-            }
-        });
+        setupRecyclerView(recyclerView, fab);
 
         List<GroupPort> groupPortList = Utils.getMockedGroupList();
 
