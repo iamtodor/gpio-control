@@ -1,6 +1,5 @@
-package org.kaaproject.kaa.examples.gpiocontrol.screen.pinSwitchManagement;
+package org.kaaproject.kaa.examples.gpiocontrol.screen.portSwitchManagement;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -12,9 +11,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
-import org.kaaproject.kaa.examples.gpiocontrol.model.GroupPin;
-import org.kaaproject.kaa.examples.gpiocontrol.screen.alarm.AlarmListActivity;
+import org.kaaproject.kaa.examples.gpiocontrol.model.GroupPort;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseFragment;
+import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.Utils;
 
 import java.util.List;
@@ -23,7 +22,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class PinSwitchManagementFragment extends BaseFragment {
+public class PortSwitchManagementFragment extends BaseFragment {
 
     @BindView(R.id.recycler_view) protected RecyclerView recyclerView;
     @BindView(R.id.no_device_message) protected TextView noDeviceMessage;
@@ -55,12 +54,12 @@ public class PinSwitchManagementFragment extends BaseFragment {
             }
         });
 
-        List<GroupPin> groupPinList = Utils.getMockedGroupList();
+        List<GroupPort> groupPortList = Utils.getMockedGroupList();
 
-        PinSwitchManagementAdapter pinSwitchManagementAdapter = new PinSwitchManagementAdapter(groupPinList);
-        recyclerView.setAdapter(pinSwitchManagementAdapter);
+        PortSwitchManagementAdapter portSwitchManagementAdapter = new PortSwitchManagementAdapter(groupPortList);
+        recyclerView.setAdapter(portSwitchManagementAdapter);
 
-        if (groupPinList.isEmpty()) {
+        if (groupPortList.isEmpty()) {
             showNoDevices();
         } else {
             showDevices();
@@ -71,8 +70,7 @@ public class PinSwitchManagementFragment extends BaseFragment {
 
     @OnClick(R.id.fab)
     public void onFabClick() {
-//        DialogFactory.showAddDeviceDialog(getBaseActivity());
-        startActivity(new Intent(getContext(), AlarmListActivity.class));
+        DialogFactory.showAddDeviceDialog(getBaseActivity());
     }
 
     private void showNoDevices() {

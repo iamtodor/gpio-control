@@ -1,4 +1,4 @@
-package org.kaaproject.kaa.examples.gpiocontrol.screen.pinManagement;
+package org.kaaproject.kaa.examples.gpiocontrol.screen.portManagement;
 
 
 import android.os.Bundle;
@@ -22,7 +22,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class PinManagementFragment extends BaseListFragment implements CompoundButton.OnCheckedChangeListener {
+public class PortManagementFragment extends BaseListFragment implements CompoundButton.OnCheckedChangeListener {
 
     @BindView(R.id.recycler_view) protected RecyclerView recyclerView;
     @BindView(R.id.no_device_message) protected TextView noDeviceMessage;

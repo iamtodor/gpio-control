@@ -1,4 +1,4 @@
-package org.kaaproject.kaa.examples.gpiocontrol.screen.pinManagement;
+package org.kaaproject.kaa.examples.gpiocontrol.screen.portManagement;
 
 
 import android.content.Context;
@@ -163,7 +163,7 @@ class PortManagementAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         @Override public void onClick(View view) {
             if (view.getId() == R.id.dropped_arrow) {
-
+                // TODO: 3/14/17 add hiding and showing devices
             } else {
 
             }

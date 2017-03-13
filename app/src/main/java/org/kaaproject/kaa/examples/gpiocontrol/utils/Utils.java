@@ -8,8 +8,8 @@ import android.support.annotation.NonNull;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Alarm;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
-import org.kaaproject.kaa.examples.gpiocontrol.model.GroupPin;
-import org.kaaproject.kaa.examples.gpiocontrol.model.Pin;
+import org.kaaproject.kaa.examples.gpiocontrol.model.GroupPort;
+import org.kaaproject.kaa.examples.gpiocontrol.model.Port;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -19,30 +19,30 @@ import java.util.List;
 
 public class Utils {
 
-    private static List<Pin> getMockedPinList() {
-        List<Pin> pinList = new ArrayList<>();
+    private static List<Port> getMockedPinList() {
+        List<Port> portList = new ArrayList<>();
 
         for (int i = 0; i < 100; i++) {
             if (i % 2 == 0) {
-                pinList.add(new Pin(true));
+                portList.add(new Port(true));
             } else {
-                pinList.add(new Pin(false));
+                portList.add(new Port(false));
             }
         }
-        return pinList;
+        return portList;
     }
 
-    public static List<GroupPin> getMockedGroupList() {
-        List<Pin> pinList = getMockedPinList();
-        List<GroupPin> groupPinList = new ArrayList<>();
+    public static List<GroupPort> getMockedGroupList() {
+        List<Port> portList = getMockedPinList();
+        List<GroupPort> groupPortList = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             if (i % 9 == 0) {
-                groupPinList.add(new GroupPin("Group" + i, "alarm", pinList, true));
+                groupPortList.add(new GroupPort("Group" + i, "alarm", portList, true));
             } else {
-                groupPinList.add(new GroupPin("Group" + i, "alarm", pinList, false));
+                groupPortList.add(new GroupPort("Group" + i, "alarm", portList, false));
             }
         }
-        return groupPinList;
+        return groupPortList;
     }
 
     public static List<Controller> getMockedControllerList() {

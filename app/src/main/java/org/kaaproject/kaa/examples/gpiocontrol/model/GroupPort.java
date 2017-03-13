@@ -3,17 +3,17 @@ package org.kaaproject.kaa.examples.gpiocontrol.model;
 
 import java.util.List;
 
-public class GroupPin {
+public class GroupPort {
 
     private String name;
     private String alarm;
-    private List<Pin> pinList;
+    private List<Port> portList;
     private boolean isLocked;
 
-    public GroupPin(String name, String alarm, List<Pin> pinList, boolean isLocked) {
+    public GroupPort(String name, String alarm, List<Port> portList, boolean isLocked) {
         this.name = name;
         this.alarm = alarm;
-        this.pinList = pinList;
+        this.portList = portList;
         this.isLocked = isLocked;
     }
 
@@ -33,12 +33,12 @@ public class GroupPin {
         this.alarm = alarm;
     }
 
-    public List<Pin> getPinList() {
-        return pinList;
+    public List<Port> getPortList() {
+        return portList;
     }
 
-    public void setPinList(List<Pin> pinList) {
-        this.pinList = pinList;
+    public void setPortList(List<Port> portList) {
+        this.portList = portList;
     }
 
     public boolean isLocked() {
@@ -50,10 +50,10 @@ public class GroupPin {
     }
 
     @Override public String toString() {
-        return "GroupPin{" +
+        return "GroupPort{" +
                 "name='" + name + '\'' +
                 ", alarm='" + alarm + '\'' +
-                ", pinList=" + pinList +
+                ", portList=" + portList +
                 ", isLocked=" + isLocked +
                 '}';
     }

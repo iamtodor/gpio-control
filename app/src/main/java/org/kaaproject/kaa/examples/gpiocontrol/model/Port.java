@@ -1,11 +1,11 @@
 package org.kaaproject.kaa.examples.gpiocontrol.model;
 
 
-public class Pin {
+public class Port {
 
     private boolean isActive;
 
-    public Pin(boolean isActive) {
+    public Port(boolean isActive) {
         this.isActive = isActive;
     }
 
@@ -18,7 +18,7 @@ public class Pin {
     }
 
     @Override public String toString() {
-        return "Pin{" +
+        return "Port{" +
                 "isActive=" + isActive +
                 '}';
     }

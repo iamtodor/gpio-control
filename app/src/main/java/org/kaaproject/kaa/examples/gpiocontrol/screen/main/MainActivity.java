@@ -14,8 +14,8 @@ import android.view.MenuItem;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseActivity;
-import org.kaaproject.kaa.examples.gpiocontrol.screen.pinManagement.PinManagementFragment;
-import org.kaaproject.kaa.examples.gpiocontrol.screen.pinSwitchManagement.PinSwitchManagementFragment;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.portManagement.PortManagementFragment;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.portSwitchManagement.PortSwitchManagementFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.resetDevices.ResetDevicesFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.signIn.SingInActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
@@ -51,7 +51,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private void defineApplicationFlow() {
         if (PreferencesImpl.getInstance().isEmailExists()) {
             navigationView.getMenu().getItem(0).setChecked(true);
-            showFragment(new PinSwitchManagementFragment());
+            showFragment(new PortSwitchManagementFragment());
         } else {
             showSignInActivity();
         }
@@ -75,21 +75,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
         if (id == R.id.pin_switch_management) {
-            showFragment(new PinSwitchManagementFragment());
+            showFragment(new PortSwitchManagementFragment());
         } else if (id == R.id.pin_management) {
-            showFragment(new PinManagementFragment());
+            showFragment(new PortManagementFragment());
         } else if (id == R.id.edit_lock_password) {
             showEditPasswordDialog();
         } else if (id == R.id.reset_devices) {

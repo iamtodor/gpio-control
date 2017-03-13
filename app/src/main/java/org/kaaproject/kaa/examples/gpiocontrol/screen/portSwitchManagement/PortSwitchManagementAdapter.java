@@ -1,4 +1,4 @@
-package org.kaaproject.kaa.examples.gpiocontrol.screen.pinSwitchManagement;
+package org.kaaproject.kaa.examples.gpiocontrol.screen.portSwitchManagement;
 
 
 import android.support.v7.widget.RecyclerView;
@@ -7,29 +7,29 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
-import org.kaaproject.kaa.examples.gpiocontrol.model.GroupPin;
+import org.kaaproject.kaa.examples.gpiocontrol.model.GroupPort;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
 
-class PinSwitchManagementAdapter extends RecyclerView.Adapter<PinSwitchManagementAdapter.ViewHolderPinGroupItem> {
+class PortSwitchManagementAdapter extends RecyclerView.Adapter<PortSwitchManagementAdapter.ViewHolderPinGroupItem> {
 
     private LayoutInflater inflater;
-    private List<GroupPin> groupPinList = new ArrayList<>();
+    private List<GroupPort> groupPortList = new ArrayList<>();
 
-    PinSwitchManagementAdapter(List<GroupPin> groupPinList) {
-        updateAdapter(groupPinList);
+    PortSwitchManagementAdapter(List<GroupPort> groupPortList) {
+        updateAdapter(groupPortList);
     }
 
-    private void updateAdapter(List<GroupPin> colorItems) {
-        groupPinList.clear();
-        groupPinList.addAll(colorItems);
+    private void updateAdapter(List<GroupPort> colorItems) {
+        groupPortList.clear();
+        groupPortList.addAll(colorItems);
         notifyDataSetChanged();
     }
 
-    @Override public PinSwitchManagementAdapter.ViewHolderPinGroupItem onCreateViewHolder(ViewGroup parent, int viewType) {
+    @Override public PortSwitchManagementAdapter.ViewHolderPinGroupItem onCreateViewHolder(ViewGroup parent, int viewType) {
         if (inflater == null) {
             inflater = LayoutInflater.from(parent.getContext());
         }
@@ -37,11 +37,11 @@ class PinSwitchManagementAdapter extends RecyclerView.Adapter<PinSwitchManagemen
     }
 
     @Override public void onBindViewHolder(ViewHolderPinGroupItem holder, int position) {
-        GroupPin groupPin = groupPinList.get(position);
+        GroupPort groupPort = groupPortList.get(position);
     }
 
     @Override public int getItemCount() {
-        return groupPinList.size();
+        return groupPortList.size();
     }
 
     static class ViewHolderPinGroupItem extends RecyclerView.ViewHolder implements View.OnClickListener {
