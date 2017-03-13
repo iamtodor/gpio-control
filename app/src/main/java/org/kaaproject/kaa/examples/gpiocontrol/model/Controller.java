@@ -6,12 +6,15 @@ public class Controller {
     private String portName;
     private int imagePortsDrawableId;
     private boolean isActive;
+    private boolean isSelected;
 
-    public Controller(String controllerId, String portName, int imagePortsDrawableId, boolean isActive) {
+    public Controller(String controllerId, String portName, int imagePortsDrawableId,
+                      boolean isActive, boolean isSelected) {
         this.controllerId = controllerId;
         this.portName = portName;
         this.imagePortsDrawableId = imagePortsDrawableId;
         this.isActive = isActive;
+        this.isSelected = isSelected;
     }
 
     public String getControllerId() {
@@ -46,12 +49,21 @@ public class Controller {
         isActive = active;
     }
 
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
     @Override public String toString() {
         return "Controller{" +
                 "controllerId='" + controllerId + '\'' +
                 ", portName='" + portName + '\'' +
                 ", imagePortsDrawableId=" + imagePortsDrawableId +
                 ", isActive=" + isActive +
+                ", isSelected=" + isSelected +
                 '}';
     }
 }

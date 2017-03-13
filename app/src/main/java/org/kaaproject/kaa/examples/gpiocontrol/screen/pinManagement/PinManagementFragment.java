@@ -3,17 +3,16 @@ package org.kaaproject.kaa.examples.gpiocontrol.screen.pinManagement;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
-import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseFragment;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseListFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.Utils;
 
@@ -23,11 +22,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class PinManagementFragment extends BaseFragment {
+public class PinManagementFragment extends BaseListFragment implements CompoundButton.OnCheckedChangeListener {
 
     @BindView(R.id.recycler_view) protected RecyclerView recyclerView;
     @BindView(R.id.no_device_message) protected TextView noDeviceMessage;
     @BindView(R.id.fab) protected FloatingActionButton fab;
+
+    private List<Controller> controllerList;
+    private PortManagementAdapter pinManagementAdapter;
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.device_list_fragment, container, false);
@@ -35,31 +37,16 @@ public class PinManagementFragment extends BaseFragment {
         ButterKnife.bind(this, view);
         getSupportActionBar().setTitle("Device management");
 
-        RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
-        recyclerView.setItemAnimator(itemAnimator);
+        setupRecyclerView(recyclerView, fab);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
+        controllerList = Utils.getMockedControllerList();
 
-        List<Controller> groupPinList = Utils.getMockedControllerList();
+        pinManagementAdapter = new PortManagementAdapter(controllerList);
+        pinManagementAdapter.setOnCheckedHeaderListener(this);
 
-        PinManagementAdapter pinManagementAdapter = new PinManagementAdapter(groupPinList);
         recyclerView.setAdapter(pinManagementAdapter);
 
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (dy > 0 && fab.isShown()) {
-                    fab.hide();
-                } else if (dy < 0 && !fab.isShown()) {
-                    fab.show();
-                }
-                super.onScrolled(recyclerView, dx, dy);
-            }
-        });
-
-        if (groupPinList.isEmpty()) {
+        if (controllerList.isEmpty()) {
             showNoDevices();
         } else {
             showDevices();
@@ -83,4 +70,18 @@ public class PinManagementFragment extends BaseFragment {
         noDeviceMessage.setVisibility(View.GONE);
     }
 
+    @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (isChecked) {
+            setActive(true);
+        } else {
+            setActive(false);
+        }
+        pinManagementAdapter.updateAdapter(controllerList);
+    }
+
+    private void setActive(boolean active) {
+        for (Controller controller : controllerList) {
+            controller.setSelected(active);
+        }
+    }
 }

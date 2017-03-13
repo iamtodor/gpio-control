@@ -49,11 +49,14 @@ public class Utils {
         List<Controller> controllerList = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             if (i % 2 == 0) {
-                controllerList.add(new Controller("Controller " + i, "Port name " + i, R.drawable.flat_tv, true));
+                controllerList.add(new Controller("Controller " + i, "Port name " + i, R.drawable.flat_tv,
+                        true, false));
             } else if (i % 3 == 0) {
-                controllerList.add(new Controller("Controller " + i, "Port name " + i, R.drawable.kitchen, true));
+                controllerList.add(new Controller("Controller " + i, "Port name " + i, R.drawable.kitchen,
+                        true, false));
             } else {
-                controllerList.add(new Controller("Controller " + i, "Port name " + i, R.drawable.fan, false));
+                controllerList.add(new Controller("Controller " + i, "Port name " + i, R.drawable.fan,
+                        false, false));
             }
         }
         return controllerList;
