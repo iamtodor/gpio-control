@@ -47,11 +47,7 @@
     <string name="power_off">Power off</string>
     <string name="power_on">Power on</string>
     <string name="toggle">Toggle</string>
-    <string name="iteration">Iteration</string>
-    <string name="once">Once</string>
-    <string name="every_day">Every day</string>
-    <string name="monday_friday">Monday - Friday</string>
-    <string name="customised">Customised</string>
+    <string name="repeat">Repeat</string>
     <string name="alarm_name">Alarm name</string>
     <string name="add_alarm">Add alarm</string>
 

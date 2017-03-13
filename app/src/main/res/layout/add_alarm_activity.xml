@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:orientation="vertical">
 
     <android.support.design.widget.AppBarLayout
@@ -21,10 +22,17 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <TimePicker
+    <TextView
+        android:id="@+id/time_picker"
+        style="@style/Base.TextAppearance.AppCompat.Large"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/time_picker"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:clickable="true"
+        android:gravity="center"
+        android:text="Time"
+        android:textColor="@color/colorAccent"
         android:timePickerMode="spinner"/>
 
     <TextView
@@ -74,57 +82,73 @@
         android:layout_height="2dp"
         android:background="@android:color/darker_gray"/>
 
-    <TextView
+    <CheckBox
+        android:id="@+id/repeat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:alpha="0.87"
-        android:text="@string/iteration"
-        android:textColor="@android:color/black"
-        android:textSize="16sp"/>
-
-    <RadioGroup
-        android:id="@+id/iteration"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:layout_marginLeft="16dp"
-        android:orientation="vertical">
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/repeat"/>
 
-        <RadioButton
-            android:id="@+id/once"
+    <LinearLayout
+        android:id="@+id/repeat_options"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:checked="true"
-            android:text="@string/once"/>
+            android:text="S"/>
 
-        <RadioButton
-            android:id="@+id/every_day"
+        <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/every_day"/>
+            android:text="M"/>
 
-        <RadioButton
-            android:id="@+id/monday_friday"
+        <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/monday_friday"/>
+            android:text="T"/>
 
-        <RadioButton
-            android:id="@+id/custom"
+        <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/customised"/>
+            android:text="W"/>
 
-    </RadioGroup>
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="T"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="F"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="S"/>
+
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
+        android:layout_marginTop="16dp"
         android:background="@android:color/darker_gray"/>
 
     <android.support.design.widget.TextInputLayout
@@ -148,8 +172,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="end"
         android:layout_margin="16dp"
+        android:gravity="end"
         android:orientation="horizontal">
 
         <Button
