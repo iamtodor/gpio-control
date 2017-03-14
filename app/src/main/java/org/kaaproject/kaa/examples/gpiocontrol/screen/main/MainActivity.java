@@ -84,7 +84,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             showFragment(new PortManagementFragment());
         } else if (id == R.id.edit_lock_password) {
             showEditPasswordDialog();
-        } else if (id == R.id.reset_devices) {
+        } else if (id == R.id.remove_device) {
             showFragment(new ResetDevicesFragment());
         } else if (id == R.id.log_out) {
             showLogoutDialog();

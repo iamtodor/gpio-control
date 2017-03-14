@@ -5,15 +5,15 @@
         <item
             android:id="@+id/pin_switch_management"
             android:icon="@drawable/switch_management"
-            android:title="@string/pin_switch_management"/>
+            android:title="@string/device_switch_management"/>
         <item
             android:id="@+id/pin_management"
             android:icon="@drawable/pin_management"
-            android:title="@string/pin_management"/>
+            android:title="@string/device_management"/>
         <item
-            android:id="@+id/reset_devices"
+            android:id="@+id/remove_device"
             android:icon="@drawable/reset_device"
-            android:title="@string/reset_devices"/>
+            android:title="@string/remove_device"/>
     </group>
 
     <item android:title="@string/account">

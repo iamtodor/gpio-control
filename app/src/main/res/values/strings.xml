@@ -28,10 +28,10 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="account">Account</string>
     <string name="log_out">Log out</string>
-    <string name="reset_devices">Reset devices</string>
+    <string name="remove_device">Remove device</string>
     <string name="edit_lock_password">Edit lock password</string>
-    <string name="pin_management">Pin management</string>
-    <string name="pin_switch_management">Pin switch management</string>
+    <string name="device_management">Device management</string>
+    <string name="device_switch_management">Device switch management</string>
     <string name="change_password">Change password</string>
     <string name="input_password">Input password</string>
     <string name="create_password_title">Create password</string>
