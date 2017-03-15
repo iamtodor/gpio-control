@@ -21,7 +21,10 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemVie
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
-import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceHeader;
+import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroup;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,40 +32,45 @@ import butterknife.ButterKnife;
 public class ExpandableExampleAdapter
         extends AbstractExpandableItemAdapter<ExpandableExampleAdapter.MyGroupViewHolder, ExpandableExampleAdapter.MyChildViewHolder> {
 
+    private static final String TAG = ExpandableExampleAdapter.class.getSimpleName();
+
     private final Context context;
+    //    private ExampleExpandableDataProvider mProvider;
+    private List<DeviceGroup> deviceGroupList = new ArrayList<>();
 
-    // NOTE: Make accessible with short name
-    private interface Expandable extends ExpandableItemConstants {
-    }
-
-    private ExampleExpandableDataProvider mProvider;
-
-    public ExpandableExampleAdapter(ExampleExpandableDataProvider dataProvider, Context context) {
-        mProvider = dataProvider;
+    public ExpandableExampleAdapter(ExampleExpandableDataProvider dataProvider, Context context,
+                                    List<DeviceGroup> deviceGroupList) {
         this.context = context;
         // ExpandableItemAdapter requires stable ID, and also
         // have to implement the getGroupItemId()/getChildItemId() methods appropriately.
         setHasStableIds(true);
+        updateAdapter(deviceGroupList);
+    }
+
+    private void updateAdapter(List<DeviceGroup> items) {
+        deviceGroupList.clear();
+        deviceGroupList.addAll(items);
+        notifyDataSetChanged();
     }
 
     @Override
     public int getGroupCount() {
-        return mProvider.getGroupCount();
+        return deviceGroupList.size();
     }
 
     @Override
     public int getChildCount(int groupPosition) {
-        return mProvider.getChildCount(groupPosition);
+        return deviceGroupList.get(groupPosition).childrenCount();
     }
 
     @Override
     public long getGroupId(int groupPosition) {
-        return mProvider.getGroupItem(groupPosition).getId();
+        return deviceGroupList.get(groupPosition).getId();
     }
 
     @Override
     public long getChildId(int groupPosition, int childPosition) {
-        return mProvider.getChildItem(groupPosition, childPosition).getId();
+        return deviceGroupList.get(groupPosition).childAt(childPosition).getId();
     }
 
     @Override
@@ -91,7 +99,7 @@ public class ExpandableExampleAdapter
 
     @Override
     public void onBindGroupViewHolder(MyGroupViewHolder holder, int groupPosition, int viewType) {
-        final DeviceHeader item = mProvider.getGroupItem(groupPosition);
+        final DeviceGroup item = deviceGroupList.get(groupPosition);
 
         holder.name.setText(item.getName());
         holder.droppedArrow.setClickable(true);
@@ -101,7 +109,7 @@ public class ExpandableExampleAdapter
 
         if ((expandState & ExpandableItemConstants.STATE_FLAG_IS_UPDATED) != 0) {
 
-            if ((expandState & Expandable.STATE_FLAG_IS_EXPANDED) != 0) {
+            if ((expandState & ExpandableItemConstants.STATE_FLAG_IS_EXPANDED) != 0) {
                 holder.droppedArrow.setRotation(180);
             } else {
                 holder.droppedArrow.setRotation(0);
@@ -111,7 +119,7 @@ public class ExpandableExampleAdapter
 
     @Override
     public void onBindChildViewHolder(MyChildViewHolder holder, int groupPosition, int childPosition, int viewType) {
-        final Controller controller = mProvider.getChildItem(groupPosition, childPosition);
+        final Controller controller = deviceGroupList.get(groupPosition).childAt(childPosition);
         final Drawable drawable = VectorDrawableCompat.create(context.getResources(),
                 controller.getImagePortsDrawableId(), null);
         holder.selection.setChecked(controller.isSelected());
@@ -192,12 +200,6 @@ public class ExpandableExampleAdapter
 
     @Override
     public boolean onCheckCanExpandOrCollapseGroup(MyGroupViewHolder holder, int groupPosition, int x, int y, boolean expand) {
-
-        // check is enabled
-        if (!(holder.itemView.isEnabled() && holder.itemView.isClickable())) {
-            return false;
-        }
-
-        return true;
+        return deviceGroupList.get(groupPosition).childrenCount() > 0;
     }
 }

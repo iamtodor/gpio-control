@@ -1,11 +1,14 @@
 package org.kaaproject.kaa.examples.gpiocontrol.model;
 
 
-public class DeviceHeader {
+import java.util.List;
+
+public class DeviceGroup {
 
     private String name;
     private int id;
     private long mNextChildId;
+    private List<Controller> controllerList;
 
     public String getName() {
         return name;
@@ -23,9 +26,10 @@ public class DeviceHeader {
         this.id = id;
     }
 
-    public DeviceHeader(String name, int id) {
+    public DeviceGroup(String name, int id, List<Controller> controllerList) {
         this.name = name;
         this.id = id;
+        this.controllerList = controllerList;
         mNextChildId = 0;
     }
 
@@ -36,9 +40,17 @@ public class DeviceHeader {
     }
 
     @Override public String toString() {
-        return "DeviceHeader{" +
+        return "DeviceGroup{" +
                 "name='" + name + '\'' +
                 ", id=" + id +
                 '}';
+    }
+
+    public int childrenCount() {
+        return controllerList.size();
+    }
+
+    public Controller childAt(int childPosition) {
+        return controllerList.get(childPosition);
     }
 }

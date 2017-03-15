@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Alarm;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
+import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroup;
 import org.kaaproject.kaa.examples.gpiocontrol.model.GroupPort;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Port;
 
@@ -90,6 +91,15 @@ public class Utils {
             }
         }
         return arrayList;
+    }
+
+    public static List<DeviceGroup> getMockedDeviceGroupList() {
+        List<DeviceGroup> deviceGroupList = new ArrayList<>();
+        List<Controller> controllerList = Utils.getMockedControllerList();
+
+        deviceGroupList.add(new DeviceGroup("Device groups (" + (controllerList.size() + 100) + ")", 0, controllerList));
+        deviceGroupList.add(new DeviceGroup("Devices (" + controllerList.size() + ")", 1, controllerList));
+        return deviceGroupList;
     }
 
 }

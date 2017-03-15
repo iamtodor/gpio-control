@@ -20,10 +20,14 @@ import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandab
 import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
+import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroup;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseListFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.portManagement.expandable.ExampleExpandableDataProvider;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.portManagement.expandable.ExpandableExampleAdapter;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
+import org.kaaproject.kaa.examples.gpiocontrol.utils.Utils;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,7 +60,8 @@ public class PortManagementFragment extends BaseListFragment implements Compound
 
         //adapter
         ExampleExpandableDataProvider provider = new ExampleExpandableDataProvider();
-        final ExpandableExampleAdapter myItemAdapter = new ExpandableExampleAdapter(provider, getContext());
+        List<DeviceGroup> deviceGroupList = Utils.getMockedDeviceGroupList();
+        final ExpandableExampleAdapter myItemAdapter = new ExpandableExampleAdapter(provider, getContext(), deviceGroupList);
 
         // wrap for expanding
         mWrappedAdapter = recyclerViewExpandableItemManager.createWrappedAdapter(myItemAdapter);
