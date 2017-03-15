@@ -7,14 +7,24 @@ public class Controller {
     private int imagePortsDrawableId;
     private boolean isActive;
     private boolean isSelected;
+    private long id;
 
     public Controller(String controllerId, String portName, int imagePortsDrawableId,
-                      boolean isActive, boolean isSelected) {
+                      boolean isActive, boolean isSelected, long id) {
         this.controllerId = controllerId;
         this.portName = portName;
         this.imagePortsDrawableId = imagePortsDrawableId;
         this.isActive = isActive;
         this.isSelected = isSelected;
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getControllerId() {

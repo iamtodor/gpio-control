@@ -47,16 +47,16 @@ public class Utils {
 
     public static List<Controller> getMockedControllerList() {
         List<Controller> controllerList = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 1; i < 101; i++) {
             if (i % 2 == 0) {
                 controllerList.add(new Controller("Controller " + i, "Port name " + i, R.drawable.flat_tv,
-                        true, false));
+                        true, false, i));
             } else if (i % 3 == 0) {
                 controllerList.add(new Controller("Controller " + i, "Port name " + i, R.drawable.kitchen,
-                        true, false));
+                        true, false, i));
             } else {
                 controllerList.add(new Controller("Controller " + i, "Port name " + i, R.drawable.fan,
-                        false, false));
+                        false, false, i));
             }
         }
         return controllerList;
