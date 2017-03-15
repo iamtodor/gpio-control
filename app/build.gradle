@@ -43,5 +43,9 @@ dependencies {
     annotationProcessor "com.jakewharton:butterknife-compiler:$butterKnifeVersion"
 
     compile "com.squareup.picasso:picasso:$picassoVersion"
+
+    compile('com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.10.4@aar') {
+        transitive = true
+    }
 }
 apply plugin: 'com.google.gms.google-services'

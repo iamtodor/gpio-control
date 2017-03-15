@@ -7,9 +7,10 @@ public class Controller {
     private int imagePortsDrawableId;
     private boolean isActive;
     private boolean isSelected;
+    private long id;
 
     public Controller(String controllerId, String portName, int imagePortsDrawableId,
-                      boolean isActive, boolean isSelected) {
+                      boolean isActive, boolean isSelected, long id) {
         this.controllerId = controllerId;
         this.portName = portName;
         this.imagePortsDrawableId = imagePortsDrawableId;
@@ -57,6 +58,14 @@ public class Controller {
         isSelected = selected;
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     @Override public String toString() {
         return "Controller{" +
                 "controllerId='" + controllerId + '\'' +
@@ -64,6 +73,7 @@ public class Controller {
                 ", imagePortsDrawableId=" + imagePortsDrawableId +
                 ", isActive=" + isActive +
                 ", isSelected=" + isSelected +
+                ", id=" + id +
                 '}';
     }
 }

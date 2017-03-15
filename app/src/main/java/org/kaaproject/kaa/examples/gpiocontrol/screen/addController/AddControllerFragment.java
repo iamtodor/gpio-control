@@ -20,7 +20,6 @@ import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
-import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.Utils;
@@ -116,8 +115,8 @@ public class AddControllerFragment extends BaseFragment {
     }
 
     private void addController() {
-        Controller controller = new Controller(controllerId.getText().toString(),
-                portsName.getText().toString(), imagePortsDrawableId, false, false);
+//        Controller controller = new Controller(controllerId.getText().toString(),
+//                portsName.getText().toString(), imagePortsDrawableId, false, false);
     }
 
     private boolean isInfoValid() {
