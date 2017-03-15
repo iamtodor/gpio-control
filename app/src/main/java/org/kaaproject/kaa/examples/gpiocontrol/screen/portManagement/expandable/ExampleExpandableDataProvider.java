@@ -5,33 +5,24 @@ import android.support.v4.util.Pair;
 
 import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
 import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceHeader;
+import org.kaaproject.kaa.examples.gpiocontrol.utils.Utils;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 public class ExampleExpandableDataProvider {
+
     private List<Pair<DeviceHeader, List<Controller>>> mData;
 
     public ExampleExpandableDataProvider() {
-        final String groupItems = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        final String childItems = "abc";
-
         mData = new LinkedList<>();
+        List<Controller> controllerList = Utils.getMockedControllerList();
 
-        for (int i = 0; i < groupItems.length(); i++) {
-            final DeviceHeader group = new DeviceHeader("Group" + i, i);
-            final List<Controller> controllerList = new ArrayList<>();
+        DeviceHeader group = new DeviceHeader("Device groups (" + (controllerList.size() + 100) + ")", 0);
+        mData.add(new Pair<>(group, controllerList));
 
-            for (int j = 0; j < childItems.length(); j++) {
-                final long childId = group.generateNewChildId();
-
-                controllerList.add(new Controller("Controller " + j, "Port name " + j, android.R.drawable.alert_dark_frame,
-                        true, false, childId));
-            }
-
-            mData.add(new Pair<>(group, controllerList));
-        }
+        group = new DeviceHeader("Devices (" + controllerList.size() + ")", 1);
+        mData.add(new Pair<>(group, controllerList));
     }
 
     public int getGroupCount() {

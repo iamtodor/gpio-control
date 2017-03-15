@@ -20,13 +20,10 @@ import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandab
 import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
-import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseListFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.portManagement.expandable.ExampleExpandableDataProvider;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.portManagement.expandable.ExpandableExampleAdapter;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,9 +41,6 @@ public class PortManagementFragment extends BaseListFragment implements Compound
     @BindView(R.id.no_device_message) protected TextView noDeviceMessage;
     @BindView(R.id.fab) protected FloatingActionButton fab;
 
-    private List<Controller> controllerList;
-    private PortManagementAdapter pinManagementAdapter;
-
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.device_list_fragment, container, false);
 
@@ -62,7 +56,7 @@ public class PortManagementFragment extends BaseListFragment implements Compound
 
         //adapter
         ExampleExpandableDataProvider provider = new ExampleExpandableDataProvider();
-        final ExpandableExampleAdapter myItemAdapter = new ExpandableExampleAdapter(provider);
+        final ExpandableExampleAdapter myItemAdapter = new ExpandableExampleAdapter(provider, getContext());
 
         // wrap for expanding
         mWrappedAdapter = recyclerViewExpandableItemManager.createWrappedAdapter(myItemAdapter);
@@ -140,13 +134,13 @@ public class PortManagementFragment extends BaseListFragment implements Compound
         } else {
             setActive(false);
         }
-        pinManagementAdapter.updateAdapter(controllerList);
+//        pinManagementAdapter.updateAdapter(controllerList);
     }
 
     private void setActive(boolean active) {
-        for (Controller controller : controllerList) {
-            controller.setSelected(active);
-        }
+//        for (Controller controller : controllerList) {
+//            controller.setSelected(active);
+//        }
     }
 
     @Override public void onGroupExpand(int groupPosition, boolean fromUser, Object payload) {
