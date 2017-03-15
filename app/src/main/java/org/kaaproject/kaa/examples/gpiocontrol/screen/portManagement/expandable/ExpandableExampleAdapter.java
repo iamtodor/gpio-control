@@ -37,6 +37,7 @@ public class ExpandableExampleAdapter
     private final Context context;
     //    private ExampleExpandableDataProvider mProvider;
     private List<DeviceGroup> deviceGroupList = new ArrayList<>();
+    private CompoundButton.OnCheckedChangeListener onSelectedGroupListener;
 
     public ExpandableExampleAdapter(ExampleExpandableDataProvider dataProvider, Context context,
                                     List<DeviceGroup> deviceGroupList) {
@@ -47,10 +48,14 @@ public class ExpandableExampleAdapter
         updateAdapter(deviceGroupList);
     }
 
-    private void updateAdapter(List<DeviceGroup> items) {
+    public void updateAdapter(List<DeviceGroup> items) {
         deviceGroupList.clear();
         deviceGroupList.addAll(items);
         notifyDataSetChanged();
+    }
+
+    public void setOnSelectedHeaderListener(CompoundButton.OnCheckedChangeListener onSelectedGroupListener) {
+        this.onSelectedGroupListener = onSelectedGroupListener;
     }
 
     @Override
@@ -86,14 +91,14 @@ public class ExpandableExampleAdapter
     @Override
     public MyGroupViewHolder onCreateGroupViewHolder(ViewGroup parent, int viewType) {
         final LayoutInflater inflater = LayoutInflater.from(context);
-        final View v = inflater.inflate(R.layout.device_header, parent, false);
-        return new MyGroupViewHolder(v, null);
+        final View v = inflater.inflate(R.layout.device_group_item, parent, false);
+        return new MyGroupViewHolder(v, onSelectedGroupListener);
     }
 
     @Override
     public MyChildViewHolder onCreateChildViewHolder(ViewGroup parent, int viewType) {
         final LayoutInflater inflater = LayoutInflater.from(context);
-        final View v = inflater.inflate(R.layout.device_item_port_management, parent, false);
+        final View v = inflater.inflate(R.layout.device_list_item_port_management, parent, false);
         return new MyChildViewHolder(v);
     }
 
@@ -127,7 +132,6 @@ public class ExpandableExampleAdapter
         holder.name.setText(controller.getControllerId());
         holder.port.setText(controller.getPortName());
         holder.switchCompat.setChecked(controller.isActive());
-
     }
 
     static class MyGroupViewHolder extends AbstractExpandableItemViewHolder implements View.OnClickListener {
@@ -135,12 +139,12 @@ public class ExpandableExampleAdapter
         @BindView(R.id.name) TextView name;
         @BindView(R.id.dropped_arrow) ImageView droppedArrow;
 
-        MyGroupViewHolder(View itemView, CompoundButton.OnCheckedChangeListener listener) {
+        MyGroupViewHolder(View itemView, CompoundButton.OnCheckedChangeListener onSelectedGroupListener) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
             droppedArrow.setOnClickListener(this);
-            selection.setOnCheckedChangeListener(listener);
+            selection.setOnCheckedChangeListener(onSelectedGroupListener);
         }
 
         @Override public void onClick(View view) {

@@ -53,7 +53,7 @@ class PortManagementAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_HEADER) {
             context = parent.getContext();
-            View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.device_header, parent, false);
+            View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.device_group_item, parent, false);
             return new HeaderViewHolder(layoutView, listener);
         } else if (viewType == TYPE_ITEM) {
             if (itemInflater == null) {
@@ -108,7 +108,7 @@ class PortManagementAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         @BindView(R.id.menu) ImageView imageViewOptions;
 
         static ItemViewHolder create(LayoutInflater inflater, ViewGroup parent) {
-            return new ItemViewHolder(inflater.inflate(R.layout.device_item_port_management, parent, false));
+            return new ItemViewHolder(inflater.inflate(R.layout.device_list_item_port_management, parent, false));
         }
 
         ItemViewHolder(View itemView) {

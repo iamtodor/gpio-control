@@ -7,7 +7,6 @@ public class DeviceGroup {
 
     private String name;
     private int id;
-    private long mNextChildId;
     private List<Controller> controllerList;
 
     public String getName() {
@@ -30,13 +29,14 @@ public class DeviceGroup {
         this.name = name;
         this.id = id;
         this.controllerList = controllerList;
-        mNextChildId = 0;
     }
 
-    public long generateNewChildId() {
-        final long id = mNextChildId;
-        mNextChildId += 1;
-        return id;
+    public int childrenCount() {
+        return controllerList.size();
+    }
+
+    public Controller childAt(int childPosition) {
+        return controllerList.get(childPosition);
     }
 
     @Override public String toString() {
@@ -46,11 +46,11 @@ public class DeviceGroup {
                 '}';
     }
 
-    public int childrenCount() {
-        return controllerList.size();
+    public List<Controller> getControllerList() {
+        return controllerList;
     }
 
-    public Controller childAt(int childPosition) {
-        return controllerList.get(childPosition);
+    public void setControllerList(List<Controller> controllerList) {
+        this.controllerList = controllerList;
     }
 }

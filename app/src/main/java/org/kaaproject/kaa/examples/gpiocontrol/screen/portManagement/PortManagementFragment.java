@@ -20,6 +20,7 @@ import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandab
 import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
+import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
 import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroup;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseListFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.portManagement.expandable.ExampleExpandableDataProvider;
@@ -44,6 +45,8 @@ public class PortManagementFragment extends BaseListFragment implements Compound
     @BindView(R.id.recycler_view) protected RecyclerView recyclerView;
     @BindView(R.id.no_device_message) protected TextView noDeviceMessage;
     @BindView(R.id.fab) protected FloatingActionButton fab;
+    private ExpandableExampleAdapter myItemAdapter;
+    private List<DeviceGroup> deviceGroupList;
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.device_list_fragment, container, false);
@@ -59,9 +62,10 @@ public class PortManagementFragment extends BaseListFragment implements Compound
         recyclerViewExpandableItemManager.setOnGroupCollapseListener(this);
 
         //adapter
-        ExampleExpandableDataProvider provider = new ExampleExpandableDataProvider();
-        List<DeviceGroup> deviceGroupList = Utils.getMockedDeviceGroupList();
-        final ExpandableExampleAdapter myItemAdapter = new ExpandableExampleAdapter(provider, getContext(), deviceGroupList);
+        final ExampleExpandableDataProvider provider = new ExampleExpandableDataProvider();
+        deviceGroupList = Utils.getMockedDeviceGroupList();
+        myItemAdapter = new ExpandableExampleAdapter(provider, getContext(), deviceGroupList);
+        myItemAdapter.setOnSelectedHeaderListener(this);
 
         // wrap for expanding
         mWrappedAdapter = recyclerViewExpandableItemManager.createWrappedAdapter(myItemAdapter);
@@ -135,17 +139,19 @@ public class PortManagementFragment extends BaseListFragment implements Compound
 
     @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (isChecked) {
-            setActive(true);
+            setSelected(true);
         } else {
-            setActive(false);
+            setSelected(false);
         }
-//        pinManagementAdapter.updateAdapter(controllerList);
+        myItemAdapter.updateAdapter(deviceGroupList);
     }
 
-    private void setActive(boolean active) {
-//        for (Controller controller : controllerList) {
-//            controller.setSelected(active);
-//        }
+    private void setSelected(boolean isSelected) {
+        for (DeviceGroup deviceGroup : deviceGroupList) {
+            for (Controller controller : deviceGroup.getControllerList()) {
+                controller.setSelected(isSelected);
+            }
+        }
     }
 
     @Override public void onGroupExpand(int groupPosition, boolean fromUser, Object payload) {
