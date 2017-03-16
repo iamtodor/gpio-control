@@ -21,10 +21,8 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
-import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroup;
+import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroupHeaderPinManagement;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseListFragment;
-import org.kaaproject.kaa.examples.gpiocontrol.screen.portManagement.expandable.ExampleExpandableDataProvider;
-import org.kaaproject.kaa.examples.gpiocontrol.screen.portManagement.expandable.ExpandableExampleAdapter;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.Utils;
 
@@ -46,13 +44,13 @@ public class PortManagementFragment extends BaseListFragment implements Compound
     @BindView(R.id.no_device_message) protected TextView noDeviceMessage;
     @BindView(R.id.fab) protected FloatingActionButton fab;
     private ExpandableExampleAdapter myItemAdapter;
-    private List<DeviceGroup> deviceGroupList;
+    private List<DeviceGroupHeaderPinManagement> deviceGroupHeaderList;
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.device_list_fragment, container, false);
 
         ButterKnife.bind(this, view);
-        getSupportActionBar().setTitle("Device management");
+        getSupportActionBar().setTitle("Port management");
 
         mLayoutManager = new LinearLayoutManager(getContext());
 
@@ -62,9 +60,8 @@ public class PortManagementFragment extends BaseListFragment implements Compound
         recyclerViewExpandableItemManager.setOnGroupCollapseListener(this);
 
         //adapter
-        final ExampleExpandableDataProvider provider = new ExampleExpandableDataProvider();
-        deviceGroupList = Utils.getMockedDeviceGroupList();
-        myItemAdapter = new ExpandableExampleAdapter(provider, getContext(), deviceGroupList);
+        deviceGroupHeaderList = Utils.getMockedDeviceGroupList();
+        myItemAdapter = new ExpandableExampleAdapter(getContext(), deviceGroupHeaderList);
         myItemAdapter.setOnSelectedHeaderListener(this);
 
         // wrap for expanding
@@ -143,12 +140,12 @@ public class PortManagementFragment extends BaseListFragment implements Compound
         } else {
             setSelected(false);
         }
-        myItemAdapter.updateAdapter(deviceGroupList);
+        myItemAdapter.updateAdapter(deviceGroupHeaderList);
     }
 
     private void setSelected(boolean isSelected) {
-        for (DeviceGroup deviceGroup : deviceGroupList) {
-            for (Controller controller : deviceGroup.getControllerList()) {
+        for (DeviceGroupHeaderPinManagement deviceGroupHeader : deviceGroupHeaderList) {
+            for (Controller controller : deviceGroupHeader.getControllerList()) {
                 controller.setSelected(isSelected);
             }
         }

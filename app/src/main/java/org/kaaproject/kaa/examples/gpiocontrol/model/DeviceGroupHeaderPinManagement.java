@@ -3,7 +3,7 @@ package org.kaaproject.kaa.examples.gpiocontrol.model;
 
 import java.util.List;
 
-public class DeviceGroup {
+public class DeviceGroupHeaderPinManagement extends Header {
 
     private String name;
     private int id;
@@ -25,7 +25,7 @@ public class DeviceGroup {
         this.id = id;
     }
 
-    public DeviceGroup(String name, int id, List<Controller> controllerList) {
+    public DeviceGroupHeaderPinManagement(String name, int id, List<Controller> controllerList) {
         this.name = name;
         this.id = id;
         this.controllerList = controllerList;
@@ -39,18 +39,19 @@ public class DeviceGroup {
         return controllerList.get(childPosition);
     }
 
-    @Override public String toString() {
-        return "DeviceGroup{" +
-                "name='" + name + '\'' +
-                ", id=" + id +
-                '}';
-    }
-
     public List<Controller> getControllerList() {
         return controllerList;
     }
 
     public void setControllerList(List<Controller> controllerList) {
         this.controllerList = controllerList;
+    }
+
+    @Override public String toString() {
+        return "DeviceGroupHeaderPinManagement{" +
+                "name='" + name + '\'' +
+                ", id=" + id +
+                ", controllerList=" + controllerList +
+                '}';
     }
 }
