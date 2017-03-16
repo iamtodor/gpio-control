@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Alarm;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
+import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroup;
 import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroupHeaderPinManagement;
 import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceHeaderPinManager;
 import org.kaaproject.kaa.examples.gpiocontrol.model.GroupPort;
@@ -48,7 +49,7 @@ public class Utils {
         return groupPortList;
     }
 
-    public static List<Controller> getMockedControllerList() {
+    private static List<Controller> getMockedControllerList() {
         List<Controller> controllerList = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             if (i % 2 == 0) {
@@ -95,12 +96,24 @@ public class Utils {
         return arrayList;
     }
 
-    public static List<Header> getMockedDeviceGroupList() {
+    public static List<DeviceGroup> getMockedDeviceGroupList() {
+        List<DeviceGroup> deviceGroupList = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            deviceGroupList.add(new DeviceGroup("Group " + i, false, R.drawable.empty_group_icon,
+                    "3/12 selected", i));
+        }
+        return deviceGroupList;
+    }
+
+    public static List<Header> getMockedHeaderList() {
         List<Header> deviceGroupHeaderList = new ArrayList<>();
         List<Controller> controllerList = Utils.getMockedControllerList();
+        List<DeviceGroup> deviceGroupList = Utils.getMockedDeviceGroupList();
 
-        deviceGroupHeaderList.add(new DeviceGroupHeaderPinManagement<>("Device groups (" + (controllerList.size() + 100) + ")", 0, controllerList));
-        deviceGroupHeaderList.add(new DeviceHeaderPinManager<>("Devices (" + controllerList.size() + ")", 1, controllerList));
+        deviceGroupHeaderList.add(new DeviceGroupHeaderPinManagement<>("Device groups (" + deviceGroupList.size() + ")",
+                0, deviceGroupList));
+        deviceGroupHeaderList.add(new DeviceHeaderPinManager<>("Devices (" + controllerList.size() + ")",
+                1, controllerList));
         return deviceGroupHeaderList;
     }
 

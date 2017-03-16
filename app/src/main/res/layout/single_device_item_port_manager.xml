@@ -55,7 +55,7 @@
                     android:textStyle="bold"/>
 
                 <TextView
-                    android:id="@+id/port"
+                    android:id="@+id/port_status"
                     tools:text="Some port"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

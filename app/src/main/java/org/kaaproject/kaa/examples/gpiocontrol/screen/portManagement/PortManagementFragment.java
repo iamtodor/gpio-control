@@ -21,6 +21,8 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
+import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroup;
+import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroupHeaderPinManagement;
 import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceHeaderPinManager;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseListFragment;
@@ -61,7 +63,7 @@ public class PortManagementFragment extends BaseListFragment implements Compound
         recyclerViewExpandableItemManager.setOnGroupCollapseListener(this);
 
         //adapter
-        deviceGroupHeaderList = Utils.getMockedDeviceGroupList();
+        deviceGroupHeaderList = Utils.getMockedHeaderList();
         myItemAdapter = new ExpandableExampleAdapter(getContext(), deviceGroupHeaderList);
         myItemAdapter.setOnSelectedHeaderListener(this);
 
@@ -150,6 +152,11 @@ public class PortManagementFragment extends BaseListFragment implements Compound
                 for (Object object : deviceGroupHeader.getControllerList()) {
                     Controller controller = (Controller) object;
                     controller.setSelected(isSelected);
+                }
+            } else if(deviceGroupHeader instanceof DeviceGroupHeaderPinManagement) {
+                for (Object object : deviceGroupHeader.getControllerList()) {
+                    DeviceGroup deviceGroup = (DeviceGroup) object;
+                    deviceGroup.setSelected(isSelected);
                 }
             }
         }
