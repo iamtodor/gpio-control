@@ -3,11 +3,11 @@ package org.kaaproject.kaa.examples.gpiocontrol.model;
 
 import java.util.List;
 
-public class DeviceGroupHeaderPinManagement extends Header {
+public class DeviceGroupHeaderPinManagement<GroupPort> extends Header {
 
     private String name;
     private int id;
-    private List<Controller> controllerList;
+    private List<GroupPort> controllerList;
 
     @Override public String getName() {
         return name;
@@ -25,7 +25,7 @@ public class DeviceGroupHeaderPinManagement extends Header {
         this.id = id;
     }
 
-    public DeviceGroupHeaderPinManagement(String name, int id, List<Controller> controllerList) {
+    public DeviceGroupHeaderPinManagement(String name, int id, List<GroupPort> controllerList) {
         this.name = name;
         this.id = id;
         this.controllerList = controllerList;
@@ -35,11 +35,11 @@ public class DeviceGroupHeaderPinManagement extends Header {
         return controllerList.size();
     }
 
-    @Override public Controller childAt(int childPosition) {
+    @Override public GroupPort childAt(int childPosition) {
         return controllerList.get(childPosition);
     }
 
-    @Override public List<Controller> getControllerList() {
+    @Override public List<GroupPort> getControllerList() {
         return controllerList;
     }
 

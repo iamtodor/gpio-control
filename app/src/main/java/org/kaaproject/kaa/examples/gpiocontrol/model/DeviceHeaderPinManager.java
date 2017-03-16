@@ -3,7 +3,7 @@ package org.kaaproject.kaa.examples.gpiocontrol.model;
 
 import java.util.List;
 
-public class DeviceHeaderPinManager extends Header {
+public class DeviceHeaderPinManager<Controller> extends Header {
 
     private String name;
     private List<Controller> controllerList;

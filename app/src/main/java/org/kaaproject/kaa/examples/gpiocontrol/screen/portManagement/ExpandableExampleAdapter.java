@@ -21,6 +21,8 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemVie
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
+import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroupHeaderPinManagement;
+import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceHeaderPinManager;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
 
 import java.util.ArrayList;
@@ -38,8 +40,7 @@ public class ExpandableExampleAdapter
     private List<Header> deviceGroupHeaderList = new ArrayList<>();
     private CompoundButton.OnCheckedChangeListener onSelectedGroupListener;
 
-    public ExpandableExampleAdapter(Context context,
-                                    List<Header> deviceGroupHeaderList) {
+    ExpandableExampleAdapter(Context context, List<Header> deviceGroupHeaderList) {
         this.context = context;
         // ExpandableItemAdapter requires stable ID, and also
         // have to implement the getGroupItemId()/getChildItemId() methods appropriately.
@@ -47,13 +48,13 @@ public class ExpandableExampleAdapter
         updateAdapter(deviceGroupHeaderList);
     }
 
-    public void updateAdapter(List<Header> items) {
+    void updateAdapter(List<Header> items) {
         deviceGroupHeaderList.clear();
         deviceGroupHeaderList.addAll(items);
         notifyDataSetChanged();
     }
 
-    public void setOnSelectedHeaderListener(CompoundButton.OnCheckedChangeListener onSelectedGroupListener) {
+    void setOnSelectedHeaderListener(CompoundButton.OnCheckedChangeListener onSelectedGroupListener) {
         this.onSelectedGroupListener = onSelectedGroupListener;
     }
 
@@ -74,7 +75,12 @@ public class ExpandableExampleAdapter
 
     @Override
     public long getChildId(int groupPosition, int childPosition) {
-        return deviceGroupHeaderList.get(groupPosition).childAt(childPosition).getId();
+        if(deviceGroupHeaderList.get(groupPosition) instanceof DeviceGroupHeaderPinManagement) {
+            final Controller controller = (Controller) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
+            return controller.getId();
+        }
+//        return null;
+        return 57;
     }
 
     @Override
@@ -123,14 +129,17 @@ public class ExpandableExampleAdapter
 
     @Override
     public void onBindChildViewHolder(MyChildViewHolder holder, int groupPosition, int childPosition, int viewType) {
-        final Controller controller = deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
-        final Drawable drawable = VectorDrawableCompat.create(context.getResources(),
-                controller.getImagePortsDrawableId(), null);
-        holder.selection.setChecked(controller.isSelected());
-        holder.imagePort.setImageDrawable(drawable);
-        holder.name.setText(controller.getControllerId());
-        holder.port.setText(controller.getPortName());
-        holder.switchCompat.setChecked(controller.isActive());
+//        final Controller controller = deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
+        if (deviceGroupHeaderList.get(groupPosition) instanceof DeviceHeaderPinManager) {
+            final Controller controller = (Controller) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
+            final Drawable drawable = VectorDrawableCompat.create(context.getResources(),
+                    controller.getImagePortsDrawableId(), null);
+            holder.selection.setChecked(controller.isSelected());
+            holder.imagePort.setImageDrawable(drawable);
+            holder.name.setText(controller.getControllerId());
+            holder.port.setText(controller.getPortName());
+            holder.switchCompat.setChecked(controller.isActive());
+        }
     }
 
     static class MyGroupViewHolder extends AbstractExpandableItemViewHolder implements View.OnClickListener {

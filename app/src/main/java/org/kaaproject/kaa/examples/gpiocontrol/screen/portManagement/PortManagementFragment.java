@@ -21,6 +21,7 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
+import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceHeaderPinManager;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseListFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
@@ -145,8 +146,11 @@ public class PortManagementFragment extends BaseListFragment implements Compound
 
     private void setSelected(boolean isSelected) {
         for (Header deviceGroupHeader : deviceGroupHeaderList) {
-            for (Controller controller : deviceGroupHeader.getControllerList()) {
-                controller.setSelected(isSelected);
+            if(deviceGroupHeader instanceof DeviceHeaderPinManager) {
+                for (Object object : deviceGroupHeader.getControllerList()) {
+                    Controller controller = (Controller) object;
+                    controller.setSelected(isSelected);
+                }
             }
         }
     }
