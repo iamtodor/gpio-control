@@ -51,5 +51,8 @@
     <string name="alarm_name">Alarm name</string>
     <string name="add_alarm">Add alarm</string>
     <string name="device_name_header">Devices (%1$d)</string>
+    <string name="remove_from_group">Remove from group</string>
+    <string name="duplicate">Duplicate</string>
+    <string name="ungroup">Ungroup</string>
 
 </resources>
