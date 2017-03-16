@@ -22,7 +22,6 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemVie
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
 import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroupHeaderPinManagement;
-import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceHeaderPinManager;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
 
 import java.util.ArrayList;
@@ -32,7 +31,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ExpandableExampleAdapter
-        extends AbstractExpandableItemAdapter<ExpandableExampleAdapter.DeviceGroupHeaderViewHolder, ExpandableExampleAdapter.SingleDeviceItemViewHolder> {
+        extends AbstractExpandableItemAdapter<ExpandableExampleAdapter.BaseHeaderViewHolder, ExpandableExampleAdapter.BaseItemViewHolder> {
 
     private static final String TAG = ExpandableExampleAdapter.class.getSimpleName();
     private static final int DEVICE_GROUP_HEADER_VIEW_TYPE = 1;
@@ -84,7 +83,6 @@ public class ExpandableExampleAdapter
             final Controller controller = (Controller) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
             return controller.getId();
         }
-//        return null;
         return 57;
     }
 
@@ -105,25 +103,25 @@ public class ExpandableExampleAdapter
     }
 
     @Override
-    public DeviceGroupHeaderViewHolder onCreateGroupViewHolder(ViewGroup parent, int viewType) {
+    public BaseHeaderViewHolder onCreateGroupViewHolder(ViewGroup parent, int viewType) {
         final LayoutInflater inflater = LayoutInflater.from(context);
-        if(viewType == DEVICE_GROUP_HEADER_VIEW_TYPE) {
+        if (viewType == DEVICE_GROUP_HEADER_VIEW_TYPE) {
             final View v = inflater.inflate(R.layout.device_group_header_port_manager, parent, false);
             return new DeviceGroupHeaderViewHolder(v, onSelectedGroupListener);
-        } else if(viewType == SINGLE_DEVICE_HEADER_VIEW_TYPE) {
+        } else if (viewType == SINGLE_DEVICE_HEADER_VIEW_TYPE) {
             final View v = inflater.inflate(R.layout.single_device_header_port_manager, parent, false);
-            return new DeviceGroupHeaderViewHolder(v, onSelectedGroupListener);
+            return new SingleDeviceHeaderViewHolder(v, onSelectedGroupListener);
         }
         throw new RuntimeException("No match for onCreateGroupViewHolder" + viewType + ".");
     }
 
     @Override
-    public SingleDeviceItemViewHolder onCreateChildViewHolder(ViewGroup parent, int viewType) {
+    public BaseItemViewHolder onCreateChildViewHolder(ViewGroup parent, int viewType) {
         final LayoutInflater inflater = LayoutInflater.from(context);
-        if(viewType == DEVICE_GROUP_ITEM_VIEW_TYPE) {
+        if (viewType == DEVICE_GROUP_ITEM_VIEW_TYPE) {
             final View v = inflater.inflate(R.layout.device_group_item_port_manager, parent, false);
-            return new SingleDeviceItemViewHolder(v);
-        } else if(viewType == SINGLE_DEVICE_ITEM_VIEW_TYPE) {
+            return new DeviceGroupItemViewHolder(v);
+        } else if (viewType == SINGLE_DEVICE_ITEM_VIEW_TYPE) {
             final View v = inflater.inflate(R.layout.single_device_item_port_manager, parent, false);
             return new SingleDeviceItemViewHolder(v);
         }
@@ -131,36 +129,64 @@ public class ExpandableExampleAdapter
     }
 
     @Override
-    public void onBindGroupViewHolder(DeviceGroupHeaderViewHolder holder, int groupPosition, int viewType) {
+    public void onBindGroupViewHolder(BaseHeaderViewHolder holder, int groupPosition, int viewType) {
         final Header item = deviceGroupHeaderList.get(groupPosition);
+        if (viewType == DEVICE_GROUP_HEADER_VIEW_TYPE) {
+            DeviceGroupHeaderViewHolder headerViewHolder = (DeviceGroupHeaderViewHolder) holder;
+            headerViewHolder.name.setText(item.getName());
+            headerViewHolder.droppedArrow.setClickable(true);
 
-        holder.name.setText(item.getName());
-        holder.droppedArrow.setClickable(true);
+            // set background resource (target view ID: container)
+            final int expandState = holder.getExpandStateFlags();
 
-        // set background resource (target view ID: container)
-        final int expandState = holder.getExpandStateFlags();
+            if ((expandState & ExpandableItemConstants.STATE_FLAG_IS_UPDATED) != 0) {
 
-        if ((expandState & ExpandableItemConstants.STATE_FLAG_IS_UPDATED) != 0) {
+                if ((expandState & ExpandableItemConstants.STATE_FLAG_IS_EXPANDED) != 0) {
+                    headerViewHolder.droppedArrow.setRotation(180);
+                } else {
+                    headerViewHolder.droppedArrow.setRotation(0);
+                }
+            }
+        } else if (viewType == SINGLE_DEVICE_HEADER_VIEW_TYPE) {
+            SingleDeviceHeaderViewHolder headerViewHolder = (SingleDeviceHeaderViewHolder) holder;
+            headerViewHolder.name.setText(item.getName());
+            headerViewHolder.droppedArrow.setClickable(true);
 
-            if ((expandState & ExpandableItemConstants.STATE_FLAG_IS_EXPANDED) != 0) {
-                holder.droppedArrow.setRotation(180);
-            } else {
-                holder.droppedArrow.setRotation(0);
+            // set background resource (target view ID: container)
+            final int expandState = holder.getExpandStateFlags();
+
+            if ((expandState & ExpandableItemConstants.STATE_FLAG_IS_UPDATED) != 0) {
+
+                if ((expandState & ExpandableItemConstants.STATE_FLAG_IS_EXPANDED) != 0) {
+                    headerViewHolder.droppedArrow.setRotation(180);
+                } else {
+                    headerViewHolder.droppedArrow.setRotation(0);
+                }
             }
         }
     }
 
     @Override
-    public void onBindChildViewHolder(SingleDeviceItemViewHolder holder, int groupPosition, int childPosition, int viewType) {
-        if (deviceGroupHeaderList.get(groupPosition) instanceof DeviceHeaderPinManager) {
+    public void onBindChildViewHolder(BaseItemViewHolder holder, int groupPosition, int childPosition, int viewType) {
+        if (viewType == DEVICE_GROUP_ITEM_VIEW_TYPE) {
+            DeviceGroupItemViewHolder headerViewHolder = (DeviceGroupItemViewHolder) holder;
             final Controller controller = (Controller) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
             final Drawable drawable = VectorDrawableCompat.create(context.getResources(),
                     controller.getImagePortsDrawableId(), null);
-            holder.selection.setChecked(controller.isSelected());
-            holder.imagePort.setImageDrawable(drawable);
-            holder.name.setText(controller.getControllerId());
-            holder.port.setText(controller.getPortName());
-            holder.switchCompat.setChecked(controller.isActive());
+            headerViewHolder.selection.setChecked(controller.isSelected());
+            headerViewHolder.folder.setImageDrawable(drawable);
+            headerViewHolder.name.setText(controller.getControllerId());
+            headerViewHolder.port.setText(controller.getPortName());
+        } else if (viewType == SINGLE_DEVICE_ITEM_VIEW_TYPE) {
+            SingleDeviceItemViewHolder headerViewHolder = (SingleDeviceItemViewHolder) holder;
+            final Controller controller = (Controller) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
+            final Drawable drawable = VectorDrawableCompat.create(context.getResources(),
+                    controller.getImagePortsDrawableId(), null);
+            headerViewHolder.selection.setChecked(controller.isSelected());
+            headerViewHolder.imagePort.setImageDrawable(drawable);
+            headerViewHolder.name.setText(controller.getControllerId());
+            headerViewHolder.port.setText(controller.getPortName());
+            headerViewHolder.switchCompat.setChecked(controller.isActive());
         }
     }
 
@@ -178,7 +204,7 @@ public class ExpandableExampleAdapter
         }
     }
 
-    static class DeviceGroupHeaderViewHolder extends AbstractExpandableItemViewHolder implements View.OnClickListener {
+    static class DeviceGroupHeaderViewHolder extends BaseHeaderViewHolder implements View.OnClickListener {
         @BindView(R.id.selection) CheckBox selection;
         @BindView(R.id.name) TextView name;
         @BindView(R.id.dropped_arrow) ImageView droppedArrow;
@@ -200,7 +226,7 @@ public class ExpandableExampleAdapter
         }
     }
 
-    static class DeviceGroupItemViewHolder extends AbstractExpandableItemViewHolder implements View.OnClickListener {
+    static class DeviceGroupItemViewHolder extends BaseItemViewHolder implements View.OnClickListener {
         private final PopupMenu popup;
 
         @BindView(R.id.selection) CheckBox selection;
@@ -254,7 +280,7 @@ public class ExpandableExampleAdapter
         }
     }
 
-    static class SingleDeviceHeaderViewHolder extends AbstractExpandableItemViewHolder implements View.OnClickListener {
+    static class SingleDeviceHeaderViewHolder extends BaseHeaderViewHolder implements View.OnClickListener {
         @BindView(R.id.selection) CheckBox selection;
         @BindView(R.id.name) TextView name;
         @BindView(R.id.dropped_arrow) ImageView droppedArrow;
@@ -276,7 +302,7 @@ public class ExpandableExampleAdapter
         }
     }
 
-    static class SingleDeviceItemViewHolder extends AbstractExpandableItemViewHolder implements View.OnClickListener {
+    static class SingleDeviceItemViewHolder extends BaseItemViewHolder implements View.OnClickListener {
         private final PopupMenu popup;
 
         @BindView(R.id.image) ImageView imagePort;
@@ -323,7 +349,7 @@ public class ExpandableExampleAdapter
     }
 
     @Override
-    public boolean onCheckCanExpandOrCollapseGroup(DeviceGroupHeaderViewHolder holder, int groupPosition, int x, int y, boolean expand) {
+    public boolean onCheckCanExpandOrCollapseGroup(BaseHeaderViewHolder holder, int groupPosition, int x, int y, boolean expand) {
         return deviceGroupHeaderList.get(groupPosition).childrenCount() > 0;
     }
 }
