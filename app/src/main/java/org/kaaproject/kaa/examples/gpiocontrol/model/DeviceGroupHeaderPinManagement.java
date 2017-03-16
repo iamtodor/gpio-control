@@ -9,7 +9,7 @@ public class DeviceGroupHeaderPinManagement extends Header {
     private int id;
     private List<Controller> controllerList;
 
-    public String getName() {
+    @Override public String getName() {
         return name;
     }
 
@@ -17,7 +17,7 @@ public class DeviceGroupHeaderPinManagement extends Header {
         this.name = name;
     }
 
-    public int getId() {
+    @Override public int getId() {
         return id;
     }
 
@@ -31,20 +31,16 @@ public class DeviceGroupHeaderPinManagement extends Header {
         this.controllerList = controllerList;
     }
 
-    public int childrenCount() {
+    @Override public int childrenCount() {
         return controllerList.size();
     }
 
-    public Controller childAt(int childPosition) {
+    @Override public Controller childAt(int childPosition) {
         return controllerList.get(childPosition);
     }
 
-    public List<Controller> getControllerList() {
+    @Override public List<Controller> getControllerList() {
         return controllerList;
-    }
-
-    public void setControllerList(List<Controller> controllerList) {
-        this.controllerList = controllerList;
     }
 
     @Override public String toString() {

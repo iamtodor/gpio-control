@@ -21,7 +21,7 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
-import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroupHeaderPinManagement;
+import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseListFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.Utils;
@@ -44,7 +44,7 @@ public class PortManagementFragment extends BaseListFragment implements Compound
     @BindView(R.id.no_device_message) protected TextView noDeviceMessage;
     @BindView(R.id.fab) protected FloatingActionButton fab;
     private ExpandableExampleAdapter myItemAdapter;
-    private List<DeviceGroupHeaderPinManagement> deviceGroupHeaderList;
+    private List<Header> deviceGroupHeaderList;
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.device_list_fragment, container, false);
@@ -144,7 +144,7 @@ public class PortManagementFragment extends BaseListFragment implements Compound
     }
 
     private void setSelected(boolean isSelected) {
-        for (DeviceGroupHeaderPinManagement deviceGroupHeader : deviceGroupHeaderList) {
+        for (Header deviceGroupHeader : deviceGroupHeaderList) {
             for (Controller controller : deviceGroupHeader.getControllerList()) {
                 controller.setSelected(isSelected);
             }

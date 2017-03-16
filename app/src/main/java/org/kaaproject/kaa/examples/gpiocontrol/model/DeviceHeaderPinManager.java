@@ -3,58 +3,42 @@ package org.kaaproject.kaa.examples.gpiocontrol.model;
 
 import java.util.List;
 
-public class DeviceHeaderPinManager extends Header{
+public class DeviceHeaderPinManager extends Header {
 
     private String name;
-    private String alarm;
     private List<Controller> controllerList;
-    private boolean isLocked;
+    private int id;
 
-    public DeviceHeaderPinManager(String name, String alarm, List<Controller> portList, boolean isLocked) {
+    public DeviceHeaderPinManager(String name, int id, List<Controller> portList) {
         this.name = name;
-        this.alarm = alarm;
+        this.id = id;
         this.controllerList = portList;
-        this.isLocked = isLocked;
     }
 
-    public String getName() {
+    @Override public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    @Override public int childrenCount() {
+        return controllerList.size();
     }
 
-    public String getAlarm() {
-        return alarm;
+    @Override public Controller childAt(int childPosition) {
+        return controllerList.get(childPosition);
     }
 
-    public void setAlarm(String alarm) {
-        this.alarm = alarm;
-    }
-
-    public List<Controller> getControllerList() {
+    @Override public List<Controller> getControllerList() {
         return controllerList;
     }
 
-    public void setControllerList(List<Controller> controllerList) {
-        this.controllerList = controllerList;
-    }
-
-    public boolean isLocked() {
-        return isLocked;
-    }
-
-    public void setLocked(boolean locked) {
-        isLocked = locked;
+    @Override public int getId() {
+        return id;
     }
 
     @Override public String toString() {
         return "GroupPort{" +
                 "name='" + name + '\'' +
-                ", alarm='" + alarm + '\'' +
                 ", controllerList=" + controllerList +
-                ", isLocked=" + isLocked +
                 '}';
     }
 }

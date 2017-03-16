@@ -21,7 +21,7 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemVie
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
-import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroupHeaderPinManagement;
+import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,11 +35,11 @@ public class ExpandableExampleAdapter
     private static final String TAG = ExpandableExampleAdapter.class.getSimpleName();
 
     private final Context context;
-    private List<DeviceGroupHeaderPinManagement> deviceGroupHeaderList = new ArrayList<>();
+    private List<Header> deviceGroupHeaderList = new ArrayList<>();
     private CompoundButton.OnCheckedChangeListener onSelectedGroupListener;
 
     public ExpandableExampleAdapter(Context context,
-                                    List<DeviceGroupHeaderPinManagement> deviceGroupHeaderList) {
+                                    List<Header> deviceGroupHeaderList) {
         this.context = context;
         // ExpandableItemAdapter requires stable ID, and also
         // have to implement the getGroupItemId()/getChildItemId() methods appropriately.
@@ -47,7 +47,7 @@ public class ExpandableExampleAdapter
         updateAdapter(deviceGroupHeaderList);
     }
 
-    public void updateAdapter(List<DeviceGroupHeaderPinManagement> items) {
+    public void updateAdapter(List<Header> items) {
         deviceGroupHeaderList.clear();
         deviceGroupHeaderList.addAll(items);
         notifyDataSetChanged();
@@ -103,7 +103,7 @@ public class ExpandableExampleAdapter
 
     @Override
     public void onBindGroupViewHolder(MyGroupViewHolder holder, int groupPosition, int viewType) {
-        final DeviceGroupHeaderPinManagement item = deviceGroupHeaderList.get(groupPosition);
+        final Header item = deviceGroupHeaderList.get(groupPosition);
 
         holder.name.setText(item.getName());
         holder.droppedArrow.setClickable(true);
