@@ -43,6 +43,8 @@ public class ExpandableExampleAdapter
     private final Context context;
     private final List<Header> deviceGroupHeaderList = new ArrayList<>();
     private CompoundButton.OnCheckedChangeListener onSelectedGroupListener;
+    private PopupMenu deviceGroupItemPopup;
+    private PopupMenu singleDeviceItemPopup;
 
     ExpandableExampleAdapter(Context context, List<Header> deviceGroupHeaderList) {
         this.context = context;
@@ -152,89 +154,13 @@ public class ExpandableExampleAdapter
             headerViewHolder.folder.setImageDrawable(drawable);
             headerViewHolder.name.setText(deviceGroup.getName());
             headerViewHolder.port.setText(deviceGroup.getPortStatus());
-        } else if (viewType == SINGLE_DEVICE_ITEM_VIEW_TYPE) {
-            final SingleDeviceItemViewHolder headerViewHolder = (SingleDeviceItemViewHolder) holder;
-            final Controller controller = (Controller) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
-            final Drawable drawable = VectorDrawableCompat.create(context.getResources(),
-                    controller.getImagePortsDrawableId(), null);
-            headerViewHolder.selection.setChecked(controller.isSelected());
-            headerViewHolder.imagePort.setImageDrawable(drawable);
-            headerViewHolder.name.setText(controller.getControllerId());
-            headerViewHolder.port.setText(controller.getPortName());
-            headerViewHolder.switchCompat.setChecked(controller.isActive());
-        }
-    }
 
-    static class BaseHeaderViewHolder extends AbstractExpandableItemViewHolder implements View.OnClickListener {
-
-        @BindView(R.id.selection) CheckBox selection;
-        @BindView(R.id.name) TextView name;
-        @BindView(R.id.dropped_arrow) ImageView droppedArrow;
-
-        BaseHeaderViewHolder(View itemView, CompoundButton.OnCheckedChangeListener onSelectedGroupListener) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
-            itemView.setOnClickListener(this);
-            droppedArrow.setOnClickListener(this);
-            selection.setOnCheckedChangeListener(onSelectedGroupListener);
-        }
-
-        @Override public void onClick(View view) {
-            if (view.getId() == R.id.selection) {
-                // TODO: 3/14/17 add hiding and showing devices
-            } else {
-
+            if (deviceGroupItemPopup == null) {
+                deviceGroupItemPopup = new PopupMenu(context, headerViewHolder.imageViewOptions);
+                deviceGroupItemPopup.inflate(R.menu.group_item_popup_menu);
             }
-        }
-    }
 
-    static class BaseItemViewHolder extends AbstractExpandableItemViewHolder {
-
-        BaseItemViewHolder(View itemView) {
-            super(itemView);
-        }
-    }
-
-    static class DeviceGroupHeaderViewHolder extends BaseHeaderViewHolder implements View.OnClickListener {
-        @BindView(R.id.selection) CheckBox selection;
-        @BindView(R.id.name) TextView name;
-        @BindView(R.id.dropped_arrow) ImageView droppedArrow;
-
-        DeviceGroupHeaderViewHolder(View itemView, CompoundButton.OnCheckedChangeListener onSelectedGroupListener) {
-            super(itemView, onSelectedGroupListener);
-            ButterKnife.bind(this, itemView);
-            itemView.setOnClickListener(this);
-            droppedArrow.setOnClickListener(this);
-            selection.setOnCheckedChangeListener(onSelectedGroupListener);
-        }
-
-        @Override public void onClick(View view) {
-            if (view.getId() == R.id.selection) {
-                // TODO: 3/14/17 add hiding and showing devices
-            } else {
-
-            }
-        }
-    }
-
-    static class DeviceGroupItemViewHolder extends BaseItemViewHolder implements View.OnClickListener {
-        private final PopupMenu popup;
-
-        @BindView(R.id.selection) CheckBox selection;
-        @BindView(R.id.icon) ImageView folder;
-        @BindView(R.id.name) TextView name;
-        @BindView(R.id.port_status) TextView port;
-        @BindView(R.id.menu) ImageView imageViewOptions;
-
-        DeviceGroupItemViewHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
-            itemView.setOnClickListener(this);
-            imageViewOptions.setOnClickListener(this);
-
-            popup = new PopupMenu(itemView.getContext(), imageViewOptions);
-            popup.inflate(R.menu.group_item_popup_menu);
-            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            deviceGroupItemPopup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
                     switch (item.getItemId()) {
@@ -260,11 +186,103 @@ public class ExpandableExampleAdapter
                     return false;
                 }
             });
+
+            headerViewHolder.imageViewOptions.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    deviceGroupItemPopup.show();
+                }
+            });
+        } else if (viewType == SINGLE_DEVICE_ITEM_VIEW_TYPE) {
+            final SingleDeviceItemViewHolder singleDeviceViewHolder = (SingleDeviceItemViewHolder) holder;
+            final Controller controller = (Controller) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
+            final Drawable drawable = VectorDrawableCompat.create(context.getResources(),
+                    controller.getImagePortsDrawableId(), null);
+            singleDeviceViewHolder.selection.setChecked(controller.isSelected());
+            singleDeviceViewHolder.imagePort.setImageDrawable(drawable);
+            singleDeviceViewHolder.name.setText(controller.getControllerId());
+            singleDeviceViewHolder.port.setText(controller.getPortName());
+            singleDeviceViewHolder.switchCompat.setChecked(controller.isActive());
+
+            if (singleDeviceItemPopup == null) {
+                singleDeviceItemPopup = new PopupMenu(context, singleDeviceViewHolder.imageViewOptions);
+                singleDeviceItemPopup.inflate(R.menu.device_item_popup_menu);
+            }
+
+            singleDeviceItemPopup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.edit_image:
+                            // TODO: 3/10/17 add edit image
+                            break;
+                        case R.id.edit_name:
+                            // TODO: 3/10/17 add edit name
+                            break;
+                        case R.id.add_to_group:
+                            // TODO: 3/10/17 add add to group
+                            break;
+                    }
+                    return false;
+                }
+            });
+
+            singleDeviceViewHolder.imageViewOptions.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    singleDeviceItemPopup.show();
+                }
+            });
+        }
+    }
+
+    static class BaseHeaderViewHolder extends AbstractExpandableItemViewHolder {
+
+        @BindView(R.id.selection) CheckBox selection;
+        @BindView(R.id.name) TextView name;
+        @BindView(R.id.dropped_arrow) ImageView droppedArrow;
+
+        BaseHeaderViewHolder(View itemView, CompoundButton.OnCheckedChangeListener onSelectedGroupListener) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+            selection.setOnCheckedChangeListener(onSelectedGroupListener);
+        }
+    }
+
+    static class BaseItemViewHolder extends AbstractExpandableItemViewHolder {
+
+        BaseItemViewHolder(View itemView) {
+            super(itemView);
+        }
+    }
+
+    static class DeviceGroupHeaderViewHolder extends BaseHeaderViewHolder {
+        @BindView(R.id.selection) CheckBox selection;
+        @BindView(R.id.name) TextView name;
+        @BindView(R.id.dropped_arrow) ImageView droppedArrow;
+
+        DeviceGroupHeaderViewHolder(View itemView, CompoundButton.OnCheckedChangeListener onSelectedGroupListener) {
+            super(itemView, onSelectedGroupListener);
+            ButterKnife.bind(this, itemView);
+            selection.setOnCheckedChangeListener(onSelectedGroupListener);
+        }
+    }
+
+    static class DeviceGroupItemViewHolder extends BaseItemViewHolder implements View.OnClickListener {
+
+        @BindView(R.id.selection) CheckBox selection;
+        @BindView(R.id.icon) ImageView folder;
+        @BindView(R.id.name) TextView name;
+        @BindView(R.id.port_status) TextView port;
+        @BindView(R.id.menu) ImageView imageViewOptions;
+
+        DeviceGroupItemViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(this);
         }
 
         @Override public void onClick(View view) {
             if (view.getId() == R.id.menu) {
-                popup.show();
+
             } else {
                 selection.setChecked(!selection.isChecked());
             }
@@ -294,7 +312,6 @@ public class ExpandableExampleAdapter
     }
 
     static class SingleDeviceItemViewHolder extends BaseItemViewHolder implements View.OnClickListener {
-        private final PopupMenu popup;
 
         @BindView(R.id.image) ImageView imagePort;
         @BindView(R.id.selection) CheckBox selection;
@@ -308,34 +325,10 @@ public class ExpandableExampleAdapter
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
             imageViewOptions.setOnClickListener(this);
-
-            popup = new PopupMenu(itemView.getContext(), imageViewOptions);
-            popup.inflate(R.menu.device_item_popup_menu);
-            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    switch (item.getItemId()) {
-                        case R.id.edit_image:
-                            // TODO: 3/10/17 add edit image
-                            break;
-                        case R.id.edit_name:
-                            // TODO: 3/10/17 add edit name
-                            break;
-                        case R.id.add_to_group:
-                            // TODO: 3/10/17 add add to group
-                            break;
-                    }
-                    return false;
-                }
-            });
         }
 
         @Override public void onClick(View view) {
-            if (view.getId() == R.id.menu) {
-                popup.show();
-            } else {
-                selection.setChecked(!selection.isChecked());
-            }
+            selection.setChecked(!selection.isChecked());
         }
     }
 
