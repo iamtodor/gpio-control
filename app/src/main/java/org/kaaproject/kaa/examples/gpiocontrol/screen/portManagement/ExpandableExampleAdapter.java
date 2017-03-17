@@ -46,8 +46,6 @@ public class ExpandableExampleAdapter
     private final Context context;
     private final List<Header> deviceGroupHeaderList = new ArrayList<>();
     private CompoundButton.OnCheckedChangeListener onSelectedGroupListener;
-    private PopupMenu deviceGroupItemPopup;
-    private PopupMenu singleDeviceItemPopup;
 
     ExpandableExampleAdapter(Context context, List<Header> deviceGroupHeaderList) {
         this.context = context;
@@ -158,10 +156,8 @@ public class ExpandableExampleAdapter
             deviceGroupViewHolder.name.setText(deviceGroup.getName());
             deviceGroupViewHolder.port.setText(deviceGroup.getPortStatus());
 
-            if (deviceGroupItemPopup == null) {
-                deviceGroupItemPopup = new PopupMenu(context, deviceGroupViewHolder.imageViewOptions);
-                deviceGroupItemPopup.inflate(R.menu.group_item_popup_menu);
-            }
+            final PopupMenu deviceGroupItemPopup = new PopupMenu(context, deviceGroupViewHolder.imageViewOptions);
+            deviceGroupItemPopup.inflate(R.menu.group_item_popup_menu);
 
             deviceGroupItemPopup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
@@ -207,10 +203,8 @@ public class ExpandableExampleAdapter
             singleDeviceViewHolder.port.setText(controller.getPortName());
             singleDeviceViewHolder.switchCompat.setChecked(controller.isActive());
 
-//            if (singleDeviceItemPopup == null) {
-                singleDeviceItemPopup = new PopupMenu(context, singleDeviceViewHolder.imageViewOptions);
-                singleDeviceItemPopup.inflate(R.menu.device_item_popup_menu);
-//            }
+            final PopupMenu singleDeviceItemPopup = new PopupMenu(context, singleDeviceViewHolder.imageViewOptions);
+            singleDeviceItemPopup.inflate(R.menu.device_item_popup_menu);
 
             singleDeviceItemPopup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
