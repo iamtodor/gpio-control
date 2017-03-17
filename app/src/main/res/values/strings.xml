@@ -51,5 +51,6 @@
     <string name="alarm_name">Alarm name</string>
     <string name="add_alarm">Add alarm</string>
     <string name="device_name_header">Devices (%1$d)</string>
+    <string name="submit">Submit</string>
 
 </resources>

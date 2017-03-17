@@ -74,8 +74,10 @@ public class PortManagementFragment extends BaseListFragment implements Compound
         // Need to disable them when using animation indicator.
         animator.setSupportsChangeAnimations(false);
 
+        List<Controller> controllerList = Utils.getMockedControllerList();
+        PortManagementAdapter adapter = new PortManagementAdapter(controllerList, getContext());
         recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setAdapter(mWrappedAdapter);  // requires *wrapped* adapter
+        recyclerView.setAdapter(adapter);  // requires *wrapped* adapter
         recyclerView.setItemAnimator(animator);
         recyclerView.setHasFixedSize(false);
 
