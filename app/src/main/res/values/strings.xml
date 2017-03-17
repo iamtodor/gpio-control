@@ -55,5 +55,6 @@
     <string name="duplicate">Duplicate</string>
     <string name="ungroup">Ungroup</string>
     <string name="submit">Submit</string>
+    <string name="log_out_question">Log out?</string>
 
 </resources>

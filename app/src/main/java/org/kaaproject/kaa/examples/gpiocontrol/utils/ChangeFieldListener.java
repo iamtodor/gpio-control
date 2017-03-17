@@ -1,4 +1,4 @@
-package org.kaaproject.kaa.examples.gpiocontrol.screen.main;
+package org.kaaproject.kaa.examples.gpiocontrol.utils;
 
 
 public interface ChangeFieldListener {

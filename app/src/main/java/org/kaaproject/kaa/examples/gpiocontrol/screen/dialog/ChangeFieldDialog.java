@@ -13,7 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
-import org.kaaproject.kaa.examples.gpiocontrol.screen.main.ChangeFieldListener;
+import org.kaaproject.kaa.examples.gpiocontrol.utils.ChangeFieldListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

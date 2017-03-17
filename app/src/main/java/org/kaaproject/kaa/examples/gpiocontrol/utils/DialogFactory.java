@@ -10,11 +10,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
@@ -23,12 +19,8 @@ import org.kaaproject.kaa.examples.gpiocontrol.screen.addController.AddControlle
 import org.kaaproject.kaa.examples.gpiocontrol.screen.addController.ImagePortsDrawableListener;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChangeFieldDialog;
-import org.kaaproject.kaa.examples.gpiocontrol.screen.main.ChangeFieldListener;
 
 public class DialogFactory {
-
-    //Default screen margins, per the Android Design guidelines.
-    private static final int SIDE_MARGIN = 16;
 
     public static void showAddDeviceDialog(final BaseActivity activity) {
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity);
@@ -119,96 +111,6 @@ public class DialogFactory {
                 .setMessage(message)
                 .setPositiveButton(R.string.log_out, listener)
                 .setNegativeButton(R.string.cancel, null);
-    }
-
-    public static AlertDialog getChangePasswordDialog(final Context context, final String title,
-                                                      final String message,
-                                                      final ChangeFieldListener listener) {
-        final EditText editText = new EditText(context);
-        final FrameLayout container = new FrameLayout(context);
-        final FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT);
-        float margin = ViewUtils.dpToPx(context, SIDE_MARGIN);
-        lp.setMargins(Math.round(margin), 0, Math.round(margin), 0);
-        editText.setLayoutParams(lp);
-        editText.setHint(R.string.input_password);
-        container.addView(editText);
-        final AlertDialog builder = new AlertDialog.Builder(context)
-                .setMessage(message)
-                .setTitle(title)
-                .setCancelable(false)
-                .setView(container)
-                .setNegativeButton(R.string.cancel, null)
-                .setPositiveButton(R.string.change_password, null)
-                .create();
-
-        builder.setOnShowListener(new DialogInterface.OnShowListener() {
-
-            @Override
-            public void onShow(final DialogInterface dialog) {
-
-                Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
-                button.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View view) {
-                        if (editText.getText().toString().isEmpty()) {
-                            editText.setError(context.getString(R.string.edit_text_cant_be_empty_error));
-                        } else {
-                            listener.onChanged(editText.getText().toString());
-                            dialog.dismiss();
-                        }
-                    }
-                });
-            }
-        });
-
-        return builder;
-    }
-
-    public static AlertDialog getEditNameDialog(final Context context, final String title, String currentName,
-                                                final ChangeFieldListener listener) {
-        final EditText editText = new EditText(context);
-        final FrameLayout container = new FrameLayout(context);
-        final FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT);
-        float margin = ViewUtils.dpToPx(context, SIDE_MARGIN);
-        lp.setMargins(Math.round(margin), 0, Math.round(margin), 0);
-        editText.setLayoutParams(lp);
-        editText.setText(currentName);
-        container.addView(editText);
-        final AlertDialog builder = new AlertDialog.Builder(context)
-                .setTitle(title)
-                .setCancelable(false)
-                .setView(container)
-                .setNegativeButton(R.string.cancel, null)
-                .setPositiveButton(R.string.change_password, null)
-                .create();
-
-        builder.setOnShowListener(new DialogInterface.OnShowListener() {
-
-            @Override
-            public void onShow(final DialogInterface dialog) {
-
-                Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
-                button.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View view) {
-                        if (editText.getText().toString().isEmpty()) {
-                            editText.setError(context.getString(R.string.edit_text_cant_be_empty_error));
-                        } else {
-                            listener.onChanged(editText.getText().toString());
-                            dialog.dismiss();
-                        }
-                    }
-                });
-            }
-        });
-
-        return builder;
     }
 
     public static ChangeFieldDialog getChangeFieldDialog(String title, String message, String editText,

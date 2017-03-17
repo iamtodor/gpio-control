@@ -25,8 +25,8 @@ import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroup;
 import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroupHeaderPinManagement;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChangeFieldDialog;
-import org.kaaproject.kaa.examples.gpiocontrol.screen.main.ChangeFieldListener;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.main.MainActivity;
+import org.kaaproject.kaa.examples.gpiocontrol.utils.ChangeFieldListener;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
 
 import java.util.ArrayList;

@@ -14,10 +14,12 @@ import android.view.MenuItem;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseActivity;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChangeFieldDialog;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.portManagement.PortManagementFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.portSwitchManagement.PortSwitchManagementFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.resetDevices.ResetDevicesFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.signIn.SingInActivity;
+import org.kaaproject.kaa.examples.gpiocontrol.utils.ChangeFieldListener;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.PreferencesImpl;
 
@@ -107,15 +109,17 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             dialogMessage = getString(R.string.change_password_message) + currentPassword;
         }
 
-        DialogFactory.getChangePasswordDialog(this, dialogTitle, dialogMessage, new ChangeFieldListener() {
-            @Override public void onChanged(String newField) {
-                PreferencesImpl.getInstance().savePassword(newField);
-            }
-        }).show();
+        ChangeFieldDialog dialog = DialogFactory.getChangeFieldDialog(dialogTitle,
+                dialogMessage, null, getString(R.string.input_password), new ChangeFieldListener() {
+                    @Override public void onChanged(String newField) {
+                        PreferencesImpl.getInstance().savePassword(newField);
+                    }
+                });
+        dialog.show(getSupportFragmentManager());
     }
 
     private void showLogoutDialog() {
-        DialogFactory.getConfirmationDialog(this, "Log out?", new DialogInterface.OnClickListener() {
+        DialogFactory.getConfirmationDialog(this, getString(R.string.log_out_question), new DialogInterface.OnClickListener() {
             @Override public void onClick(DialogInterface dialog, int which) {
                 PreferencesImpl.getInstance().cleanUp();
                 showSignInActivity();
