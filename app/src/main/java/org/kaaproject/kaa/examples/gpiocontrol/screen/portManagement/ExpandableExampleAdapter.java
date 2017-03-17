@@ -4,6 +4,7 @@ package org.kaaproject.kaa.examples.gpiocontrol.screen.portManagement;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.graphics.drawable.VectorDrawableCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
@@ -24,6 +25,8 @@ import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
 import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroup;
 import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroupHeaderPinManagement;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.main.ChangeStringListener;
+import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -145,18 +148,18 @@ public class ExpandableExampleAdapter
     @Override
     public void onBindChildViewHolder(BaseItemViewHolder holder, int groupPosition, int childPosition, int viewType) {
         if (viewType == DEVICE_GROUP_ITEM_VIEW_TYPE) {
-            final DeviceGroupItemViewHolder headerViewHolder = (DeviceGroupItemViewHolder) holder;
+            final DeviceGroupItemViewHolder deviceGroupViewHolder = (DeviceGroupItemViewHolder) holder;
             final DeviceGroup deviceGroup = (DeviceGroup) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
             final Drawable drawable = VectorDrawableCompat.create(context.getResources(),
                     deviceGroup.getIconId(), null);
 
-            headerViewHolder.selection.setChecked(deviceGroup.isSelected());
-            headerViewHolder.folder.setImageDrawable(drawable);
-            headerViewHolder.name.setText(deviceGroup.getName());
-            headerViewHolder.port.setText(deviceGroup.getPortStatus());
+            deviceGroupViewHolder.selection.setChecked(deviceGroup.isSelected());
+            deviceGroupViewHolder.folder.setImageDrawable(drawable);
+            deviceGroupViewHolder.name.setText(deviceGroup.getName());
+            deviceGroupViewHolder.port.setText(deviceGroup.getPortStatus());
 
             if (deviceGroupItemPopup == null) {
-                deviceGroupItemPopup = new PopupMenu(context, headerViewHolder.imageViewOptions);
+                deviceGroupItemPopup = new PopupMenu(context, deviceGroupViewHolder.imageViewOptions);
                 deviceGroupItemPopup.inflate(R.menu.group_item_popup_menu);
             }
 
@@ -187,7 +190,7 @@ public class ExpandableExampleAdapter
                 }
             });
 
-            headerViewHolder.imageViewOptions.setOnClickListener(new View.OnClickListener() {
+            deviceGroupViewHolder.imageViewOptions.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
                     deviceGroupItemPopup.show();
                 }
@@ -197,16 +200,17 @@ public class ExpandableExampleAdapter
             final Controller controller = (Controller) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
             final Drawable drawable = VectorDrawableCompat.create(context.getResources(),
                     controller.getImagePortsDrawableId(), null);
+
             singleDeviceViewHolder.selection.setChecked(controller.isSelected());
             singleDeviceViewHolder.imagePort.setImageDrawable(drawable);
             singleDeviceViewHolder.name.setText(controller.getControllerId());
             singleDeviceViewHolder.port.setText(controller.getPortName());
             singleDeviceViewHolder.switchCompat.setChecked(controller.isActive());
 
-            if (singleDeviceItemPopup == null) {
+//            if (singleDeviceItemPopup == null) {
                 singleDeviceItemPopup = new PopupMenu(context, singleDeviceViewHolder.imageViewOptions);
                 singleDeviceItemPopup.inflate(R.menu.device_item_popup_menu);
-            }
+//            }
 
             singleDeviceItemPopup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
@@ -217,6 +221,13 @@ public class ExpandableExampleAdapter
                             break;
                         case R.id.edit_name:
                             // TODO: 3/10/17 add edit name
+                            AlertDialog dialog = DialogFactory.getEditNameDialog(context, "Edit name", controller.getControllerId(),
+                                    new ChangeStringListener() {
+                                        @Override public void onChanged(String newString) {
+                                            controller.setControllerId(newString);
+                                        }
+                                    });
+                            dialog.show();
                             break;
                         case R.id.add_to_group:
                             // TODO: 3/10/17 add add to group

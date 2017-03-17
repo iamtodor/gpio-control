@@ -107,7 +107,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             dialogMessage = getString(R.string.change_password_message) + currentPassword;
         }
 
-        DialogFactory.getChangePasswordDialog(this, dialogTitle, dialogMessage, new ChangePasswordListener() {
+        DialogFactory.getChangePasswordDialog(this, dialogTitle, dialogMessage, new ChangeStringListener() {
             @Override public void onChanged(String newPassword) {
                 PreferencesImpl.getInstance().savePassword(newPassword);
             }

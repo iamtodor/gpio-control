@@ -22,7 +22,7 @@ import org.kaaproject.kaa.examples.gpiocontrol.model.mapper.AddControllerImageTe
 import org.kaaproject.kaa.examples.gpiocontrol.screen.addController.AddControllerFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.addController.ImagePortsDrawableListener;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseActivity;
-import org.kaaproject.kaa.examples.gpiocontrol.screen.main.ChangePasswordListener;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.main.ChangeStringListener;
 
 public class DialogFactory {
 
@@ -122,7 +122,7 @@ public class DialogFactory {
 
     public static AlertDialog getChangePasswordDialog(final Context context, final String title,
                                                       final String message,
-                                                      final ChangePasswordListener listener) {
+                                                      final ChangeStringListener listener) {
         final EditText editText = new EditText(context);
         final FrameLayout container = new FrameLayout(context);
         final FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
@@ -135,6 +135,50 @@ public class DialogFactory {
         container.addView(editText);
         final AlertDialog builder = new AlertDialog.Builder(context)
                 .setMessage(message)
+                .setTitle(title)
+                .setCancelable(false)
+                .setView(container)
+                .setNegativeButton(R.string.cancel, null)
+                .setPositiveButton(R.string.change_password, null)
+                .create();
+
+        builder.setOnShowListener(new DialogInterface.OnShowListener() {
+
+            @Override
+            public void onShow(final DialogInterface dialog) {
+
+                Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                button.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View view) {
+                        if (editText.getText().toString().isEmpty()) {
+                            editText.setError(context.getString(R.string.edit_text_cant_be_empty_error));
+                        } else {
+                            listener.onChanged(editText.getText().toString());
+                            dialog.dismiss();
+                        }
+                    }
+                });
+            }
+        });
+
+        return builder;
+    }
+
+    public static AlertDialog getEditNameDialog(final Context context, final String title, String currentName,
+                                                final ChangeStringListener listener) {
+        final EditText editText = new EditText(context);
+        final FrameLayout container = new FrameLayout(context);
+        final FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        float margin = ViewUtils.dpToPx(context, SIDE_MARGIN);
+        lp.setMargins(Math.round(margin), 0, Math.round(margin), 0);
+        editText.setLayoutParams(lp);
+        editText.setText(currentName);
+        container.addView(editText);
+        final AlertDialog builder = new AlertDialog.Builder(context)
                 .setTitle(title)
                 .setCancelable(false)
                 .setView(container)

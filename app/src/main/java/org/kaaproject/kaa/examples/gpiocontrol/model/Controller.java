@@ -19,6 +19,14 @@ public class Controller {
         this.id = id;
     }
 
+    public void setPortName(String portName) {
+        this.portName = portName;
+    }
+
+    public void setControllerId(String controllerId) {
+        this.controllerId = controllerId;
+    }
+
     public String getControllerId() {
         return controllerId;
     }
