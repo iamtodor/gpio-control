@@ -168,7 +168,15 @@ public class ExpandableExampleAdapter
                             // TODO: 3/10/17 add edit image
                             break;
                         case R.id.edit_name:
-                            // TODO: 3/10/17 add edit name
+                            ChangeFieldDialog dialog = DialogFactory.getChangeFieldDialog(context.getString(R.string.edit_name),
+                                    null, deviceGroup.getName(), context.getString(R.string.group_name),
+                                    context.getString(R.string.edit_name), new ChangeFieldListener() {
+                                        @Override public void onChanged(String newField) {
+                                            deviceGroup.getName();
+                                            notifyDataSetChanged();
+                                        }
+                                    });
+                            dialog.show(context.getSupportFragmentManager());
                             break;
                         case R.id.add_to_group:
                             // TODO: 3/10/17 add add to group
