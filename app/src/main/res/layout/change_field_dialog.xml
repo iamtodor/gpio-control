@@ -1,60 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:layout_margin="16dp"
-              android:gravity="center_vertical"
-              android:orientation="vertical">
+              android:orientation="vertical"
+              android:padding="16dp">
 
     <TextView
+        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:alpha="0.87"
-        android:text="@string/add_controller"
         android:textColor="@android:color/black"
-        android:textSize="20sp"/>
+        android:textSize="18sp"
+        tools:text="Title"/>
+
+    <TextView
+        android:id="@+id/message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:alpha="0.87"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        android:visibility="gone"
+        tools:text="Message"
+        tools:visibility="visible"/>
 
     <android.support.design.widget.TextInputLayout
+        android:id="@+id/text_input_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <EditText
-            android:id="@+id/controller_id"
+            android:id="@+id/edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/controller_id"/>
+            tools:text="Edit text"/>
 
     </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:id="@+id/ports_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/name_for_ports"/>
-
-    </android.support.design.widget.TextInputLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16sp"
-        android:alpha="0.87"
-        android:text="@string/image_for_ports"
-        android:textColor="@android:color/black"
-        android:textSize="20sp"/>
-
-    <ImageView
-        android:id="@+id/image_for_ports"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:alpha="0.54"
-        android:layout_marginTop="8dp"
-        app:srcCompat="@drawable/no_image_selected"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -71,10 +55,10 @@
             android:textColor="@android:color/darker_gray"/>
 
         <Button
-            android:id="@+id/add"
+            android:id="@+id/submit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/add_controller"
+            android:text="@string/submit"
             android:textColor="@android:color/white"
             android:theme="@style/ButtonStyle"/>
 

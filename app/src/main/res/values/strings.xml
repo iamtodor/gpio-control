@@ -54,5 +54,6 @@
     <string name="remove_from_group">Remove from group</string>
     <string name="duplicate">Duplicate</string>
     <string name="ungroup">Ungroup</string>
+    <string name="submit">Submit</string>
 
 </resources>

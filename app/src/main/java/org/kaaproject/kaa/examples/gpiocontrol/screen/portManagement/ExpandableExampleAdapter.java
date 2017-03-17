@@ -4,7 +4,6 @@ package org.kaaproject.kaa.examples.gpiocontrol.screen.portManagement;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.graphics.drawable.VectorDrawableCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
@@ -25,7 +24,9 @@ import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
 import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroup;
 import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroupHeaderPinManagement;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
-import org.kaaproject.kaa.examples.gpiocontrol.screen.main.ChangeStringListener;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChangeFieldDialog;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.main.ChangeFieldListener;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.main.MainActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
 
 import java.util.ArrayList;
@@ -43,12 +44,12 @@ public class ExpandableExampleAdapter
 
     private static final int SINGLE_DEVICE_ITEM_VIEW_TYPE = 4;
 
-    private final Context context;
+    private final MainActivity context;
     private final List<Header> deviceGroupHeaderList = new ArrayList<>();
     private CompoundButton.OnCheckedChangeListener onSelectedGroupListener;
 
     ExpandableExampleAdapter(Context context, List<Header> deviceGroupHeaderList) {
-        this.context = context;
+        this.context = (MainActivity) context;
         // ExpandableItemAdapter requires stable ID, and also
         // have to implement the getGroupItemId()/getChildItemId() methods appropriately.
         setHasStableIds(true);
@@ -215,13 +216,14 @@ public class ExpandableExampleAdapter
                             break;
                         case R.id.edit_name:
                             // TODO: 3/10/17 add edit name
-                            AlertDialog dialog = DialogFactory.getEditNameDialog(context, "Edit name", controller.getControllerId(),
-                                    new ChangeStringListener() {
-                                        @Override public void onChanged(String newString) {
-                                            controller.setControllerId(newString);
+                            ChangeFieldDialog dialog = DialogFactory.getChangeFieldDialog(context.getString(R.string.edit_name),
+                                    null, controller.getControllerId(), context.getString(R.string.controller_id), new ChangeFieldListener() {
+                                        @Override public void onChanged(String newField) {
+                                            controller.setControllerId(newField);
+                                            notifyDataSetChanged();
                                         }
                                     });
-                            dialog.show();
+                            dialog.show(context.getSupportFragmentManager());
                             break;
                         case R.id.add_to_group:
                             // TODO: 3/10/17 add add to group
