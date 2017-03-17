@@ -19,8 +19,9 @@ import android.widget.TextView;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChangeFieldDialog;
-import org.kaaproject.kaa.examples.gpiocontrol.screen.main.ChangePasswordListener;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.main.ChangeFieldListener;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.main.MainActivity;
+import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,17 +90,13 @@ class PortManagementAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                             // TODO: 3/10/17 add edit image
                             break;
                         case R.id.edit_name:
-                            ChangeFieldDialog dialog = new ChangeFieldDialog()
-                                    .setTitle(context.getString(R.string.edit_name))
-                                    .setEditText(controller.getControllerId())
-                                    .setHint(context.getString(R.string.controller_id))
-                                    .setChangePasswordListener(new ChangePasswordListener() {
-                                        @Override public void onChanged(String newPassword) {
-                                            controller.setControllerId(newPassword);
+                            ChangeFieldDialog dialog = DialogFactory.getChangeFieldDialog(context.getString(R.string.edit_name),
+                                    null, controller.getControllerId(), context.getString(R.string.controller_id), new ChangeFieldListener() {
+                                        @Override public void onChanged(String newField) {
+                                            controller.setControllerId(newField);
                                         }
                                     });
                             dialog.show(context.getSupportFragmentManager());
-
                             break;
                         case R.id.add_to_group:
                             // TODO: 3/10/17 add add to group

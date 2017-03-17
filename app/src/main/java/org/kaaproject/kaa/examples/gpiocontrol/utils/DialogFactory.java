@@ -22,7 +22,8 @@ import org.kaaproject.kaa.examples.gpiocontrol.model.mapper.AddControllerImageTe
 import org.kaaproject.kaa.examples.gpiocontrol.screen.addController.AddControllerFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.addController.ImagePortsDrawableListener;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseActivity;
-import org.kaaproject.kaa.examples.gpiocontrol.screen.main.ChangePasswordListener;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChangeFieldDialog;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.main.ChangeFieldListener;
 
 public class DialogFactory {
 
@@ -122,7 +123,7 @@ public class DialogFactory {
 
     public static AlertDialog getChangePasswordDialog(final Context context, final String title,
                                                       final String message,
-                                                      final ChangePasswordListener listener) {
+                                                      final ChangeFieldListener listener) {
         final EditText editText = new EditText(context);
         final FrameLayout container = new FrameLayout(context);
         final FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
@@ -165,4 +166,15 @@ public class DialogFactory {
 
         return builder;
     }
+
+    public static ChangeFieldDialog getChangeFieldDialog(String title, String message, String editText,
+                                                         String hint, ChangeFieldListener changeFieldListener) {
+        return new ChangeFieldDialog()
+                .setTitle(title)
+                .setMessage(message)
+                .setEditText(editText)
+                .setHint(hint)
+                .setChangeFieldListener(changeFieldListener);
+    }
+
 }

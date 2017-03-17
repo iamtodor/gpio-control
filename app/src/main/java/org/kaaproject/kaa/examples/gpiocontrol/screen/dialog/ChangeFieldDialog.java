@@ -13,7 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
-import org.kaaproject.kaa.examples.gpiocontrol.screen.main.ChangePasswordListener;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.main.ChangeFieldListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,7 +21,7 @@ import butterknife.OnClick;
 
 public class ChangeFieldDialog extends DialogFragment {
 
-    private ChangePasswordListener changePasswordListener;
+    private ChangeFieldListener changeFieldListener;
     private String titleValue;
     private String messageValue;
     private String editTextValue;
@@ -47,8 +47,8 @@ public class ChangeFieldDialog extends DialogFragment {
         return rootView;
     }
 
-    public ChangeFieldDialog setChangePasswordListener(ChangePasswordListener changePasswordListener) {
-        this.changePasswordListener = changePasswordListener;
+    public ChangeFieldDialog setChangeFieldListener(ChangeFieldListener changeFieldListener) {
+        this.changeFieldListener = changeFieldListener;
         return this;
     }
 
@@ -84,7 +84,7 @@ public class ChangeFieldDialog extends DialogFragment {
     @OnClick(R.id.submit)
     public void submit() {
         if (!TextUtils.isEmpty(editText.getText().toString())) {
-            changePasswordListener.onChanged(editText.getText().toString());
+            changeFieldListener.onChanged(editText.getText().toString());
         } else {
             editText.setError(getContext().getString(R.string.edit_text_cant_be_empty_error));
         }
