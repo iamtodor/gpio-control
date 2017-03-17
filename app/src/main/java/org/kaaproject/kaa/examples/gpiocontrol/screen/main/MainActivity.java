@@ -110,7 +110,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
 
         ChangeFieldDialog dialog = DialogFactory.getChangeFieldDialog(dialogTitle,
-                dialogMessage, null, getString(R.string.input_password), new ChangeFieldListener() {
+                dialogMessage, null, getString(R.string.input_password), getString(R.string.log_out), new ChangeFieldListener() {
                     @Override public void onChanged(String newField) {
                         PreferencesImpl.getInstance().savePassword(newField);
                     }
@@ -119,11 +119,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     private void showLogoutDialog() {
-        DialogFactory.getConfirmationDialog(this, getString(R.string.log_out_question), new DialogInterface.OnClickListener() {
-            @Override public void onClick(DialogInterface dialog, int which) {
-                PreferencesImpl.getInstance().cleanUp();
-                showSignInActivity();
-            }
-        }).show();
+        DialogFactory.getConfirmationDialog(this, getString(R.string.log_out_question), getString(R.string.log_out),
+                new DialogInterface.OnClickListener() {
+                    @Override public void onClick(DialogInterface dialog, int which) {
+                        PreferencesImpl.getInstance().cleanUp();
+                        showSignInActivity();
+                    }
+                }).show();
     }
 }

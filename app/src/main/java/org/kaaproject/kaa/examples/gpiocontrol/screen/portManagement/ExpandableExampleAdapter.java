@@ -217,7 +217,8 @@ public class ExpandableExampleAdapter
                         case R.id.edit_name:
                             // TODO: 3/10/17 add edit name
                             ChangeFieldDialog dialog = DialogFactory.getChangeFieldDialog(context.getString(R.string.edit_name),
-                                    null, controller.getControllerId(), context.getString(R.string.controller_id), new ChangeFieldListener() {
+                                    null, controller.getControllerId(), context.getString(R.string.controller_id),
+                                    context.getString(R.string.edit_name), new ChangeFieldListener() {
                                         @Override public void onChanged(String newField) {
                                             controller.setControllerId(newField);
                                             notifyDataSetChanged();

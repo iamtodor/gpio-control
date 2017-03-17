@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -26,11 +27,13 @@ public class ChangeFieldDialog extends DialogFragment {
     private String messageValue;
     private String editTextValue;
     private String hint;
+    private String action;
 
     @BindView(R.id.title) TextView title;
     @BindView(R.id.message) TextView message;
     @BindView(R.id.edit_text) EditText editText;
     @BindView(R.id.text_input_layout) TextInputLayout textInputLayout;
+    @BindView(R.id.submit) Button button;
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.change_field_dialog, container, false);
@@ -43,6 +46,7 @@ public class ChangeFieldDialog extends DialogFragment {
         }
         editText.setText(editTextValue);
         textInputLayout.setHint(hint);
+        button.setText(action);
 
         return rootView;
     }
@@ -69,6 +73,11 @@ public class ChangeFieldDialog extends DialogFragment {
 
     public ChangeFieldDialog setHint(String hint) {
         this.hint = hint;
+        return this;
+    }
+
+    public ChangeFieldDialog setAction(String action) {
+        this.action = action;
         return this;
     }
 

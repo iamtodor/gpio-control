@@ -105,21 +105,22 @@ public class DialogFactory {
         window.setOnClickListener(onClickListener);
     }
 
-    public static AlertDialog.Builder getConfirmationDialog(final Context context, final String message,
+    public static AlertDialog.Builder getConfirmationDialog(final Context context, final String message, String positiveButtonText,
                                                             final DialogInterface.OnClickListener listener) {
         return new AlertDialog.Builder(context)
                 .setMessage(message)
-                .setPositiveButton(R.string.log_out, listener)
+                .setPositiveButton(positiveButtonText, listener)
                 .setNegativeButton(R.string.cancel, null);
     }
 
     public static ChangeFieldDialog getChangeFieldDialog(String title, String message, String editText,
-                                                         String hint, ChangeFieldListener changeFieldListener) {
+                                                         String hint, String action, ChangeFieldListener changeFieldListener) {
         return new ChangeFieldDialog()
                 .setTitle(title)
                 .setMessage(message)
                 .setEditText(editText)
                 .setHint(hint)
+                .setAction(action)
                 .setChangeFieldListener(changeFieldListener);
     }
 }
