@@ -1,11 +1,11 @@
 package org.kaaproject.kaa.examples.gpiocontrol.utils;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -57,8 +57,7 @@ public class DialogFactory {
         });
     }
 
-    public static void showChooseTemplateImageDialog(final BaseActivity activity,
-                                                     final ImageView imageForPorts,
+    public static void showChooseTemplateImageDialog(final Activity activity,
                                                      final ImagePortsDrawableListener listener) {
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity);
         final View view = LayoutInflater.from(activity).inflate(R.layout.choose_template_image_dialog, null, false);
@@ -85,8 +84,6 @@ public class DialogFactory {
                 int drawableId = AddControllerImageTemplateMapper.DeviceItem
                         .getDeviceItemById(view.getId()).getDrawableId();
                 listener.onImageClick(drawableId);
-                Drawable drawable = VectorDrawableCompat.create(activity.getResources(), drawableId, null);
-                imageForPorts.setImageDrawable(drawable);
                 dialog.dismiss();
             }
         };

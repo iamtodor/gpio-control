@@ -148,12 +148,12 @@ public class PortManagementFragment extends BaseListFragment implements Compound
 
     private void setSelected(boolean isSelected) {
         for (Header deviceGroupHeader : deviceGroupHeaderList) {
-            if(deviceGroupHeader instanceof DeviceHeaderPinManager) {
+            if (deviceGroupHeader instanceof DeviceHeaderPinManager) {
                 for (Object object : deviceGroupHeader.getControllerList()) {
                     Controller controller = (Controller) object;
                     controller.setSelected(isSelected);
                 }
-            } else if(deviceGroupHeader instanceof DeviceGroupHeaderPinManagement) {
+            } else if (deviceGroupHeader instanceof DeviceGroupHeaderPinManagement) {
                 for (Object object : deviceGroupHeader.getControllerList()) {
                     DeviceGroup deviceGroup = (DeviceGroup) object;
                     deviceGroup.setSelected(isSelected);

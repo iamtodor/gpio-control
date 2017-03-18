@@ -3,6 +3,7 @@ package org.kaaproject.kaa.examples.gpiocontrol.screen.portManagement;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.SwitchCompat;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import com.h6ah4i.android.widget.advrecyclerview.expandable.ExpandableItemConstants;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
+import com.squareup.picasso.Picasso;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
@@ -25,6 +27,8 @@ import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroup;
 import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroupHeaderPinManagement;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChangeFieldDialog;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChooseImageDialog;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChooseImageListener;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.main.MainActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.ChangeFieldListener;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
@@ -153,7 +157,7 @@ public class ExpandableExampleAdapter
                     deviceGroup.getIconId(), null);
 
             deviceGroupViewHolder.selection.setChecked(deviceGroup.isSelected());
-            deviceGroupViewHolder.folder.setImageDrawable(drawable);
+            deviceGroupViewHolder.icon.setImageDrawable(drawable);
             deviceGroupViewHolder.name.setText(deviceGroup.getName());
             deviceGroupViewHolder.port.setText(deviceGroup.getPortStatus());
 
@@ -165,7 +169,21 @@ public class ExpandableExampleAdapter
                 public boolean onMenuItemClick(MenuItem item) {
                     switch (item.getItemId()) {
                         case R.id.edit_image:
-                            // TODO: 3/10/17 add edit image
+                            ChooseImageDialog chooseImageDialog = new ChooseImageDialog().setChooseImageListener(new ChooseImageListener() {
+                                @Override public void onImageChosen(Uri path) {
+                                    Picasso.with(context)
+                                            .load(path)
+                                            .fit()
+                                            .centerCrop()
+                                            .into(deviceGroupViewHolder.icon);
+                                }
+
+                                @Override public void onImageChosen(int drawableId) {
+                                    Drawable drawable = VectorDrawableCompat.create(context.getResources(), drawableId, null);
+                                    deviceGroupViewHolder.icon.setImageDrawable(drawable);
+                                }
+                            });
+                            chooseImageDialog.show(context.getSupportFragmentManager());
                             break;
                         case R.id.edit_name:
                             ChangeFieldDialog dialog = DialogFactory.getChangeFieldDialog(context.getString(R.string.edit_name),
@@ -220,7 +238,21 @@ public class ExpandableExampleAdapter
                 public boolean onMenuItemClick(MenuItem item) {
                     switch (item.getItemId()) {
                         case R.id.edit_image:
-                            // TODO: 3/10/17 add edit image
+                            ChooseImageDialog chooseImageDialog = new ChooseImageDialog().setChooseImageListener(new ChooseImageListener() {
+                                @Override public void onImageChosen(Uri path) {
+                                    Picasso.with(context)
+                                            .load(path)
+                                            .fit()
+                                            .centerCrop()
+                                            .into(singleDeviceViewHolder.imagePort);
+                                }
+
+                                @Override public void onImageChosen(int drawableId) {
+                                    Drawable drawable = VectorDrawableCompat.create(context.getResources(), drawableId, null);
+                                    singleDeviceViewHolder.imagePort.setImageDrawable(drawable);
+                                }
+                            });
+                            chooseImageDialog.show(context.getSupportFragmentManager());
                             break;
                         case R.id.edit_name:
                             // TODO: 3/10/17 add edit name
@@ -285,7 +317,7 @@ public class ExpandableExampleAdapter
     static class DeviceGroupItemViewHolder extends BaseItemViewHolder implements View.OnClickListener {
 
         @BindView(R.id.selection) CheckBox selection;
-        @BindView(R.id.icon) ImageView folder;
+        @BindView(R.id.icon) ImageView icon;
         @BindView(R.id.name) TextView name;
         @BindView(R.id.port_status) TextView port;
         @BindView(R.id.menu) ImageView imageViewOptions;
