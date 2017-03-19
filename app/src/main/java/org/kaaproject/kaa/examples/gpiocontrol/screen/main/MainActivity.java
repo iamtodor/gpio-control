@@ -110,7 +110,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
 
         ChangeFieldDialog dialog = DialogFactory.getChangeFieldDialog(dialogTitle,
-                dialogMessage, null, getString(R.string.input_password), getString(R.string.log_out), new ChangeFieldListener() {
+                dialogMessage, null, getString(R.string.input_password), getString(R.string.submit), new ChangeFieldListener() {
                     @Override public void onChanged(String newField) {
                         PreferencesImpl.getInstance().savePassword(newField);
                     }

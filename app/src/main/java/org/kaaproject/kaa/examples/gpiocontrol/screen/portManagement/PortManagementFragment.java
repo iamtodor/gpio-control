@@ -26,7 +26,7 @@ import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroupHeaderPinManagem
 import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceHeaderPinManager;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseListFragment;
-import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.AddControllerOrGroupDialog;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.Utils;
 
 import java.util.List;
@@ -124,7 +124,8 @@ public class PortManagementFragment extends BaseListFragment implements Compound
 
     @OnClick(R.id.fab)
     public void onFabClick() {
-        DialogFactory.showAddDeviceDialog(getBaseActivity());
+        AddControllerOrGroupDialog dialog = new AddControllerOrGroupDialog();
+        dialog.show(getBaseActivity().getSupportFragmentManager());
     }
 
     private void showNoDevices() {

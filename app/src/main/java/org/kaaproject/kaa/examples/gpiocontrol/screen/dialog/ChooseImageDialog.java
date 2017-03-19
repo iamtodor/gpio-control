@@ -7,8 +7,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +19,7 @@ import org.kaaproject.kaa.examples.gpiocontrol.utils.Utils;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ChooseImageDialog extends DialogFragment {
+public class ChooseImageDialog extends BaseDialog {
 
     private static final int REQUEST_IMAGE_PICK = 200;
     private static final int REQUEST_IMAGE_CAPTURE = 201;
@@ -33,10 +31,6 @@ public class ChooseImageDialog extends DialogFragment {
         ButterKnife.bind(this, rootView);
 
         return rootView;
-    }
-
-    public void show(FragmentManager manager) {
-        show(manager, getClass().getSimpleName());
     }
 
     @OnClick(R.id.templates)

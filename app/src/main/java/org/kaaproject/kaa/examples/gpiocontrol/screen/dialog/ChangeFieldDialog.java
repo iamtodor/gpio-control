@@ -3,8 +3,6 @@ package org.kaaproject.kaa.examples.gpiocontrol.screen.dialog;
 
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +18,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ChangeFieldDialog extends DialogFragment {
+public class ChangeFieldDialog extends BaseDialog {
 
     private ChangeFieldListener changeFieldListener;
     private String titleValue;
@@ -79,10 +77,6 @@ public class ChangeFieldDialog extends DialogFragment {
     public ChangeFieldDialog setAction(String action) {
         this.action = action;
         return this;
-    }
-
-    public void show(FragmentManager manager) {
-        show(manager, getClass().getSimpleName());
     }
 
     @OnClick(R.id.cancel)
