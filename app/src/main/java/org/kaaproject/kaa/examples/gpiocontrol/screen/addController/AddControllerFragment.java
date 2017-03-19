@@ -20,6 +20,7 @@ import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChooseImageDialog;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChooseImageListener;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.portManagement.AddItemListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,6 +31,7 @@ public class AddControllerFragment extends BaseFragment implements ChooseImageLi
     @BindView(R.id.controller_id) protected EditText controllerId;
     @BindView(R.id.ports_name) protected EditText portsName;
     @BindView(R.id.image_for_ports) protected ImageView imageForPorts;
+    private AddItemListener listener;
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.add_controller_fragment, container, false);
@@ -65,7 +67,12 @@ public class AddControllerFragment extends BaseFragment implements ChooseImageLi
         }
     }
 
+    public void setAddItemListener(AddItemListener listener) {
+        this.listener = listener;
+    }
+
     private void addController() {
+        listener.onItemAdded();
 //        Controller controller = new Controller(controllerId.getText().toString(),
 //                portsName.getText().toString(), imagePortsDrawableId, false, false);
     }

@@ -35,7 +35,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class PortManagementFragment extends BaseListFragment implements CompoundButton.OnCheckedChangeListener, RecyclerViewExpandableItemManager.OnGroupExpandListener, RecyclerViewExpandableItemManager.OnGroupCollapseListener {
+public class PortManagementFragment extends BaseListFragment implements CompoundButton.OnCheckedChangeListener, RecyclerViewExpandableItemManager.OnGroupExpandListener, RecyclerViewExpandableItemManager.OnGroupCollapseListener, AddItemListener {
 
     private static final String SAVED_STATE_EXPANDABLE_ITEM_MANAGER = "RecyclerViewExpandableItemManager";
 
@@ -124,7 +124,7 @@ public class PortManagementFragment extends BaseListFragment implements Compound
 
     @OnClick(R.id.fab)
     public void onFabClick() {
-        AddControllerOrGroupDialog dialog = new AddControllerOrGroupDialog();
+        AddControllerOrGroupDialog dialog = new AddControllerOrGroupDialog().setAddItemListener(this);
         dialog.show(getBaseActivity().getSupportFragmentManager());
     }
 
@@ -168,6 +168,10 @@ public class PortManagementFragment extends BaseListFragment implements Compound
     }
 
     @Override public void onGroupCollapse(int groupPosition, boolean fromUser, Object payload) {
+
+    }
+
+    @Override public void onItemAdded() {
 
     }
 }
