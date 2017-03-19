@@ -35,7 +35,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class PortManagementFragment extends BaseListFragment implements CompoundButton.OnCheckedChangeListener, RecyclerViewExpandableItemManager.OnGroupExpandListener, RecyclerViewExpandableItemManager.OnGroupCollapseListener, AddItemListener {
+public class PortManagementFragment extends BaseListFragment implements
+        RecyclerViewExpandableItemManager.OnGroupExpandListener,
+        RecyclerViewExpandableItemManager.OnGroupCollapseListener, AddItemListener {
 
     private static final String SAVED_STATE_EXPANDABLE_ITEM_MANAGER = "RecyclerViewExpandableItemManager";
 
@@ -65,7 +67,32 @@ public class PortManagementFragment extends BaseListFragment implements Compound
         //adapter
         deviceGroupHeaderList = Utils.getMockedHeaderList();
         myItemAdapter = new ExpandableExampleAdapter(getContext(), deviceGroupHeaderList);
-        myItemAdapter.setOnSelectedHeaderListener(this);
+        myItemAdapter.setOnSelectedDeviceListListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                for (Header deviceGroupHeader : deviceGroupHeaderList) {
+                    if (deviceGroupHeader instanceof DeviceHeaderPinManager) {
+                        for (Object object : deviceGroupHeader.getControllerList()) {
+                            Controller controller = (Controller) object;
+                            controller.setSelected(isChecked);
+                        }
+                    }
+                }
+                myItemAdapter.updateAdapter(deviceGroupHeaderList);
+            }
+        });
+        myItemAdapter.setOnSelectedGroupListListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                for (Header deviceGroupHeader : deviceGroupHeaderList) {
+                    if (deviceGroupHeader instanceof DeviceGroupHeaderPinManagement) {
+                        for (Object object : deviceGroupHeader.getControllerList()) {
+                            DeviceGroup deviceGroup = (DeviceGroup) object;
+                            deviceGroup.setSelected(isChecked);
+                        }
+                    }
+                }
+                myItemAdapter.updateAdapter(deviceGroupHeaderList);
+            }
+        });
 
         // wrap for expanding
         mWrappedAdapter = recyclerViewExpandableItemManager.createWrappedAdapter(myItemAdapter);
@@ -136,31 +163,6 @@ public class PortManagementFragment extends BaseListFragment implements Compound
     private void showDevices() {
         recyclerView.setVisibility(View.VISIBLE);
         noDeviceMessage.setVisibility(View.GONE);
-    }
-
-    @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if (isChecked) {
-            setSelected(true);
-        } else {
-            setSelected(false);
-        }
-        myItemAdapter.updateAdapter(deviceGroupHeaderList);
-    }
-
-    private void setSelected(boolean isSelected) {
-        for (Header deviceGroupHeader : deviceGroupHeaderList) {
-            if (deviceGroupHeader instanceof DeviceHeaderPinManager) {
-                for (Object object : deviceGroupHeader.getControllerList()) {
-                    Controller controller = (Controller) object;
-                    controller.setSelected(isSelected);
-                }
-            } else if (deviceGroupHeader instanceof DeviceGroupHeaderPinManagement) {
-                for (Object object : deviceGroupHeader.getControllerList()) {
-                    DeviceGroup deviceGroup = (DeviceGroup) object;
-                    deviceGroup.setSelected(isSelected);
-                }
-            }
-        }
     }
 
     @Override public void onGroupExpand(int groupPosition, boolean fromUser, Object payload) {

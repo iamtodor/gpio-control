@@ -43,14 +43,16 @@ public class ExpandableExampleAdapter
         extends AbstractExpandableItemAdapter<ExpandableExampleAdapter.BaseHeaderViewHolder, ExpandableExampleAdapter.BaseItemViewHolder> {
 
     private static final String TAG = ExpandableExampleAdapter.class.getSimpleName();
-    private static final int HEADER_VIEW_TYPE = 1;
-    private static final int DEVICE_GROUP_ITEM_VIEW_TYPE = 2;
+    private static final int DEVICE_GROUP_HEADER_VIEW_TYPE = 1;
+    private static final int DEVICE_LIST_HEADER_VIEW_TYPE = 2;
 
+    private static final int DEVICE_GROUP_ITEM_VIEW_TYPE = 3;
     private static final int SINGLE_DEVICE_ITEM_VIEW_TYPE = 4;
 
     private final MainActivity context;
     private final List<Header> deviceGroupHeaderList = new ArrayList<>();
-    private CompoundButton.OnCheckedChangeListener onSelectedGroupListener;
+    private CompoundButton.OnCheckedChangeListener onSelectedDeviceListListener;
+    private CompoundButton.OnCheckedChangeListener onSelectedGroupListListener;
 
     ExpandableExampleAdapter(Context context, List<Header> deviceGroupHeaderList) {
         this.context = (MainActivity) context;
@@ -66,8 +68,12 @@ public class ExpandableExampleAdapter
         notifyDataSetChanged();
     }
 
-    void setOnSelectedHeaderListener(CompoundButton.OnCheckedChangeListener onSelectedGroupListener) {
-        this.onSelectedGroupListener = onSelectedGroupListener;
+    void setOnSelectedDeviceListListener(CompoundButton.OnCheckedChangeListener onSelectedGroupListener) {
+        this.onSelectedDeviceListListener = onSelectedGroupListener;
+    }
+
+    void setOnSelectedGroupListListener(CompoundButton.OnCheckedChangeListener onSelectedGroupListListener) {
+        this.onSelectedGroupListListener = onSelectedGroupListListener;
     }
 
     @Override
@@ -98,7 +104,10 @@ public class ExpandableExampleAdapter
 
     @Override
     public int getGroupItemViewType(int groupPosition) {
-        return HEADER_VIEW_TYPE;
+        if (deviceGroupHeaderList.get(groupPosition) instanceof DeviceGroupHeaderPinManagement) {
+            return DEVICE_GROUP_HEADER_VIEW_TYPE;
+        } else
+            return DEVICE_LIST_HEADER_VIEW_TYPE;
     }
 
     @Override
@@ -112,8 +121,14 @@ public class ExpandableExampleAdapter
     @Override
     public BaseHeaderViewHolder onCreateGroupViewHolder(ViewGroup parent, int viewType) {
         final LayoutInflater inflater = LayoutInflater.from(context);
-        final View v = inflater.inflate(R.layout.device_group_header_port_manager, parent, false);
-        return new BaseHeaderViewHolder(v, onSelectedGroupListener);
+        if (viewType == DEVICE_GROUP_HEADER_VIEW_TYPE) {
+            final View v = inflater.inflate(R.layout.device_group_header_port_manager, parent, false);
+            return new DeviceGroupHeaderViewHolder(v, onSelectedGroupListListener);
+        } else if (viewType == DEVICE_LIST_HEADER_VIEW_TYPE) {
+            final View v = inflater.inflate(R.layout.single_device_header_port_manager, parent, false);
+            return new DeviceListHeaderViewHolder(v, onSelectedDeviceListListener);
+        }
+        throw new RuntimeException("No match for onCreateGroupViewHolder" + viewType + ".");
     }
 
     @Override
@@ -337,12 +352,12 @@ public class ExpandableExampleAdapter
         }
     }
 
-    static class SingleDeviceHeaderViewHolder extends BaseHeaderViewHolder implements View.OnClickListener {
+    static class DeviceListHeaderViewHolder extends BaseHeaderViewHolder implements View.OnClickListener {
         @BindView(R.id.selection) CheckBox selection;
         @BindView(R.id.name) TextView name;
         @BindView(R.id.dropped_arrow) ImageView droppedArrow;
 
-        SingleDeviceHeaderViewHolder(View itemView, CompoundButton.OnCheckedChangeListener onSelectedGroupListener) {
+        DeviceListHeaderViewHolder(View itemView, CompoundButton.OnCheckedChangeListener onSelectedGroupListener) {
             super(itemView, onSelectedGroupListener);
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);

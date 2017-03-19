@@ -100,7 +100,7 @@ public class Utils {
         List<DeviceGroup> deviceGroupList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             deviceGroupList.add(new DeviceGroup("Group " + i, false, R.drawable.empty_group_icon,
-                    "3/12 selected", i));
+                    "3/12 selected", i, null));
         }
         return deviceGroupList;
     }
