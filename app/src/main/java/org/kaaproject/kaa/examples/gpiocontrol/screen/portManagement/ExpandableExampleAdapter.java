@@ -53,6 +53,10 @@ public class ExpandableExampleAdapter
     private final List<Header> deviceGroupHeaderList = new ArrayList<>();
     private CompoundButton.OnCheckedChangeListener onSelectedDeviceListListener;
     private CompoundButton.OnCheckedChangeListener onSelectedGroupListListener;
+    private CompoundButton.OnCheckedChangeListener onSelectedDeviceItemListener;
+    private CompoundButton.OnCheckedChangeListener onSelectedGroupItemListener;
+
+    private OnCheckedChangeItemListener onCheckedChangeItemListener;
 
     ExpandableExampleAdapter(Context context, List<Header> deviceGroupHeaderList) {
         this.context = (MainActivity) context;
@@ -68,12 +72,24 @@ public class ExpandableExampleAdapter
         notifyDataSetChanged();
     }
 
-    void setOnSelectedDeviceListListener(CompoundButton.OnCheckedChangeListener onSelectedGroupListener) {
-        this.onSelectedDeviceListListener = onSelectedGroupListener;
-    }
+//    void setOnSelectedDeviceListListener(CompoundButton.OnCheckedChangeListener onSelectedGroupListener) {
+//        this.onSelectedDeviceListListener = onSelectedGroupListener;
+//    }
 
     void setOnSelectedGroupListListener(CompoundButton.OnCheckedChangeListener onSelectedGroupListListener) {
         this.onSelectedGroupListListener = onSelectedGroupListListener;
+    }
+
+//    void setOnSelectedGroupItemListener(CompoundButton.OnCheckedChangeListener onSelectedGroupItemListener) {
+//        this.onSelectedGroupItemListener = onSelectedGroupItemListener;
+//    }
+
+//    void setOnSelectedDeviceItemListener(CompoundButton.OnCheckedChangeListener onSelectedDeviceItemListener) {
+//        this.onSelectedDeviceItemListener = onSelectedDeviceItemListener;
+//    }
+
+    void setOnCheckedChangeItemListener(OnCheckedChangeItemListener onCheckedChangeItemListener) {
+        this.onCheckedChangeItemListener = onCheckedChangeItemListener;
     }
 
     @Override
@@ -136,10 +152,10 @@ public class ExpandableExampleAdapter
         final LayoutInflater inflater = LayoutInflater.from(context);
         if (viewType == DEVICE_GROUP_ITEM_VIEW_TYPE) {
             final View v = inflater.inflate(R.layout.device_group_item_port_manager, parent, false);
-            return new DeviceGroupItemViewHolder(v);
+            return new DeviceGroupItemViewHolder(v, onSelectedGroupItemListener);
         } else if (viewType == SINGLE_DEVICE_ITEM_VIEW_TYPE) {
             final View v = inflater.inflate(R.layout.single_device_item_port_manager, parent, false);
-            return new SingleDeviceItemViewHolder(v);
+            return new SingleDeviceItemViewHolder(v, onSelectedDeviceItemListener);
         }
         throw new RuntimeException("No match for onCreateChildViewHolder" + viewType + ".");
     }
@@ -175,6 +191,12 @@ public class ExpandableExampleAdapter
             deviceGroupViewHolder.icon.setImageDrawable(drawable);
             deviceGroupViewHolder.name.setText(deviceGroup.getName());
             deviceGroupViewHolder.port.setText(deviceGroup.getPortStatus());
+
+            deviceGroupViewHolder.selection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    onCheckedChangeItemListener.onChange(isChecked, deviceGroup);
+                }
+            });
 
             final PopupMenu deviceGroupItemPopup = new PopupMenu(context, deviceGroupViewHolder.imageViewOptions);
             deviceGroupItemPopup.inflate(R.menu.group_item_popup_menu);
@@ -336,17 +358,18 @@ public class ExpandableExampleAdapter
         @BindView(R.id.port_status) TextView port;
         @BindView(R.id.menu) ImageView imageViewOptions;
 
-        DeviceGroupItemViewHolder(View itemView) {
+        DeviceGroupItemViewHolder(View itemView, CompoundButton.OnCheckedChangeListener onSelectedGroupItemListener) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
+            selection.setOnCheckedChangeListener(onSelectedGroupItemListener);
         }
 
         @Override public void onClick(View view) {
             if (view.getId() == R.id.menu) {
 
             } else {
-                selection.setChecked(!selection.isChecked());
+//                selection.setChecked(!selection.isChecked());
             }
         }
     }
@@ -382,11 +405,12 @@ public class ExpandableExampleAdapter
         @BindView(R.id.switch_active) SwitchCompat switchCompat;
         @BindView(R.id.menu) ImageView imageViewOptions;
 
-        SingleDeviceItemViewHolder(View itemView) {
+        SingleDeviceItemViewHolder(View itemView, CompoundButton.OnCheckedChangeListener onSelectedDeviceItemListener) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
             imageViewOptions.setOnClickListener(this);
+            selection.setOnCheckedChangeListener(onSelectedDeviceItemListener);
         }
 
         @Override public void onClick(View view) {
