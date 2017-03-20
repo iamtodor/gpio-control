@@ -151,6 +151,7 @@ public class ExpandableExampleAdapter
             final Header item = deviceGroupHeaderList.get(groupPosition);
             holder.name.setText(item.getName());
             holder.droppedArrow.setClickable(true);
+            holder.selection.setChecked(item.isSelected());
             holder.selection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     for (Header deviceGroupHeader : deviceGroupHeaderList) {
@@ -160,10 +161,10 @@ public class ExpandableExampleAdapter
                                 DeviceGroup deviceGroup = (DeviceGroup) object;
                                 deviceGroup.setSelected(isChecked);
                             }
+//                            notifyDataSetChanged();
                             onCheckedGroupHeaderListener.onChange(isChecked, (GroupHeaderPinManagement) deviceGroupHeader);
                         }
                     }
-                    notifyDataSetChanged();
                 }
             });
 
@@ -181,6 +182,7 @@ public class ExpandableExampleAdapter
             final Header item = deviceGroupHeaderList.get(groupPosition);
             holder.name.setText(item.getName());
             holder.droppedArrow.setClickable(true);
+            holder.selection.setChecked(item.isSelected());
             holder.selection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 

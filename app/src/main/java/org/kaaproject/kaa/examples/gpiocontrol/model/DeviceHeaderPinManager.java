@@ -41,7 +41,7 @@ public class DeviceHeaderPinManager<Controller> extends Header {
     }
 
     @Override public boolean isSelected() {
-        return false;
+        return selected;
     }
 
     @Override public int getChildSize() {

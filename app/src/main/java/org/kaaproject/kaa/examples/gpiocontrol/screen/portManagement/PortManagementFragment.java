@@ -10,6 +10,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,9 @@ import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandab
 import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
+import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
 import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroup;
+import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceHeaderPinManager;
 import org.kaaproject.kaa.examples.gpiocontrol.model.GroupHeaderPinManagement;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseListFragment;
@@ -235,9 +238,24 @@ public class PortManagementFragment extends BaseListFragment implements
     @OnClick(R.id.cancel_selection)
     public void cancelSelection() {
         for (Header header : deviceGroupHeaderList) {
-            header.cancelSelection();
+            if(header instanceof GroupHeaderPinManagement) {
+                GroupHeaderPinManagement groupHeaderPinManagement = (GroupHeaderPinManagement) header;
+                groupHeaderPinManagement.setSelected(false);
+                for (Object object : groupHeaderPinManagement.getChildList()) {
+                    DeviceGroup deviceGroup = (DeviceGroup) object;
+                    deviceGroup.setSelected(false);
+                }
+            } else if(header instanceof DeviceHeaderPinManager) {
+                DeviceHeaderPinManager deviceHeaderPinManager = (DeviceHeaderPinManager) header;
+                deviceHeaderPinManager.setSelected(false);
+                for (Object object : deviceHeaderPinManager.getChildList()) {
+                    Controller controller = (Controller) object;
+                    controller.setSelected(false);
+                }
+            }
         }
-        myItemAdapter.notifyDataSetChanged();
+        Log.d(TAG, "cancelSelection: " + deviceGroupHeaderList);
+        myItemAdapter.updateAdapter(deviceGroupHeaderList);
     }
 
     private void showNoDevices() {
