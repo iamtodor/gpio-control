@@ -27,8 +27,8 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
 import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroup;
-import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroupHeaderPinManagement;
 import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceHeaderPinManager;
+import org.kaaproject.kaa.examples.gpiocontrol.model.GroupHeaderPinManagement;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseListFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.AddControllerOrGroupDialog;
@@ -91,14 +91,30 @@ public class PortManagementFragment extends BaseListFragment implements
         //adapter
         deviceGroupHeaderList = Utils.getMockedHeaderList();
         myItemAdapter = new ExpandableExampleAdapter(context, deviceGroupHeaderList);
+
+        myItemAdapter.setOnSelectedGroupListListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                for (Header deviceGroupHeader : deviceGroupHeaderList) {
+                    if (deviceGroupHeader instanceof GroupHeaderPinManagement) {
+                        ((GroupHeaderPinManagement) deviceGroupHeader).setSelected(isChecked);
+                        for (Object object : deviceGroupHeader.getChildList()) {
+                            DeviceGroup deviceGroup = (DeviceGroup) object;
+                            deviceGroup.setSelected(isChecked);
+                        }
+                    }
+                }
+                myItemAdapter.updateAdapter(deviceGroupHeaderList);
+                showOrHideSelectionMenu();
+            }
+        });
         myItemAdapter.setOnSelectedDeviceListListener(new CompoundButton.OnCheckedChangeListener() {
             @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 int selectionCount = 0;
                 int size = 0;
                 for (Header deviceGroupHeader : deviceGroupHeaderList) {
                     if (deviceGroupHeader instanceof DeviceHeaderPinManager) {
-                        size = deviceGroupHeader.getControllerList().size();
-                        for (Object object : deviceGroupHeader.getControllerList()) {
+                        size = deviceGroupHeader.getChildList().size();
+                        for (Object object : deviceGroupHeader.getChildList()) {
                             Controller controller = (Controller) object;
                             controller.setSelected(isChecked);
                             if (controller.isSelected()) {
@@ -110,21 +126,6 @@ public class PortManagementFragment extends BaseListFragment implements
 
                 selectedCountedValue.setText(String.valueOf("Selected " + selectionCount + "/" + size));
                 myItemAdapter.updateAdapter(deviceGroupHeaderList);
-                showSelectionMenu(isChecked);
-            }
-        });
-        myItemAdapter.setOnSelectedGroupListListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                for (Header deviceGroupHeader : deviceGroupHeaderList) {
-                    if (deviceGroupHeader instanceof DeviceGroupHeaderPinManagement) {
-                        for (Object object : deviceGroupHeader.getControllerList()) {
-                            DeviceGroup deviceGroup = (DeviceGroup) object;
-                            deviceGroup.setSelected(isChecked);
-                        }
-                    }
-                }
-                myItemAdapter.updateAdapter(deviceGroupHeaderList);
-                showSelectionMenu(isChecked);
             }
         });
 
@@ -149,19 +150,29 @@ public class PortManagementFragment extends BaseListFragment implements
         return view;
     }
 
-    private void showSelectionMenu(boolean isChecked) {
-        if (isChecked) {
+    private void showOrHideSelectionMenu() {
+        boolean isSelected = false;
+        int totalSize = 0;
+        int selectedSize = 0;
+        for (Header deviceGroupHeader : deviceGroupHeaderList) {
+            if (deviceGroupHeader instanceof GroupHeaderPinManagement) {
+                for (Object object : deviceGroupHeader.getChildList()) {
+                    DeviceGroup deviceGroup = (DeviceGroup) object;
+                    totalSize = deviceGroupHeader.getChildSize();
+                    if (deviceGroup.isSelected()) {
+                        selectedSize++;
+                        isSelected = true;
+                    }
+                }
+            }
+        }
+        if (isSelected) {
+            selectedCountedValue.setText("Selected " + selectedSize + "/" + totalSize);
             selectionMenu.setVisibility(View.VISIBLE);
             fab.setVisibility(View.GONE);
         } else {
             selectionMenu.setVisibility(View.GONE);
             fab.setVisibility(View.VISIBLE);
-        }
-
-        for (Header deviceGroupHeader : deviceGroupHeaderList) {
-            if (deviceGroupHeader instanceof DeviceGroupHeaderPinManagement) {
-
-            }
         }
     }
 

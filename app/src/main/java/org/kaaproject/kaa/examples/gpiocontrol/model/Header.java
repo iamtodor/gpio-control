@@ -11,10 +11,12 @@ public abstract class Header<T> {
 
     public abstract T childAt(int childPosition);
 
-    public abstract List<T> getControllerList();
+    public abstract List<T> getChildList();
 
     public abstract int getId();
 
     public abstract boolean isSelected();
+
+    public abstract int getChildSize();
 
 }

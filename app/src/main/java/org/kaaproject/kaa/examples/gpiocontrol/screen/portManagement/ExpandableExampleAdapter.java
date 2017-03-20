@@ -24,7 +24,7 @@ import com.squareup.picasso.Picasso;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
 import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroup;
-import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroupHeaderPinManagement;
+import org.kaaproject.kaa.examples.gpiocontrol.model.GroupHeaderPinManagement;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChangeFieldDialog;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChooseImageDialog;
@@ -93,7 +93,7 @@ public class ExpandableExampleAdapter
 
     @Override
     public long getChildId(int groupPosition, int childPosition) {
-        if (deviceGroupHeaderList.get(groupPosition) instanceof DeviceGroupHeaderPinManagement) {
+        if (deviceGroupHeaderList.get(groupPosition) instanceof GroupHeaderPinManagement) {
             final DeviceGroup deviceGroup = (DeviceGroup) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
             return deviceGroup.getId();
         } else {
@@ -104,7 +104,7 @@ public class ExpandableExampleAdapter
 
     @Override
     public int getGroupItemViewType(int groupPosition) {
-        if (deviceGroupHeaderList.get(groupPosition) instanceof DeviceGroupHeaderPinManagement) {
+        if (deviceGroupHeaderList.get(groupPosition) instanceof GroupHeaderPinManagement) {
             return DEVICE_GROUP_HEADER_VIEW_TYPE;
         } else
             return DEVICE_LIST_HEADER_VIEW_TYPE;
@@ -112,7 +112,7 @@ public class ExpandableExampleAdapter
 
     @Override
     public int getChildItemViewType(int groupPosition, int childPosition) {
-        if (deviceGroupHeaderList.get(groupPosition) instanceof DeviceGroupHeaderPinManagement) {
+        if (deviceGroupHeaderList.get(groupPosition) instanceof GroupHeaderPinManagement) {
             return DEVICE_GROUP_ITEM_VIEW_TYPE;
         } else
             return SINGLE_DEVICE_ITEM_VIEW_TYPE;
@@ -270,7 +270,6 @@ public class ExpandableExampleAdapter
                             chooseImageDialog.show(context.getSupportFragmentManager());
                             break;
                         case R.id.edit_name:
-                            // TODO: 3/10/17 add edit name
                             ChangeFieldDialog dialog = DialogFactory.getChangeFieldDialog(context.getString(R.string.edit_name),
                                     null, controller.getControllerId(), context.getString(R.string.controller_id),
                                     context.getString(R.string.edit_name), new ChangeFieldListener() {

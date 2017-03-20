@@ -9,8 +9,8 @@ import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Alarm;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
 import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroup;
-import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroupHeaderPinManagement;
 import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceHeaderPinManager;
+import org.kaaproject.kaa.examples.gpiocontrol.model.GroupHeaderPinManagement;
 import org.kaaproject.kaa.examples.gpiocontrol.model.GroupPort;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Port;
@@ -110,7 +110,7 @@ public class Utils {
         List<Controller> controllerList = Utils.getMockedControllerList();
         List<DeviceGroup> deviceGroupList = Utils.getMockedDeviceGroupList();
 
-        deviceGroupHeaderList.add(new DeviceGroupHeaderPinManagement<>("Device groups (" + deviceGroupList.size() + ")",
+        deviceGroupHeaderList.add(new GroupHeaderPinManagement<>("Device groups (" + deviceGroupList.size() + ")",
                 0, deviceGroupList));
         deviceGroupHeaderList.add(new DeviceHeaderPinManager<>("Devices (" + controllerList.size() + ")",
                 1, controllerList));

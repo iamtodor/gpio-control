@@ -28,7 +28,11 @@ public class DeviceHeaderPinManager<Controller> extends Header {
         return controllerList.get(childPosition);
     }
 
-    @Override public List<Controller> getControllerList() {
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+
+    @Override public List<Controller> getChildList() {
         return controllerList;
     }
 
@@ -38,6 +42,10 @@ public class DeviceHeaderPinManager<Controller> extends Header {
 
     @Override public boolean isSelected() {
         return false;
+    }
+
+    @Override public int getChildSize() {
+        return controllerList.size();
     }
 
     @Override public String toString() {
