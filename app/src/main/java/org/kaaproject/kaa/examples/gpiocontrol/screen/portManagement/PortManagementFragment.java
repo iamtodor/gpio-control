@@ -1,6 +1,9 @@
 package org.kaaproject.kaa.examples.gpiocontrol.screen.portManagement;
 
 
+import android.content.Context;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
@@ -11,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
@@ -32,6 +37,7 @@ import org.kaaproject.kaa.examples.gpiocontrol.utils.Utils;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -41,23 +47,41 @@ public class PortManagementFragment extends BaseListFragment implements
 
     private static final String SAVED_STATE_EXPANDABLE_ITEM_MANAGER = "RecyclerViewExpandableItemManager";
 
-    private RecyclerView.LayoutManager mLayoutManager;
-    private RecyclerView.Adapter mWrappedAdapter;
-    private RecyclerViewExpandableItemManager recyclerViewExpandableItemManager;
-
     @BindView(R.id.recycler_view) protected RecyclerView recyclerView;
     @BindView(R.id.no_device_message) protected TextView noDeviceMessage;
     @BindView(R.id.fab) protected FloatingActionButton fab;
+    @BindView(R.id.selection_menu) protected LinearLayout selectionMenu;
+    @BindView(R.id.create_group) protected LinearLayout createGroup;
+    @BindView(R.id.add_to_group) protected LinearLayout addGroup;
+    @BindView(R.id.duplicate) protected LinearLayout duplicateGroup;
+    @BindView(R.id.ungroup) protected LinearLayout ungroup;
+    @BindView(R.id.selected_count_value) protected TextView selectedCountedValue;
+
+    @BindViews({R.id.ic_create_group, R.id.ic_add_to_group,
+            R.id.ic_duplicate, R.id.ic_ungroup}) protected ImageView[] imageViews;
+
+    private RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerView.Adapter mWrappedAdapter;
+    private RecyclerViewExpandableItemManager recyclerViewExpandableItemManager;
     private ExpandableExampleAdapter myItemAdapter;
     private List<Header> deviceGroupHeaderList;
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.device_list_fragment, container, false);
+        final View view = inflater.inflate(R.layout.device_list_fragment, container, false);
+        final Context context = getContext();
 
         ButterKnife.bind(this, view);
         getSupportActionBar().setTitle("Port management");
 
-        mLayoutManager = new LinearLayoutManager(getContext());
+        final Drawable addGroupIcon = ContextCompat.getDrawable(context, R.drawable.add_group);
+        addGroupIcon.setColorFilter(ContextCompat.getColor(context, R.color.lightBlueActiveElement),
+                PorterDuff.Mode.SRC_ATOP);
+
+        for (ImageView imageView : imageViews) {
+            imageView.setImageDrawable(addGroupIcon);
+        }
+
+        mLayoutManager = new LinearLayoutManager(context);
 
         final Parcelable eimSavedState = (savedInstanceState != null) ? savedInstanceState.getParcelable(SAVED_STATE_EXPANDABLE_ITEM_MANAGER) : null;
         recyclerViewExpandableItemManager = new RecyclerViewExpandableItemManager(eimSavedState);
@@ -66,18 +90,27 @@ public class PortManagementFragment extends BaseListFragment implements
 
         //adapter
         deviceGroupHeaderList = Utils.getMockedHeaderList();
-        myItemAdapter = new ExpandableExampleAdapter(getContext(), deviceGroupHeaderList);
+        myItemAdapter = new ExpandableExampleAdapter(context, deviceGroupHeaderList);
         myItemAdapter.setOnSelectedDeviceListListener(new CompoundButton.OnCheckedChangeListener() {
             @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                int selectionCount = 0;
+                int size = 0;
                 for (Header deviceGroupHeader : deviceGroupHeaderList) {
                     if (deviceGroupHeader instanceof DeviceHeaderPinManager) {
+                        size = deviceGroupHeader.getControllerList().size();
                         for (Object object : deviceGroupHeader.getControllerList()) {
                             Controller controller = (Controller) object;
                             controller.setSelected(isChecked);
+                            if (controller.isSelected()) {
+                                selectionCount++;
+                            }
                         }
                     }
                 }
+
+                selectedCountedValue.setText(String.valueOf("Selected " + selectionCount + "/" + size));
                 myItemAdapter.updateAdapter(deviceGroupHeaderList);
+                showSelectionMenu(isChecked);
             }
         });
         myItemAdapter.setOnSelectedGroupListListener(new CompoundButton.OnCheckedChangeListener() {
@@ -91,6 +124,7 @@ public class PortManagementFragment extends BaseListFragment implements
                     }
                 }
                 myItemAdapter.updateAdapter(deviceGroupHeaderList);
+                showSelectionMenu(isChecked);
             }
         });
 
@@ -108,11 +142,27 @@ public class PortManagementFragment extends BaseListFragment implements
         recyclerView.setItemAnimator(animator);
         recyclerView.setHasFixedSize(false);
 
-        recyclerView.addItemDecoration(new SimpleListDividerDecorator(ContextCompat.getDrawable(getContext(), R.drawable.list_divider_h), true));
+        recyclerView.addItemDecoration(new SimpleListDividerDecorator(ContextCompat.getDrawable(context, R.drawable.list_divider_h), true));
 
         recyclerViewExpandableItemManager.attachRecyclerView(recyclerView);
 
         return view;
+    }
+
+    private void showSelectionMenu(boolean isChecked) {
+        if (isChecked) {
+            selectionMenu.setVisibility(View.VISIBLE);
+            fab.setVisibility(View.GONE);
+        } else {
+            selectionMenu.setVisibility(View.GONE);
+            fab.setVisibility(View.VISIBLE);
+        }
+
+        for (Header deviceGroupHeader : deviceGroupHeaderList) {
+            if (deviceGroupHeader instanceof DeviceGroupHeaderPinManagement) {
+
+            }
+        }
     }
 
     @Override

@@ -8,6 +8,7 @@ public class DeviceHeaderPinManager<Controller> extends Header {
     private String name;
     private List<Controller> controllerList;
     private int id;
+    private boolean selected;
 
     public DeviceHeaderPinManager(String name, int id, List<Controller> portList) {
         this.name = name;
@@ -33,6 +34,10 @@ public class DeviceHeaderPinManager<Controller> extends Header {
 
     @Override public int getId() {
         return id;
+    }
+
+    @Override public boolean isSelected() {
+        return false;
     }
 
     @Override public String toString() {

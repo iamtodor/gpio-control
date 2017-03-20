@@ -15,4 +15,6 @@ public abstract class Header<T> {
 
     public abstract int getId();
 
+    public abstract boolean isSelected();
+
 }

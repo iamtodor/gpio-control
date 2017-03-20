@@ -8,6 +8,7 @@ public class DeviceGroupHeaderPinManagement<GroupPort> extends Header {
     private String name;
     private int id;
     private List<GroupPort> controllerList;
+    private boolean selected;
 
     @Override public String getName() {
         return name;
@@ -19,6 +20,14 @@ public class DeviceGroupHeaderPinManagement<GroupPort> extends Header {
 
     @Override public int getId() {
         return id;
+    }
+
+    @Override public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 
     public void setId(int id) {
