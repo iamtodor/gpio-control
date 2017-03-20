@@ -48,6 +48,10 @@ public class DeviceHeaderPinManager<Controller> extends Header {
         return controllerList.size();
     }
 
+    @Override public void cancelSelection() {
+        selected = false;
+    }
+
     @Override public String toString() {
         return "GroupPort{" +
                 "name='" + name + '\'' +

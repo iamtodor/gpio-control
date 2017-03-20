@@ -30,6 +30,10 @@ public class GroupHeaderPinManagement<GroupPort> extends Header {
         return groupPortList.size();
     }
 
+    @Override public void cancelSelection() {
+        selected = false;
+    }
+
     @Override public int childrenCount() {
         return groupPortList.size();
     }

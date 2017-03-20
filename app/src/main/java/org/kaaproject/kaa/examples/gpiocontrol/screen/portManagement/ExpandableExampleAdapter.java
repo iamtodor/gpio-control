@@ -51,12 +51,9 @@ public class ExpandableExampleAdapter
 
     private final MainActivity context;
     private final List<Header> deviceGroupHeaderList = new ArrayList<>();
-    private CompoundButton.OnCheckedChangeListener onSelectedDeviceListListener;
-    private CompoundButton.OnCheckedChangeListener onSelectedGroupListListener;
-    private CompoundButton.OnCheckedChangeListener onSelectedDeviceItemListener;
-    private CompoundButton.OnCheckedChangeListener onSelectedGroupItemListener;
 
     private OnCheckedChangeItemListener onCheckedChangeItemListener;
+    private OnCheckedGroupHeaderListener onCheckedGroupHeaderListener;
 
     ExpandableExampleAdapter(Context context, List<Header> deviceGroupHeaderList) {
         this.context = (MainActivity) context;
@@ -72,24 +69,12 @@ public class ExpandableExampleAdapter
         notifyDataSetChanged();
     }
 
-//    void setOnSelectedDeviceListListener(CompoundButton.OnCheckedChangeListener onSelectedGroupListener) {
-//        this.onSelectedDeviceListListener = onSelectedGroupListener;
-//    }
-
-    void setOnSelectedGroupListListener(CompoundButton.OnCheckedChangeListener onSelectedGroupListListener) {
-        this.onSelectedGroupListListener = onSelectedGroupListListener;
-    }
-
-//    void setOnSelectedGroupItemListener(CompoundButton.OnCheckedChangeListener onSelectedGroupItemListener) {
-//        this.onSelectedGroupItemListener = onSelectedGroupItemListener;
-//    }
-
-//    void setOnSelectedDeviceItemListener(CompoundButton.OnCheckedChangeListener onSelectedDeviceItemListener) {
-//        this.onSelectedDeviceItemListener = onSelectedDeviceItemListener;
-//    }
-
     void setOnCheckedChangeItemListener(OnCheckedChangeItemListener onCheckedChangeItemListener) {
         this.onCheckedChangeItemListener = onCheckedChangeItemListener;
+    }
+
+    void setOnCheckedGroupHeaderListener(OnCheckedGroupHeaderListener onCheckedGroupHeaderListener) {
+        this.onCheckedGroupHeaderListener = onCheckedGroupHeaderListener;
     }
 
     @Override
@@ -139,10 +124,10 @@ public class ExpandableExampleAdapter
         final LayoutInflater inflater = LayoutInflater.from(context);
         if (viewType == DEVICE_GROUP_HEADER_VIEW_TYPE) {
             final View v = inflater.inflate(R.layout.device_group_header_port_manager, parent, false);
-            return new DeviceGroupHeaderViewHolder(v, onSelectedGroupListListener);
+            return new DeviceGroupHeaderViewHolder(v);
         } else if (viewType == DEVICE_LIST_HEADER_VIEW_TYPE) {
             final View v = inflater.inflate(R.layout.single_device_header_port_manager, parent, false);
-            return new DeviceListHeaderViewHolder(v, onSelectedDeviceListListener);
+            return new DeviceListHeaderViewHolder(v);
         }
         throw new RuntimeException("No match for onCreateGroupViewHolder" + viewType + ".");
     }
@@ -152,29 +137,65 @@ public class ExpandableExampleAdapter
         final LayoutInflater inflater = LayoutInflater.from(context);
         if (viewType == DEVICE_GROUP_ITEM_VIEW_TYPE) {
             final View v = inflater.inflate(R.layout.device_group_item_port_manager, parent, false);
-            return new DeviceGroupItemViewHolder(v, onSelectedGroupItemListener);
+            return new DeviceGroupItemViewHolder(v);
         } else if (viewType == SINGLE_DEVICE_ITEM_VIEW_TYPE) {
             final View v = inflater.inflate(R.layout.single_device_item_port_manager, parent, false);
-            return new SingleDeviceItemViewHolder(v, onSelectedDeviceItemListener);
+            return new SingleDeviceItemViewHolder(v);
         }
         throw new RuntimeException("No match for onCreateChildViewHolder" + viewType + ".");
     }
 
     @Override
     public void onBindGroupViewHolder(BaseHeaderViewHolder holder, int groupPosition, int viewType) {
-        final Header item = deviceGroupHeaderList.get(groupPosition);
-        holder.name.setText(item.getName());
-        holder.droppedArrow.setClickable(true);
+        if (viewType == DEVICE_GROUP_HEADER_VIEW_TYPE) {
+            final Header item = deviceGroupHeaderList.get(groupPosition);
+            holder.name.setText(item.getName());
+            holder.droppedArrow.setClickable(true);
+            holder.selection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    for (Header deviceGroupHeader : deviceGroupHeaderList) {
+                        if (deviceGroupHeader instanceof GroupHeaderPinManagement) {
+                            ((GroupHeaderPinManagement) deviceGroupHeader).setSelected(isChecked);
+                            for (Object object : deviceGroupHeader.getChildList()) {
+                                DeviceGroup deviceGroup = (DeviceGroup) object;
+                                deviceGroup.setSelected(isChecked);
+                            }
+                            onCheckedGroupHeaderListener.onChange(isChecked, (GroupHeaderPinManagement) deviceGroupHeader);
+                        }
+                    }
+                    notifyDataSetChanged();
+                }
+            });
 
-        // set background resource (target view ID: container)
-        final int expandState = holder.getExpandStateFlags();
+            final int expandState = holder.getExpandStateFlags();
 
-        if ((expandState & ExpandableItemConstants.STATE_FLAG_IS_UPDATED) != 0) {
+            if ((expandState & ExpandableItemConstants.STATE_FLAG_IS_UPDATED) != 0) {
 
-            if ((expandState & ExpandableItemConstants.STATE_FLAG_IS_EXPANDED) != 0) {
-                holder.droppedArrow.setRotation(180);
-            } else {
-                holder.droppedArrow.setRotation(0);
+                if ((expandState & ExpandableItemConstants.STATE_FLAG_IS_EXPANDED) != 0) {
+                    holder.droppedArrow.setRotation(180);
+                } else {
+                    holder.droppedArrow.setRotation(0);
+                }
+            }
+        } else if (viewType == DEVICE_LIST_HEADER_VIEW_TYPE) {
+            final Header item = deviceGroupHeaderList.get(groupPosition);
+            holder.name.setText(item.getName());
+            holder.droppedArrow.setClickable(true);
+            holder.selection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                }
+            });
+
+            final int expandState = holder.getExpandStateFlags();
+
+            if ((expandState & ExpandableItemConstants.STATE_FLAG_IS_UPDATED) != 0) {
+
+                if ((expandState & ExpandableItemConstants.STATE_FLAG_IS_EXPANDED) != 0) {
+                    holder.droppedArrow.setRotation(180);
+                } else {
+                    holder.droppedArrow.setRotation(0);
+                }
             }
         }
     }
@@ -324,10 +345,9 @@ public class ExpandableExampleAdapter
         @BindView(R.id.name) TextView name;
         @BindView(R.id.dropped_arrow) ImageView droppedArrow;
 
-        BaseHeaderViewHolder(View itemView, CompoundButton.OnCheckedChangeListener onSelectedGroupListener) {
+        BaseHeaderViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            selection.setOnCheckedChangeListener(onSelectedGroupListener);
         }
     }
 
@@ -343,10 +363,9 @@ public class ExpandableExampleAdapter
         @BindView(R.id.name) TextView name;
         @BindView(R.id.dropped_arrow) ImageView droppedArrow;
 
-        DeviceGroupHeaderViewHolder(View itemView, CompoundButton.OnCheckedChangeListener onSelectedGroupListener) {
-            super(itemView, onSelectedGroupListener);
+        DeviceGroupHeaderViewHolder(View itemView) {
+            super(itemView);
             ButterKnife.bind(this, itemView);
-            selection.setOnCheckedChangeListener(onSelectedGroupListener);
         }
     }
 
@@ -358,11 +377,10 @@ public class ExpandableExampleAdapter
         @BindView(R.id.port_status) TextView port;
         @BindView(R.id.menu) ImageView imageViewOptions;
 
-        DeviceGroupItemViewHolder(View itemView, CompoundButton.OnCheckedChangeListener onSelectedGroupItemListener) {
+        DeviceGroupItemViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
-            selection.setOnCheckedChangeListener(onSelectedGroupItemListener);
         }
 
         @Override public void onClick(View view) {
@@ -379,12 +397,11 @@ public class ExpandableExampleAdapter
         @BindView(R.id.name) TextView name;
         @BindView(R.id.dropped_arrow) ImageView droppedArrow;
 
-        DeviceListHeaderViewHolder(View itemView, CompoundButton.OnCheckedChangeListener onSelectedGroupListener) {
-            super(itemView, onSelectedGroupListener);
+        DeviceListHeaderViewHolder(View itemView) {
+            super(itemView);
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
             droppedArrow.setOnClickListener(this);
-            selection.setOnCheckedChangeListener(onSelectedGroupListener);
         }
 
         @Override public void onClick(View view) {
@@ -405,12 +422,11 @@ public class ExpandableExampleAdapter
         @BindView(R.id.switch_active) SwitchCompat switchCompat;
         @BindView(R.id.menu) ImageView imageViewOptions;
 
-        SingleDeviceItemViewHolder(View itemView, CompoundButton.OnCheckedChangeListener onSelectedDeviceItemListener) {
+        SingleDeviceItemViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
             imageViewOptions.setOnClickListener(this);
-            selection.setOnCheckedChangeListener(onSelectedDeviceItemListener);
         }
 
         @Override public void onClick(View view) {

@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/content_main"
     android:layout_width="match_parent"
+    android:animateLayoutChanges="true"
     android:layout_height="match_parent"
     android:background="#edeef0">
 
@@ -50,7 +51,7 @@
         tools:visibility="visible">
 
         <LinearLayout
-            android:id="@+id/selected_count"
+            android:id="@+id/cancel_selection"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"

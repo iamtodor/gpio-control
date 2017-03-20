@@ -19,4 +19,6 @@ public abstract class Header<T> {
 
     public abstract int getChildSize();
 
+    public abstract void cancelSelection();
+
 }

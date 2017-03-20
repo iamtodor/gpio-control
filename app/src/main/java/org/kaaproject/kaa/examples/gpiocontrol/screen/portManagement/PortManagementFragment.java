@@ -13,7 +13,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -90,21 +89,12 @@ public class PortManagementFragment extends BaseListFragment implements
         deviceGroupHeaderList = Utils.getMockedHeaderList();
         myItemAdapter = new ExpandableExampleAdapter(context, deviceGroupHeaderList);
 
-        myItemAdapter.setOnSelectedGroupListListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                for (Header deviceGroupHeader : deviceGroupHeaderList) {
-                    if (deviceGroupHeader instanceof GroupHeaderPinManagement) {
-                        ((GroupHeaderPinManagement) deviceGroupHeader).setSelected(isChecked);
-                        for (Object object : deviceGroupHeader.getChildList()) {
-                            DeviceGroup deviceGroup = (DeviceGroup) object;
-                            deviceGroup.setSelected(isChecked);
-                        }
-                    }
-                }
-//                myItemAdapter.updateAdapter(deviceGroupHeaderList);
-                showOrHideSelectionMenu();
+        myItemAdapter.setOnCheckedGroupHeaderListener(new OnCheckedGroupHeaderListener() {
+            @Override public void onChange(boolean isChecked, GroupHeaderPinManagement groupHeaderPinManagement) {
+                showOrHideSelectionMenu(groupHeaderPinManagement);
             }
         });
+
         myItemAdapter.setOnCheckedChangeItemListener(new OnCheckedChangeItemListener() {
             @Override public void onChange(boolean isChecked, DeviceGroup deviceGroup) {
                 for (Header deviceGroupHeader : deviceGroupHeaderList) {
@@ -118,55 +108,10 @@ public class PortManagementFragment extends BaseListFragment implements
                         }
                     }
                 }
-                myItemAdapter.updateAdapter(deviceGroupHeaderList);
+//                myItemAdapter.updateAdapter(deviceGroupHeaderList);
                 showOrHideSelectionMenu();
             }
         });
-//        myItemAdapter.setOnSelectedDeviceListListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                int selectionCount = 0;
-//                int size = 0;
-//                for (Header deviceGroupHeader : deviceGroupHeaderList) {
-//                    if (deviceGroupHeader instanceof DeviceHeaderPinManager) {
-//                        size = deviceGroupHeader.getChildList().size();
-//                        for (Object object : deviceGroupHeader.getChildList()) {
-//                            Controller controller = (Controller) object;
-//                            controller.setSelected(isChecked);
-//                            if (controller.isSelected()) {
-//                                selectionCount++;
-//                            }
-//                        }
-//                    }
-//                }
-//
-//                selectedCountedValue.setText(String.valueOf("Selected " + selectionCount + "/" + size));
-//                myItemAdapter.updateAdapter(deviceGroupHeaderList);
-//            }
-//        });
-//        myItemAdapter.setOnSelectedGroupItemListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                int totalSize = 0;
-//                int selectedSize = 0;
-//                for (Header deviceGroupHeader : deviceGroupHeaderList) {
-//                    if (deviceGroupHeader instanceof GroupHeaderPinManagement) {
-//                        for (Object object : deviceGroupHeader.getChildList()) {
-//                            DeviceGroup deviceGroup = (DeviceGroup) object;
-//                            deviceGroup.setSelected(isChecked);
-//                            totalSize++;
-//                            if (deviceGroup.isSelected()) {
-//                                selectedSize++;
-//                            }
-//                        }
-//                    }
-//                }
-//                showSelectionMenu(totalSize, selectedSize);
-//            }
-//        });
-//        myItemAdapter.setOnSelectedDeviceItemListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//
-//            }
-//        });
 
         // wrap for expanding
         mWrappedAdapter = recyclerViewExpandableItemManager.createWrappedAdapter(myItemAdapter);
@@ -226,6 +171,27 @@ public class PortManagementFragment extends BaseListFragment implements
         }
     }
 
+    private void showOrHideSelectionMenu(GroupHeaderPinManagement groupHeaderPinManagement) {
+        boolean isSelected = false;
+        int totalSize = groupHeaderPinManagement.getChildSize();
+        int selectedSize = 0;
+        for (Object object : groupHeaderPinManagement.getChildList()) {
+            DeviceGroup deviceGroup = (DeviceGroup) object;
+            if (deviceGroup.isSelected()) {
+                selectedSize++;
+                isSelected = true;
+            }
+        }
+        if (isSelected) {
+            selectedCountedValue.setText("Selected " + selectedSize + "/" + totalSize);
+            selectionMenu.setVisibility(View.VISIBLE);
+            fab.setVisibility(View.GONE);
+        } else {
+            selectionMenu.setVisibility(View.GONE);
+            fab.setVisibility(View.VISIBLE);
+        }
+    }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -264,6 +230,14 @@ public class PortManagementFragment extends BaseListFragment implements
     public void onFabClick() {
         AddControllerOrGroupDialog dialog = new AddControllerOrGroupDialog().setAddItemListener(this);
         dialog.show(getBaseActivity().getSupportFragmentManager());
+    }
+
+    @OnClick(R.id.cancel_selection)
+    public void cancelSelection() {
+        for (Header header : deviceGroupHeaderList) {
+            header.cancelSelection();
+        }
+        myItemAdapter.notifyDataSetChanged();
     }
 
     private void showNoDevices() {
