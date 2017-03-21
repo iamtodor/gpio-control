@@ -3,7 +3,7 @@ package org.kaaproject.kaa.examples.gpiocontrol.model;
 
 import java.util.List;
 
-public abstract class BaseDevice extends SelectableItem {
+public abstract class BaseDeviceGroup extends SelectableItem {
 
     private String portStatus;
     private String power;
@@ -14,9 +14,9 @@ public abstract class BaseDevice extends SelectableItem {
     private List<DeviceGroup> deviceGroupList;
     private List<Device> deviceList;
 
-    BaseDevice(String name, String portStatus, String power,
-               boolean toggle, Alarm alarm, boolean isSelected, long id,
-               List<DeviceGroup> deviceGroupList, List<Device> deviceList) {
+    BaseDeviceGroup(String name, String portStatus, String power,
+                    boolean toggle, Alarm alarm, boolean isSelected, long id,
+                    List<DeviceGroup> deviceGroupList, List<Device> deviceList) {
         super(name);
         this.portStatus = portStatus;
         this.power = power;
@@ -93,7 +93,7 @@ public abstract class BaseDevice extends SelectableItem {
     }
 
     @Override public String toString() {
-        return "BaseDevice{" +
+        return "BaseDeviceGroup{" +
                 ", portStatus='" + portStatus + '\'' +
                 ", power='" + power + '\'' +
                 ", toggle=" + toggle +

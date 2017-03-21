@@ -7,7 +7,7 @@ import android.widget.ImageView;
 
 import java.util.List;
 
-public class DeviceGroup extends BaseDevice {
+public class DeviceGroup extends BaseDeviceGroup {
 
     private int iconId;
 

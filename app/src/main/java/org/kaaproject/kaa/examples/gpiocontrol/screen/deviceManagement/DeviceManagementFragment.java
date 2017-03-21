@@ -158,7 +158,7 @@ public class DeviceManagementFragment extends BaseListFragment implements
                         isSelected = true;
                     }
                 }
-            } else if(deviceGroupHeader instanceof DeviceHeaderPinManagement) {
+            } else if (deviceGroupHeader instanceof DeviceHeaderPinManagement) {
                 for (Object object : deviceGroupHeader.getChildList()) {
                     Controller controller = (Controller) object;
                     if (controller.isSelected()) {
@@ -167,27 +167,6 @@ public class DeviceManagementFragment extends BaseListFragment implements
                         isSelected = true;
                     }
                 }
-            }
-        }
-        if (isSelected) {
-            selectedCountedValue.setText("Selected " + selectedSize + "/" + totalSize);
-            selectionMenu.setVisibility(View.VISIBLE);
-            fab.setVisibility(View.GONE);
-        } else {
-            selectionMenu.setVisibility(View.GONE);
-            fab.setVisibility(View.VISIBLE);
-        }
-    }
-
-    private void showOrHideSelectionMenu(GroupHeaderPinManagement groupHeaderPinManagement) {
-        boolean isSelected = false;
-        int totalSize = groupHeaderPinManagement.getChildSize();
-        int selectedSize = 0;
-        for (Object object : groupHeaderPinManagement.getChildList()) {
-            DeviceGroup deviceGroup = (DeviceGroup) object;
-            if (deviceGroup.isSelected()) {
-                selectedSize++;
-                isSelected = true;
             }
         }
         if (isSelected) {
