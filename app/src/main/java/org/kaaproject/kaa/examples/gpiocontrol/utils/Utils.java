@@ -7,12 +7,14 @@ import android.support.annotation.NonNull;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Alarm;
-import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
+import org.kaaproject.kaa.examples.gpiocontrol.model.BaseController;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Device;
 import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroup;
 import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceHeaderPinManagement;
 import org.kaaproject.kaa.examples.gpiocontrol.model.GroupHeaderPinManagement;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
+import org.kaaproject.kaa.examples.gpiocontrol.model.ImageController;
+import org.kaaproject.kaa.examples.gpiocontrol.model.VectorController;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -40,18 +42,17 @@ public class Utils {
         return groupPortList;
     }
 
-    private static List<Controller> getMockedControllerList() {
-        List<Controller> controllerList = new ArrayList<>();
+    private static List<BaseController> getMockedControllerList() {
+        List<BaseController> controllerList = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             if (i % 2 == 0) {
-                controllerList.add(new Controller("Controller " + i, "Device name " + i, R.drawable.flat_tv,
-                        true, false, i));
+                controllerList.add(new VectorController("VectorController " + i, "Device name " + i,
+                        true, false, i, R.drawable.flat_tv));
             } else if (i % 3 == 0) {
-                controllerList.add(new Controller("Controller " + i, "Device name " + i, R.drawable.kitchen,
-                        true, false, i));
+                controllerList.add(new VectorController("VectorController " + i, "Device name " + i,
+                        true, false, i, R.drawable.kitchen));
             } else {
-                controllerList.add(new Controller("Controller " + i, "Device name " + i, R.drawable.fan,
-                        false, false, i));
+                controllerList.add(new ImageController("ImageController " + i, "Device name " + i, false, false, i, "some path"));
             }
         }
         return controllerList;
@@ -87,7 +88,7 @@ public class Utils {
 
     public static List<Header> getMockedHeaderList() {
         List<Header> deviceGroupHeaderList = new ArrayList<>();
-        List<Controller> controllerList = Utils.getMockedControllerList();
+        List<BaseController> controllerList = Utils.getMockedControllerList();
         List<DeviceGroup> deviceGroupList = Utils.getMockedDeviceGroupList();
 
         deviceGroupHeaderList.add(new GroupHeaderPinManagement<>("Device groups (" + deviceGroupList.size() + ")",

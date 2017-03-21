@@ -22,7 +22,7 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemVie
 import com.squareup.picasso.Picasso;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
-import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
+import org.kaaproject.kaa.examples.gpiocontrol.model.BaseController;
 import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroup;
 import org.kaaproject.kaa.examples.gpiocontrol.model.GroupHeaderPinManagement;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
@@ -98,7 +98,7 @@ public class ExpandableExampleAdapter
             final DeviceGroup deviceGroup = (DeviceGroup) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
             return deviceGroup.getId();
         } else {
-            final Controller controller = (Controller) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
+            final BaseController controller = (BaseController) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
             return controller.getId();
         }
     }
@@ -258,12 +258,10 @@ public class ExpandableExampleAdapter
             });
         } else if (viewType == SINGLE_DEVICE_ITEM_VIEW_TYPE) {
             final SingleDeviceItemViewHolder singleDeviceViewHolder = (SingleDeviceItemViewHolder) holder;
-            final Controller controller = (Controller) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
-            final Drawable drawable = VectorDrawableCompat.create(context.getResources(),
-                    controller.getImagePortsDrawableId(), null);
+            final BaseController controller = (BaseController) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
 
             singleDeviceViewHolder.selection.setChecked(controller.isSelected());
-            singleDeviceViewHolder.imagePort.setImageDrawable(drawable);
+            controller.loadImage(singleDeviceViewHolder.imagePort);
             singleDeviceViewHolder.name.setText(controller.getControllerId());
             singleDeviceViewHolder.port.setText(controller.getPortName());
             singleDeviceViewHolder.switchCompat.setChecked(controller.isActive());

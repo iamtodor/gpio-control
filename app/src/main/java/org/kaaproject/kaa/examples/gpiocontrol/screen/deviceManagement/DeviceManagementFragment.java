@@ -24,7 +24,7 @@ import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandab
 import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
-import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
+import org.kaaproject.kaa.examples.gpiocontrol.model.BaseController;
 import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroup;
 import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceHeaderPinManagement;
 import org.kaaproject.kaa.examples.gpiocontrol.model.GroupHeaderPinManagement;
@@ -108,11 +108,11 @@ public class DeviceManagementFragment extends BaseListFragment implements
         });
 
         myItemAdapter.setOnCheckedControllerItemListener(new OnCheckedControllerItemListener() {
-            @Override public void onChecked(boolean isChecked, Controller controller) {
+            @Override public void onChecked(boolean isChecked, BaseController controller) {
                 for (Header deviceGroupHeader : deviceGroupHeaderList) {
                     if (deviceGroupHeader instanceof DeviceHeaderPinManagement) {
                         for (Object object : deviceGroupHeader.getChildList()) {
-                            Controller controllerObject = (Controller) object;
+                            BaseController controllerObject = (BaseController) object;
                             if (controller == controllerObject) {
                                 controllerObject.setSelected(isChecked);
                             }
@@ -160,7 +160,7 @@ public class DeviceManagementFragment extends BaseListFragment implements
                 }
             } else if (deviceGroupHeader instanceof DeviceHeaderPinManagement) {
                 for (Object object : deviceGroupHeader.getChildList()) {
-                    Controller controller = (Controller) object;
+                    BaseController controller = (BaseController) object;
                     if (controller.isSelected()) {
                         totalSize = deviceGroupHeader.getChildSize();
                         selectedSize++;

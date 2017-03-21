@@ -3,11 +3,11 @@ package org.kaaproject.kaa.examples.gpiocontrol.model;
 
 import java.util.List;
 
-public class GroupHeaderPinManagement<DeviceGroup> extends Header {
+public class GroupHeaderPinManagement<T> extends Header {
 
     private String name;
     private int id;
-    private List<DeviceGroup> deviceGroupList;
+    private List<T> deviceGroupList;
 
     @Override public String getName() {
         return name;
@@ -26,10 +26,9 @@ public class GroupHeaderPinManagement<DeviceGroup> extends Header {
     }
 
     @Override public void cancelSelection() {
-        for (DeviceGroup deviceGroupToCastObject : deviceGroupList) {
-            org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroup deviceGroup1 =
-                    (org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroup) deviceGroupToCastObject;
-            deviceGroup1.setSelected(false);
+        for (T deviceGroupToCastObject : deviceGroupList) {
+            DeviceGroup deviceGroup = (DeviceGroup) deviceGroupToCastObject;
+            deviceGroup.setSelected(false);
         }
     }
 
@@ -37,11 +36,11 @@ public class GroupHeaderPinManagement<DeviceGroup> extends Header {
         return deviceGroupList.size();
     }
 
-    @Override public DeviceGroup childAt(int childPosition) {
+    @Override public T childAt(int childPosition) {
         return deviceGroupList.get(childPosition);
     }
 
-    @Override public List<DeviceGroup> getChildList() {
+    @Override public List<T> getChildList() {
         return deviceGroupList;
     }
 
@@ -49,7 +48,7 @@ public class GroupHeaderPinManagement<DeviceGroup> extends Header {
         this.id = id;
     }
 
-    public GroupHeaderPinManagement(String name, int id, List<DeviceGroup> deviceGroupList) {
+    public GroupHeaderPinManagement(String name, int id, List<T> deviceGroupList) {
         this.name = name;
         this.id = id;
         this.deviceGroupList = deviceGroupList;

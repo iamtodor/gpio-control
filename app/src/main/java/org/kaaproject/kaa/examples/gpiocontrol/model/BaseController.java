@@ -1,19 +1,20 @@
 package org.kaaproject.kaa.examples.gpiocontrol.model;
 
-public class Controller {
+
+import android.widget.ImageView;
+
+public abstract class BaseController {
 
     private String controllerId;
     private String portName;
-    private int imagePortsDrawableId;
     private boolean isActive;
     private boolean isSelected;
     private long id;
 
-    public Controller(String controllerId, String portName, int imagePortsDrawableId,
-                      boolean isActive, boolean isSelected, long id) {
+    public BaseController(String controllerId, String portName, boolean isActive,
+                          boolean isSelected, long id) {
         this.controllerId = controllerId;
         this.portName = portName;
-        this.imagePortsDrawableId = imagePortsDrawableId;
         this.isActive = isActive;
         this.isSelected = isSelected;
         this.id = id;
@@ -33,10 +34,6 @@ public class Controller {
 
     public String getPortName() {
         return portName;
-    }
-
-    public int getImagePortsDrawableId() {
-        return imagePortsDrawableId;
     }
 
     public boolean isActive() {
@@ -59,14 +56,6 @@ public class Controller {
         this.id = id;
     }
 
-    @Override public String toString() {
-        return "Controller{" +
-                "controllerId='" + controllerId + '\'' +
-                ", portName='" + portName + '\'' +
-                ", imagePortsDrawableId=" + imagePortsDrawableId +
-                ", isOn=" + isActive +
-                ", isSelected=" + isSelected +
-                ", id=" + id +
-                '}';
-    }
+    public abstract void loadImage(ImageView imageView);
+
 }

@@ -31,4 +31,18 @@ public class DeviceGroup extends BaseDeviceGroup {
                 iconId, null);
         imageView.setImageDrawable(drawable);
     }
+
+    @Override public String toString() {
+        return "DeviceGroup{" +
+                ", iconId='" + iconId + '\'' +
+                ", portStatus='" + getPortStatus() + '\'' +
+                ", power='" + getPower() + '\'' +
+                ", toggle=" + isToggle() +
+                ", alarm=" + getAlarm() +
+                ", isSelected=" + isSelected() +
+                ", id=" + getId() +
+                ", deviceGroupList=" + getDeviceGroupList() +
+                ", deviceList=" + getDeviceList() +
+                '}';
+    }
 }

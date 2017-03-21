@@ -73,8 +73,8 @@ public class AddControllerFragment extends BaseFragment implements ChooseImageLi
 
     private void addController() {
         listener.onItemAdded();
-//        Controller controller = new Controller(controllerId.getText().toString(),
-//                portsName.getText().toString(), imagePortsDrawableId, false, false);
+//        BaseController controller = new VectorController(controllerId.getText().toString(),
+//                portsName.getText().toString(), false, false, 1, imagePortsDrawableId);
     }
 
     private boolean isInfoValid() {

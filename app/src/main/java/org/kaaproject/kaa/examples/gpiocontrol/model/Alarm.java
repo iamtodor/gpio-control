@@ -13,40 +13,45 @@ public class Alarm {
         return time;
     }
 
-    public void setTime(String time) {
+    public Alarm setTime(String time) {
         this.time = time;
+        return this;
     }
 
     public String getAction() {
         return action;
     }
 
-    public void setAction(String action) {
+    public Alarm setAction(String action) {
         this.action = action;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public Alarm setName(String name) {
         this.name = name;
+        return this;
     }
 
     public String getIteration() {
         return iteration;
     }
 
-    public void setIteration(String iteration) {
+    public Alarm setIteration(String iteration) {
         this.iteration = iteration;
+        return this;
     }
 
     public boolean isActive() {
         return isActive;
     }
 
-    public void setActive(boolean active) {
+    public Alarm setActive(boolean active) {
         isActive = active;
+        return this;
     }
 
     @Override public String toString() {
