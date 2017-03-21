@@ -47,7 +47,7 @@ class PortSwitchManagementAdapter extends RecyclerView.Adapter<PortSwitchManagem
     static class ViewHolderPinGroupItem extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         static ViewHolderPinGroupItem create(LayoutInflater inflater, ViewGroup parent) {
-            return new ViewHolderPinGroupItem(inflater.inflate(R.layout.device_item_pin_switch_mangement, parent, false));
+            return new ViewHolderPinGroupItem(inflater.inflate(R.layout.device_item_device_switch_mangement, parent, false));
         }
 
         ViewHolderPinGroupItem(View itemView) {
