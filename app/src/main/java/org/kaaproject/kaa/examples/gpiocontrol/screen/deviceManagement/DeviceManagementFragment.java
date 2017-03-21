@@ -29,8 +29,12 @@ import org.kaaproject.kaa.examples.gpiocontrol.model.BaseDeviceGroup;
 import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceHeaderPinManagement;
 import org.kaaproject.kaa.examples.gpiocontrol.model.GroupHeaderPinManagement;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
+import org.kaaproject.kaa.examples.gpiocontrol.model.VectorDeviceGroup;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseListFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.AddControllerOrGroupDialog;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChangeFieldDialog;
+import org.kaaproject.kaa.examples.gpiocontrol.utils.ChangeFieldListener;
+import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.Utils;
 
 import java.util.List;
@@ -217,6 +221,36 @@ public class DeviceManagementFragment extends BaseListFragment implements
     public void onFabClick() {
         AddControllerOrGroupDialog dialog = new AddControllerOrGroupDialog().setAddItemListener(this);
         dialog.show(getBaseActivity().getSupportFragmentManager());
+    }
+
+    @OnClick(R.id.create_group)
+    public void createGroup() {
+
+    }
+
+    @OnClick(R.id.add_to_group)
+    public void addToGroup() {
+        ChangeFieldDialog dialogFactory = DialogFactory.getChangeFieldDialog(getString(R.string.add_group),
+                null, null, "Group name", "Add group", new ChangeFieldListener() {
+                    @Override public void onChanged(String newField) {
+                        for (Header header : deviceGroupHeaderList) {
+                            if (header instanceof GroupHeaderPinManagement) {
+                                GroupHeaderPinManagement groupHeaderPinManagement = (GroupHeaderPinManagement) header;
+                                BaseDeviceGroup vectorDeviceGroup = new VectorDeviceGroup(newField, R.drawable.empty_group_icon,
+                                        null, null, false, null, false, 1, null, null);
+                                groupHeaderPinManagement.addGroup(vectorDeviceGroup);
+                            }
+                        }
+                        myItemAdapter.notifyDataSetChanged();
+                    }
+                });
+
+        dialogFactory.show(getBaseActivity().getSupportFragmentManager());
+    }
+
+    @OnClick(R.id.duplicate)
+    public void duplicate() {
+
     }
 
     @OnClick(R.id.cancel_selection)

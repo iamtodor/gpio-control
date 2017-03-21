@@ -52,9 +52,9 @@ public class AddControllerOrGroupDialog extends BaseDialog implements ChangeFiel
     public void addGroup() {
         dismiss();
         ChangeFieldDialog dialog = new ChangeFieldDialog()
-                .setTitle(getString(R.string.add_group_dialog))
+                .setTitle(getString(R.string.add_group))
                 .setHint(getString(R.string.group_name))
-                .setAction(getString(R.string.add_group_dialog))
+                .setAction(getString(R.string.add_group))
                 .setChangeFieldListener(this);
 
         dialog.show(getActivity().getSupportFragmentManager());
