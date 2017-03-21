@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
-import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroup;
+import org.kaaproject.kaa.examples.gpiocontrol.model.BaseDeviceGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,15 +17,15 @@ import butterknife.ButterKnife;
 class DeviceSwitchManagementAdapter extends RecyclerView.Adapter<DeviceSwitchManagementAdapter.ViewHolderPinGroupItem> {
 
     private LayoutInflater inflater;
-    private List<DeviceGroup> groupPortList = new ArrayList<>();
+    private List<BaseDeviceGroup> baseDeviceGroupList = new ArrayList<>();
 
-    DeviceSwitchManagementAdapter(List<DeviceGroup> groupPortList) {
-        updateAdapter(groupPortList);
+    DeviceSwitchManagementAdapter(List<BaseDeviceGroup> baseDeviceGroupList) {
+        updateAdapter(baseDeviceGroupList);
     }
 
-    private void updateAdapter(List<DeviceGroup> colorItems) {
-        groupPortList.clear();
-        groupPortList.addAll(colorItems);
+    private void updateAdapter(List<BaseDeviceGroup> baseDeviceGroupList) {
+        this.baseDeviceGroupList.clear();
+        this.baseDeviceGroupList.addAll(baseDeviceGroupList);
         notifyDataSetChanged();
     }
 
@@ -37,11 +37,11 @@ class DeviceSwitchManagementAdapter extends RecyclerView.Adapter<DeviceSwitchMan
     }
 
     @Override public void onBindViewHolder(ViewHolderPinGroupItem holder, int position) {
-        DeviceGroup groupPort = groupPortList.get(position);
+        BaseDeviceGroup baseDeviceGroup = baseDeviceGroupList.get(position);
     }
 
     @Override public int getItemCount() {
-        return groupPortList.size();
+        return baseDeviceGroupList.size();
     }
 
     static class ViewHolderPinGroupItem extends RecyclerView.ViewHolder implements View.OnClickListener {

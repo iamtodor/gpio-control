@@ -5,16 +5,19 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
+import org.kaaproject.kaa.examples.gpiocontrol.R;
+
 import java.util.List;
 
-public class DeviceGroupImage extends BaseDeviceGroup {
+public class ImageDeviceGroup extends BaseDeviceGroup {
 
     private String imagePath;
+    private int drawableId = R.drawable.xboxone_frontview_stockblack;
 
-    public DeviceGroupImage(String name, String imagePath, String portStatus, String power,
+    public ImageDeviceGroup(String name, String imagePath, String portStatus, String power,
                             boolean toggle, Alarm alarm, boolean isSelected, long id,
-                            List<DeviceGroup> deviceGroupList, List<Device> deviceList) {
-        super(name, portStatus, power, toggle, alarm, isSelected, id, deviceGroupList, deviceList);
+                            List<BaseDeviceGroup> baseDeviceGroupList, List<Device> deviceList) {
+        super(name, portStatus, power, toggle, alarm, isSelected, id, baseDeviceGroupList, deviceList);
         this.imagePath = imagePath;
     }
 
@@ -27,11 +30,11 @@ public class DeviceGroupImage extends BaseDeviceGroup {
     }
 
     @Override public void loadImage(ImageView imageView) {
-        Picasso.with(imageView.getContext()).load(imagePath).fit().centerCrop().into(imageView);
+        Picasso.with(imageView.getContext()).load(drawableId).fit().centerCrop().into(imageView);
     }
 
     @Override public String toString() {
-        return "DeviceGroup{" +
+        return "VectorDeviceGroup{" +
                 ", imagePath='" + imagePath + '\'' +
                 ", portStatus='" + getPortStatus() + '\'' +
                 ", power='" + getPower() + '\'' +
@@ -39,7 +42,7 @@ public class DeviceGroupImage extends BaseDeviceGroup {
                 ", alarm=" + getAlarm() +
                 ", isSelected=" + isSelected() +
                 ", id=" + getId() +
-                ", deviceGroupList=" + getDeviceGroupList() +
+                ", deviceGroupList=" + getBaseDeviceGroupList() +
                 ", deviceList=" + getDeviceList() +
                 '}';
     }

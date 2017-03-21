@@ -11,12 +11,12 @@ public abstract class BaseDeviceGroup extends SelectableItem {
     private Alarm alarm;
     private boolean isSelected;
     private long id;
-    private List<DeviceGroup> deviceGroupList;
+    private List<BaseDeviceGroup> baseDeviceGroupList;
     private List<Device> deviceList;
 
     BaseDeviceGroup(String name, String portStatus, String power,
                     boolean toggle, Alarm alarm, boolean isSelected, long id,
-                    List<DeviceGroup> deviceGroupList, List<Device> deviceList) {
+                    List<BaseDeviceGroup> baseDeviceGroupList, List<Device> deviceList) {
         super(name);
         this.portStatus = portStatus;
         this.power = power;
@@ -24,7 +24,7 @@ public abstract class BaseDeviceGroup extends SelectableItem {
         this.alarm = alarm;
         this.isSelected = isSelected;
         this.id = id;
-        this.deviceGroupList = deviceGroupList;
+        this.baseDeviceGroupList = baseDeviceGroupList;
         this.deviceList = deviceList;
     }
 
@@ -76,12 +76,12 @@ public abstract class BaseDeviceGroup extends SelectableItem {
         this.id = id;
     }
 
-    public List<DeviceGroup> getDeviceGroupList() {
-        return deviceGroupList;
+    public List<BaseDeviceGroup> getBaseDeviceGroupList() {
+        return baseDeviceGroupList;
     }
 
-    public void setDeviceGroupList(List<DeviceGroup> deviceGroupList) {
-        this.deviceGroupList = deviceGroupList;
+    public void setBaseDeviceGroupList(List<BaseDeviceGroup> baseDeviceGroupList) {
+        this.baseDeviceGroupList = baseDeviceGroupList;
     }
 
     public List<Device> getDeviceList() {
@@ -100,7 +100,7 @@ public abstract class BaseDeviceGroup extends SelectableItem {
                 ", alarm=" + alarm +
                 ", isSelected=" + isSelected +
                 ", id=" + id +
-                ", deviceGroupList=" + deviceGroupList +
+                ", baseDeviceGroupList=" + baseDeviceGroupList +
                 ", deviceList=" + deviceList +
                 '}';
     }

@@ -8,13 +8,15 @@ import android.support.annotation.NonNull;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Alarm;
 import org.kaaproject.kaa.examples.gpiocontrol.model.BaseController;
+import org.kaaproject.kaa.examples.gpiocontrol.model.BaseDeviceGroup;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Device;
-import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroup;
 import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceHeaderPinManagement;
 import org.kaaproject.kaa.examples.gpiocontrol.model.GroupHeaderPinManagement;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
 import org.kaaproject.kaa.examples.gpiocontrol.model.ImageController;
+import org.kaaproject.kaa.examples.gpiocontrol.model.ImageDeviceGroup;
 import org.kaaproject.kaa.examples.gpiocontrol.model.VectorController;
+import org.kaaproject.kaa.examples.gpiocontrol.model.VectorDeviceGroup;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -32,14 +34,19 @@ public class Utils {
         return deviceList;
     }
 
-    public static List<DeviceGroup> getMockedDeviceGroupList() {
+    public static List<BaseDeviceGroup> getMockedDeviceGroupList() {
         List<Device> deviceList = getMockedDeviceList();
-        List<DeviceGroup> groupPortList = new ArrayList<>();
+        List<BaseDeviceGroup> baseDeviceGroupList = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
-            groupPortList.add(new DeviceGroup("Group" + i, R.drawable.empty_group_icon, "Norm", "power",
-                    false, new Alarm(), false, i, null, deviceList));
+            if (i % 2 == 0) {
+                baseDeviceGroupList.add(new VectorDeviceGroup("Group vector" + i, R.drawable.empty_group_icon, "Norm", "power",
+                        false, new Alarm(), false, i, null, deviceList));
+            } else {
+                baseDeviceGroupList.add(new ImageDeviceGroup("Group" + i, "some path", "Norm", "power",
+                        false, new Alarm(), false, i, null, deviceList));
+            }
         }
-        return groupPortList;
+        return baseDeviceGroupList;
     }
 
     private static List<BaseController> getMockedControllerList() {
@@ -89,10 +96,10 @@ public class Utils {
     public static List<Header> getMockedHeaderList() {
         List<Header> deviceGroupHeaderList = new ArrayList<>();
         List<BaseController> controllerList = Utils.getMockedControllerList();
-        List<DeviceGroup> deviceGroupList = Utils.getMockedDeviceGroupList();
+        List<BaseDeviceGroup> baseDeviceGroupList = Utils.getMockedDeviceGroupList();
 
-        deviceGroupHeaderList.add(new GroupHeaderPinManagement<>("Device groups (" + deviceGroupList.size() + ")",
-                0, deviceGroupList));
+        deviceGroupHeaderList.add(new GroupHeaderPinManagement<>("Device groups (" + baseDeviceGroupList.size() + ")",
+                0, baseDeviceGroupList));
         deviceGroupHeaderList.add(new DeviceHeaderPinManagement<>("Devices (" + controllerList.size() + ")",
                 1, controllerList));
         return deviceGroupHeaderList;

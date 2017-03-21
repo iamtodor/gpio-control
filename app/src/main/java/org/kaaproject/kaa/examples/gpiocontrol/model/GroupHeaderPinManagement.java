@@ -27,8 +27,8 @@ public class GroupHeaderPinManagement<T> extends Header {
 
     @Override public void cancelSelection() {
         for (T deviceGroupToCastObject : deviceGroupList) {
-            DeviceGroup deviceGroup = (DeviceGroup) deviceGroupToCastObject;
-            deviceGroup.setSelected(false);
+            BaseDeviceGroup baseDeviceGroup = (BaseDeviceGroup) deviceGroupToCastObject;
+            baseDeviceGroup.setSelected(false);
         }
     }
 

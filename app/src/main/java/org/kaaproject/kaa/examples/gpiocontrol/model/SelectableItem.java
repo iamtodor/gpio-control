@@ -19,5 +19,5 @@ public abstract class SelectableItem {
         this.name = name;
     }
 
-    abstract void loadImage(ImageView imageView);
+    public abstract void loadImage(ImageView imageView);
 }

@@ -7,14 +7,14 @@ import android.widget.ImageView;
 
 import java.util.List;
 
-public class DeviceGroup extends BaseDeviceGroup {
+public class VectorDeviceGroup extends BaseDeviceGroup {
 
     private int iconId;
 
-    public DeviceGroup(String name, int iconId, String portStatus, String power,
-                       boolean toggle, Alarm alarm, boolean isSelected, long id,
-                       List<DeviceGroup> deviceGroupList, List<Device> deviceList) {
-        super(name, portStatus, power, toggle, alarm, isSelected, id, deviceGroupList, deviceList);
+    public VectorDeviceGroup(String name, int iconId, String portStatus, String power,
+                             boolean toggle, Alarm alarm, boolean isSelected, long id,
+                             List<BaseDeviceGroup> deviceGroupVectorList, List<Device> deviceList) {
+        super(name, portStatus, power, toggle, alarm, isSelected, id, deviceGroupVectorList, deviceList);
         this.iconId = iconId;
     }
 
@@ -33,7 +33,7 @@ public class DeviceGroup extends BaseDeviceGroup {
     }
 
     @Override public String toString() {
-        return "DeviceGroup{" +
+        return "VectorDeviceGroup{" +
                 ", iconId='" + iconId + '\'' +
                 ", portStatus='" + getPortStatus() + '\'' +
                 ", power='" + getPower() + '\'' +
@@ -41,7 +41,7 @@ public class DeviceGroup extends BaseDeviceGroup {
                 ", alarm=" + getAlarm() +
                 ", isSelected=" + isSelected() +
                 ", id=" + getId() +
-                ", deviceGroupList=" + getDeviceGroupList() +
+                ", deviceGroupList=" + getBaseDeviceGroupList() +
                 ", deviceList=" + getDeviceList() +
                 '}';
     }

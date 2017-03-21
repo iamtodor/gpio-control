@@ -27,7 +27,7 @@ public class Device extends SelectableItem {
         this.name = name;
     }
 
-    @Override void loadImage(ImageView imageView) {
+    @Override public void loadImage(ImageView imageView) {
         Picasso.with(imageView.getContext()).load(imagePath).fit().centerCrop().into(imageView);
     }
 

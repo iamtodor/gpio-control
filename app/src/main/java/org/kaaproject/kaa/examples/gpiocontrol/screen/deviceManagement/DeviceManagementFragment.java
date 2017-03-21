@@ -25,7 +25,7 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.BaseController;
-import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroup;
+import org.kaaproject.kaa.examples.gpiocontrol.model.BaseDeviceGroup;
 import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceHeaderPinManagement;
 import org.kaaproject.kaa.examples.gpiocontrol.model.GroupHeaderPinManagement;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
@@ -92,13 +92,13 @@ public class DeviceManagementFragment extends BaseListFragment implements
         myItemAdapter = new ExpandableExampleAdapter(context, deviceGroupHeaderList);
 
         myItemAdapter.setOnCheckedGroupItemListener(new OnCheckedGroupItemListener() {
-            @Override public void onChange(boolean isChecked, DeviceGroup deviceGroup) {
+            @Override public void onChange(boolean isChecked, BaseDeviceGroup baseDeviceGroup) {
                 for (Header deviceGroupHeader : deviceGroupHeaderList) {
                     if (deviceGroupHeader instanceof GroupHeaderPinManagement) {
                         for (Object object : deviceGroupHeader.getChildList()) {
-                            DeviceGroup deviceGroupObject = (DeviceGroup) object;
-                            if (deviceGroup == deviceGroupObject) {
-                                deviceGroupObject.setSelected(isChecked);
+                            BaseDeviceGroup deviceGroup = (BaseDeviceGroup) object;
+                            if (baseDeviceGroup == deviceGroup) {
+                                deviceGroup.setSelected(isChecked);
                             }
                         }
                     }
@@ -151,8 +151,8 @@ public class DeviceManagementFragment extends BaseListFragment implements
         for (Header deviceGroupHeader : deviceGroupHeaderList) {
             if (deviceGroupHeader instanceof GroupHeaderPinManagement) {
                 for (Object object : deviceGroupHeader.getChildList()) {
-                    DeviceGroup deviceGroup = (DeviceGroup) object;
-                    if (deviceGroup.isSelected()) {
+                    BaseDeviceGroup baseDeviceGroup = (BaseDeviceGroup) object;
+                    if (baseDeviceGroup.isSelected()) {
                         totalSize = deviceGroupHeader.getChildSize();
                         selectedSize++;
                         isSelected = true;
