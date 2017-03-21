@@ -1,4 +1,4 @@
-package org.kaaproject.kaa.examples.gpiocontrol.screen.portManagement;
+package org.kaaproject.kaa.examples.gpiocontrol.screen.deviceManagement;
 
 
 import android.content.Context;
@@ -40,7 +40,7 @@ import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class PortManagementFragment extends BaseListFragment implements
+public class DeviceManagementFragment extends BaseListFragment implements
         RecyclerViewExpandableItemManager.OnGroupExpandListener,
         RecyclerViewExpandableItemManager.OnGroupCollapseListener, AddItemListener {
 
@@ -70,7 +70,7 @@ public class PortManagementFragment extends BaseListFragment implements
         final Context context = getContext();
 
         ButterKnife.bind(this, view);
-        getSupportActionBar().setTitle("Port management");
+        getSupportActionBar().setTitle(getString(R.string.device_management));
 
         final Drawable addGroupIcon = ContextCompat.getDrawable(context, R.drawable.add_group);
         addGroupIcon.setColorFilter(ContextCompat.getColor(context, R.color.lightBlueActiveElement),

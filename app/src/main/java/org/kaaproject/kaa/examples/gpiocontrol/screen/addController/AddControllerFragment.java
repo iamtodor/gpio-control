@@ -18,9 +18,9 @@ import com.squareup.picasso.Picasso;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseFragment;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.deviceManagement.AddItemListener;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChooseImageDialog;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChooseImageListener;
-import org.kaaproject.kaa.examples.gpiocontrol.screen.portManagement.AddItemListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

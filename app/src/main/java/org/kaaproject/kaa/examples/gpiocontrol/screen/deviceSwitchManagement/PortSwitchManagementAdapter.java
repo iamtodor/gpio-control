@@ -1,4 +1,4 @@
-package org.kaaproject.kaa.examples.gpiocontrol.screen.portSwitchManagement;
+package org.kaaproject.kaa.examples.gpiocontrol.screen.deviceSwitchManagement;
 
 
 import android.support.v7.widget.RecyclerView;

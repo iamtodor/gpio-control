@@ -14,8 +14,8 @@ import android.widget.ImageView;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.addController.AddControllerFragment;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.deviceManagement.AddItemListener;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.main.MainActivity;
-import org.kaaproject.kaa.examples.gpiocontrol.screen.portManagement.AddItemListener;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.ChangeFieldListener;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
 

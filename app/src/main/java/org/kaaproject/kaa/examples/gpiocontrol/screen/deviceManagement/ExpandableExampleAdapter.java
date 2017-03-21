@@ -1,4 +1,4 @@
-package org.kaaproject.kaa.examples.gpiocontrol.screen.portManagement;
+package org.kaaproject.kaa.examples.gpiocontrol.screen.deviceManagement;
 
 
 import android.content.Context;

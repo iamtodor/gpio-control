@@ -1,4 +1,4 @@
-package org.kaaproject.kaa.examples.gpiocontrol.screen.portSwitchManagement;
+package org.kaaproject.kaa.examples.gpiocontrol.screen.deviceSwitchManagement;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -20,7 +20,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class PortSwitchManagementFragment extends BaseListFragment {
+public class DeviceSwitchManagementFragment extends BaseListFragment {
 
     @BindView(R.id.recycler_view) protected RecyclerView recyclerView;
     @BindView(R.id.no_device_message) protected TextView noDeviceMessage;
@@ -31,7 +31,7 @@ public class PortSwitchManagementFragment extends BaseListFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.device_list_fragment, container, false);
         ButterKnife.bind(this, view);
-        getSupportActionBar().setTitle("Device switch management");
+        getSupportActionBar().setTitle(getString(R.string.device_switch_management));
 
         setupRecyclerView(recyclerView, fab);
 

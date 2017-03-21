@@ -1,4 +1,4 @@
-package org.kaaproject.kaa.examples.gpiocontrol.screen.portManagement;
+package org.kaaproject.kaa.examples.gpiocontrol.screen.deviceManagement;
 
 
 import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;

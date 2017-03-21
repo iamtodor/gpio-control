@@ -14,9 +14,9 @@ import android.view.MenuItem;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseActivity;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.deviceManagement.DeviceManagementFragment;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.deviceSwitchManagement.DeviceSwitchManagementFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChangeFieldDialog;
-import org.kaaproject.kaa.examples.gpiocontrol.screen.portManagement.PortManagementFragment;
-import org.kaaproject.kaa.examples.gpiocontrol.screen.portSwitchManagement.PortSwitchManagementFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.resetDevices.ResetDevicesFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.signIn.SingInActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.ChangeFieldListener;
@@ -53,7 +53,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private void defineApplicationFlow() {
         if (PreferencesImpl.getInstance().isEmailExists()) {
             navigationView.getMenu().getItem(0).setChecked(true);
-            showFragment(new PortManagementFragment());
+            showFragment(new DeviceSwitchManagementFragment());
         } else {
             showSignInActivity();
         }
@@ -80,13 +80,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.pin_switch_management) {
-            showFragment(new PortSwitchManagementFragment());
-        } else if (id == R.id.pin_management) {
-            showFragment(new PortManagementFragment());
+        if (id == R.id.device_switch_management) {
+            showFragment(new DeviceSwitchManagementFragment());
+        } else if (id == R.id.device_management) {
+            showFragment(new DeviceManagementFragment());
         } else if (id == R.id.edit_lock_password) {
             showEditPasswordDialog();
-        } else if (id == R.id.reset_devices) {
+        } else if (id == R.id.remove_controller) {
             showFragment(new ResetDevicesFragment());
         } else if (id == R.id.log_out) {
             showLogoutDialog();
