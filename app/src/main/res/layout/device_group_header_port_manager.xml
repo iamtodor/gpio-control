@@ -10,17 +10,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:layout_gravity="center_vertical"
-        android:layout_margin="8dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
-
-        <CheckBox
-            android:id="@+id/selection"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:gravity="center_vertical"/>
 
         <TextView
             android:id="@+id/name"
@@ -29,6 +23,7 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:alpha="0.87"
+            android:maxLines="1"
             android:gravity="center_vertical"
             android:textColor="@android:color/black"
             android:textSize="18sp"

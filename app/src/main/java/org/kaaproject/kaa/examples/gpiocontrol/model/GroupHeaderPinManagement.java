@@ -8,7 +8,6 @@ public class GroupHeaderPinManagement<DeviceGroup> extends Header {
     private String name;
     private int id;
     private List<DeviceGroup> deviceGroupList;
-    private boolean selected;
 
     @Override public String getName() {
         return name;
@@ -22,16 +21,11 @@ public class GroupHeaderPinManagement<DeviceGroup> extends Header {
         return id;
     }
 
-    @Override public boolean isSelected() {
-        return selected;
-    }
-
     @Override public int getChildSize() {
         return deviceGroupList.size();
     }
 
     @Override public void cancelSelection() {
-        selected = false;
         for (DeviceGroup deviceGroupToCastObject : deviceGroupList) {
             org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroup deviceGroup1 =
                     (org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroup) deviceGroupToCastObject;
@@ -49,10 +43,6 @@ public class GroupHeaderPinManagement<DeviceGroup> extends Header {
 
     @Override public List<DeviceGroup> getChildList() {
         return deviceGroupList;
-    }
-
-    public void setSelected(boolean selected) {
-        this.selected = selected;
     }
 
     public void setId(int id) {

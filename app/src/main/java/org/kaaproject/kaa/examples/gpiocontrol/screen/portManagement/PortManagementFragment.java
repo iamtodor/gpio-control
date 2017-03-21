@@ -91,11 +91,10 @@ public class PortManagementFragment extends BaseListFragment implements
         deviceGroupHeaderList = Utils.getMockedHeaderList();
         myItemAdapter = new ExpandableExampleAdapter(context, deviceGroupHeaderList);
 
-        myItemAdapter.setOnCheckedChangeItemListener(new OnCheckedChangeItemListener() {
+        myItemAdapter.setOnCheckedGroupItemListener(new OnCheckedGroupItemListener() {
             @Override public void onChange(boolean isChecked, DeviceGroup deviceGroup) {
                 for (Header deviceGroupHeader : deviceGroupHeaderList) {
                     if (deviceGroupHeader instanceof GroupHeaderPinManagement) {
-                        ((GroupHeaderPinManagement) deviceGroupHeader).setSelected(isChecked);
                         for (Object object : deviceGroupHeader.getChildList()) {
                             DeviceGroup deviceGroupObject = (DeviceGroup) object;
                             if (deviceGroup == deviceGroupObject) {
@@ -112,7 +111,6 @@ public class PortManagementFragment extends BaseListFragment implements
             @Override public void onChecked(boolean isChecked, Controller controller) {
                 for (Header deviceGroupHeader : deviceGroupHeaderList) {
                     if (deviceGroupHeader instanceof DeviceHeaderPinManagement) {
-                        ((DeviceHeaderPinManagement) deviceGroupHeader).setSelected(isChecked);
                         for (Object object : deviceGroupHeader.getChildList()) {
                             Controller controllerObject = (Controller) object;
                             if (controller == controllerObject) {

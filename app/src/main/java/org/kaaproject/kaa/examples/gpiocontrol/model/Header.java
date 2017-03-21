@@ -15,8 +15,6 @@ public abstract class Header<T> {
 
     public abstract int getId();
 
-    public abstract boolean isSelected();
-
     public abstract int getChildSize();
 
     public abstract void cancelSelection();

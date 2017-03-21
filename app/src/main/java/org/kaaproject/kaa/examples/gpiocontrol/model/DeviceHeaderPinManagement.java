@@ -8,7 +8,6 @@ public class DeviceHeaderPinManagement<Controller> extends Header {
     private String name;
     private List<Controller> controllerList;
     private int id;
-    private boolean selected;
 
     public DeviceHeaderPinManagement(String name, int id, List<Controller> portList) {
         this.name = name;
@@ -28,10 +27,6 @@ public class DeviceHeaderPinManagement<Controller> extends Header {
         return controllerList.get(childPosition);
     }
 
-    public void setSelected(boolean selected) {
-        this.selected = selected;
-    }
-
     @Override public List<Controller> getChildList() {
         return controllerList;
     }
@@ -40,16 +35,11 @@ public class DeviceHeaderPinManagement<Controller> extends Header {
         return id;
     }
 
-    @Override public boolean isSelected() {
-        return selected;
-    }
-
     @Override public int getChildSize() {
         return controllerList.size();
     }
 
     @Override public void cancelSelection() {
-        selected = false;
         for (Controller controllerToCastObject : controllerList) {
             org.kaaproject.kaa.examples.gpiocontrol.model.Controller controller =
                     (org.kaaproject.kaa.examples.gpiocontrol.model.Controller) controllerToCastObject;

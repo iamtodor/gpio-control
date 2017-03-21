@@ -52,9 +52,7 @@ public class ExpandableExampleAdapter
     private final MainActivity context;
     private final List<Header> deviceGroupHeaderList = new ArrayList<>();
 
-    private OnCheckedGroupHeaderListener onCheckedGroupHeaderListener;
-    private OnCheckedChangeItemListener onCheckedChangeItemListener;
-
+    private OnCheckedGroupItemListener onCheckedGroupItemListener;
     private OnCheckedControllerItemListener onCheckedControllerItemListener;
 
     ExpandableExampleAdapter(Context context, List<Header> deviceGroupHeaderList) {
@@ -71,15 +69,11 @@ public class ExpandableExampleAdapter
         notifyDataSetChanged();
     }
 
-    void setOnCheckedChangeItemListener(OnCheckedChangeItemListener onCheckedChangeItemListener) {
-        this.onCheckedChangeItemListener = onCheckedChangeItemListener;
+    void setOnCheckedGroupItemListener(OnCheckedGroupItemListener onCheckedGroupItemListener) {
+        this.onCheckedGroupItemListener = onCheckedGroupItemListener;
     }
 
-    void setOnCheckedGroupHeaderListener(OnCheckedGroupHeaderListener onCheckedGroupHeaderListener) {
-        this.onCheckedGroupHeaderListener = onCheckedGroupHeaderListener;
-    }
-
-    public void setOnCheckedControllerItemListener(OnCheckedControllerItemListener onCheckedControllerItemListener) {
+    void setOnCheckedControllerItemListener(OnCheckedControllerItemListener onCheckedControllerItemListener) {
         this.onCheckedControllerItemListener = onCheckedControllerItemListener;
     }
 
@@ -157,21 +151,6 @@ public class ExpandableExampleAdapter
             final Header item = deviceGroupHeaderList.get(groupPosition);
             holder.name.setText(item.getName());
             holder.droppedArrow.setClickable(true);
-            holder.selection.setChecked(item.isSelected());
-            holder.selection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    for (Header deviceGroupHeader : deviceGroupHeaderList) {
-                        if (deviceGroupHeader instanceof GroupHeaderPinManagement) {
-                            ((GroupHeaderPinManagement) deviceGroupHeader).setSelected(isChecked);
-                            for (Object object : deviceGroupHeader.getChildList()) {
-                                DeviceGroup deviceGroup = (DeviceGroup) object;
-                                deviceGroup.setSelected(isChecked);
-                            }
-                            onCheckedGroupHeaderListener.onChecked(isChecked, (GroupHeaderPinManagement) deviceGroupHeader);
-                        }
-                    }
-                }
-            });
 
             final int expandState = holder.getExpandStateFlags();
 
@@ -187,12 +166,6 @@ public class ExpandableExampleAdapter
             final Header item = deviceGroupHeaderList.get(groupPosition);
             holder.name.setText(item.getName());
             holder.droppedArrow.setClickable(true);
-            holder.selection.setChecked(item.isSelected());
-            holder.selection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                }
-            });
 
             final int expandState = holder.getExpandStateFlags();
 
@@ -222,7 +195,7 @@ public class ExpandableExampleAdapter
 
             deviceGroupViewHolder.selection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    onCheckedChangeItemListener.onChange(isChecked, deviceGroup);
+                    onCheckedGroupItemListener.onChange(isChecked, deviceGroup);
                 }
             });
 
@@ -353,8 +326,6 @@ public class ExpandableExampleAdapter
     }
 
     static class BaseHeaderViewHolder extends AbstractExpandableItemViewHolder {
-
-        @BindView(R.id.selection) CheckBox selection;
         @BindView(R.id.name) TextView name;
         @BindView(R.id.dropped_arrow) ImageView droppedArrow;
 
@@ -364,21 +335,29 @@ public class ExpandableExampleAdapter
         }
     }
 
-    static class BaseItemViewHolder extends AbstractExpandableItemViewHolder {
-
-        BaseItemViewHolder(View itemView) {
-            super(itemView);
-        }
-    }
-
     static class DeviceGroupHeaderViewHolder extends BaseHeaderViewHolder {
-        @BindView(R.id.selection) CheckBox selection;
         @BindView(R.id.name) TextView name;
         @BindView(R.id.dropped_arrow) ImageView droppedArrow;
 
         DeviceGroupHeaderViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+    }
+
+    static class DeviceListHeaderViewHolder extends BaseHeaderViewHolder {
+        @BindView(R.id.name) TextView name;
+        @BindView(R.id.dropped_arrow) ImageView droppedArrow;
+
+        DeviceListHeaderViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+    }
+
+    static class BaseItemViewHolder extends AbstractExpandableItemViewHolder {
+        BaseItemViewHolder(View itemView) {
+            super(itemView);
         }
     }
 
@@ -397,32 +376,7 @@ public class ExpandableExampleAdapter
         }
 
         @Override public void onClick(View view) {
-            if (view.getId() == R.id.menu) {
-
-            } else {
-//                selection.setChecked(!selection.isChecked());
-            }
-        }
-    }
-
-    static class DeviceListHeaderViewHolder extends BaseHeaderViewHolder implements View.OnClickListener {
-        @BindView(R.id.selection) CheckBox selection;
-        @BindView(R.id.name) TextView name;
-        @BindView(R.id.dropped_arrow) ImageView droppedArrow;
-
-        DeviceListHeaderViewHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
-            itemView.setOnClickListener(this);
-            droppedArrow.setOnClickListener(this);
-        }
-
-        @Override public void onClick(View view) {
-            if (view.getId() == R.id.selection) {
-                // TODO: 3/14/17 add hiding and showing devices
-            } else {
-
-            }
+            selection.setChecked(!selection.isChecked());
         }
     }
 
@@ -445,6 +399,7 @@ public class ExpandableExampleAdapter
         @Override public void onClick(View view) {
             selection.setChecked(!selection.isChecked());
         }
+
     }
 
     @Override
