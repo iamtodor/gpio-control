@@ -9,14 +9,6 @@ public class Alarm {
     private String iteration;
     private boolean isActive;
 
-    public Alarm(String time, String action, String name, String iteration, boolean isActive) {
-        this.time = time;
-        this.action = action;
-        this.name = name;
-        this.iteration = iteration;
-        this.isActive = isActive;
-    }
-
     public String getTime() {
         return time;
     }
@@ -55,5 +47,15 @@ public class Alarm {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    @Override public String toString() {
+        return "Alarm{" +
+                "time='" + time + '\'' +
+                ", action='" + action + '\'' +
+                ", name='" + name + '\'' +
+                ", iteration='" + iteration + '\'' +
+                ", isActive=" + isActive +
+                '}';
     }
 }

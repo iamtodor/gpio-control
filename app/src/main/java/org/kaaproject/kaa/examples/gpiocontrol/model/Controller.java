@@ -64,7 +64,7 @@ public class Controller {
                 "controllerId='" + controllerId + '\'' +
                 ", portName='" + portName + '\'' +
                 ", imagePortsDrawableId=" + imagePortsDrawableId +
-                ", isActive=" + isActive +
+                ", isOn=" + isActive +
                 ", isSelected=" + isSelected +
                 ", id=" + id +
                 '}';

@@ -108,8 +108,7 @@ public class AddAlarmActivity extends BaseActivity {
             alarmName.setError(getString(R.string.edit_text_cant_be_empty_error));
         }
 
-        Alarm alarm = new Alarm(timePicker.getText().toString(), action, alarmName.getText().toString(),
-                alarmDays.toString(), true);
+        Alarm alarm = new Alarm();
     }
 
     @OnClick(R.id.cancel)

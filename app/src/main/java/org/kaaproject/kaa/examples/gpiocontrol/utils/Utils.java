@@ -8,12 +8,11 @@ import android.support.annotation.NonNull;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Alarm;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
+import org.kaaproject.kaa.examples.gpiocontrol.model.Device;
 import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroup;
 import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceHeaderPinManagement;
 import org.kaaproject.kaa.examples.gpiocontrol.model.GroupHeaderPinManagement;
-import org.kaaproject.kaa.examples.gpiocontrol.model.GroupPort;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
-import org.kaaproject.kaa.examples.gpiocontrol.model.Port;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -23,28 +22,20 @@ import java.util.List;
 
 public class Utils {
 
-    private static List<Port> getMockedPinList() {
-        List<Port> portList = new ArrayList<>();
-
+    private static List<Device> getMockedDeviceList() {
+        List<Device> deviceList = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
-            if (i % 2 == 0) {
-                portList.add(new Port(true));
-            } else {
-                portList.add(new Port(false));
-            }
+            deviceList.add(new Device("Device " + i));
         }
-        return portList;
+        return deviceList;
     }
 
-    public static List<GroupPort> getMockedGroupList() {
-        List<Port> portList = getMockedPinList();
-        List<GroupPort> groupPortList = new ArrayList<>();
+    public static List<DeviceGroup> getMockedDeviceGroupList() {
+        List<Device> deviceList = getMockedDeviceList();
+        List<DeviceGroup> groupPortList = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
-            if (i % 9 == 0) {
-                groupPortList.add(new GroupPort("Group" + i, "alarm", portList, true));
-            } else {
-                groupPortList.add(new GroupPort("Group" + i, "alarm", portList, false));
-            }
+            groupPortList.add(new DeviceGroup("Group" + i, R.drawable.empty_group_icon, "Norm", "power",
+                    false, new Alarm(), false, i, null, deviceList));
         }
         return groupPortList;
     }
@@ -53,13 +44,13 @@ public class Utils {
         List<Controller> controllerList = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             if (i % 2 == 0) {
-                controllerList.add(new Controller("Controller " + i, "Port name " + i, R.drawable.flat_tv,
+                controllerList.add(new Controller("Controller " + i, "Device name " + i, R.drawable.flat_tv,
                         true, false, i));
             } else if (i % 3 == 0) {
-                controllerList.add(new Controller("Controller " + i, "Port name " + i, R.drawable.kitchen,
+                controllerList.add(new Controller("Controller " + i, "Device name " + i, R.drawable.kitchen,
                         true, false, i));
             } else {
-                controllerList.add(new Controller("Controller " + i, "Port name " + i, R.drawable.fan,
+                controllerList.add(new Controller("Controller " + i, "Device name " + i, R.drawable.fan,
                         false, false, i));
             }
         }
@@ -86,23 +77,12 @@ public class Utils {
         List<Alarm> arrayList = new ArrayList<>();
         for (int i = 1; i < 5; i++) {
             if (i % 2 == 0) {
-                arrayList.add(new Alarm("12:" + i * 10, "Turn on", "Alarm " + i,
-                        "Every sunday", true));
+                arrayList.add(new Alarm());
             } else {
-                arrayList.add(new Alarm("12:" + i * 10, "Turn off", "Alarm " + i,
-                        "Once", false));
+                arrayList.add(new Alarm());
             }
         }
         return arrayList;
-    }
-
-    private static List<DeviceGroup> getMockedDeviceGroupList() {
-        List<DeviceGroup> deviceGroupList = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            deviceGroupList.add(new DeviceGroup("Group " + i, false, R.drawable.empty_group_icon,
-                    "3/12 selected", i, null));
-        }
-        return deviceGroupList;
     }
 
     public static List<Header> getMockedHeaderList() {
