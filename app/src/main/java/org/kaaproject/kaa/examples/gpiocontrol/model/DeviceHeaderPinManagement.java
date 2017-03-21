@@ -3,14 +3,14 @@ package org.kaaproject.kaa.examples.gpiocontrol.model;
 
 import java.util.List;
 
-public class DeviceHeaderPinManager<Controller> extends Header {
+public class DeviceHeaderPinManagement<Controller> extends Header {
 
     private String name;
     private List<Controller> controllerList;
     private int id;
     private boolean selected;
 
-    public DeviceHeaderPinManager(String name, int id, List<Controller> portList) {
+    public DeviceHeaderPinManagement(String name, int id, List<Controller> portList) {
         this.name = name;
         this.id = id;
         this.controllerList = portList;
@@ -50,6 +50,11 @@ public class DeviceHeaderPinManager<Controller> extends Header {
 
     @Override public void cancelSelection() {
         selected = false;
+        for (Controller controllerToCastObject : controllerList) {
+            org.kaaproject.kaa.examples.gpiocontrol.model.Controller controller =
+                    (org.kaaproject.kaa.examples.gpiocontrol.model.Controller) controllerToCastObject;
+            controller.setSelected(false);
+        }
     }
 
     @Override public String toString() {

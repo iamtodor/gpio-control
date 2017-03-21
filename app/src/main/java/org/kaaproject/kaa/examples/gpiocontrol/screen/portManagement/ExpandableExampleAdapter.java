@@ -52,8 +52,10 @@ public class ExpandableExampleAdapter
     private final MainActivity context;
     private final List<Header> deviceGroupHeaderList = new ArrayList<>();
 
-    private OnCheckedChangeItemListener onCheckedChangeItemListener;
     private OnCheckedGroupHeaderListener onCheckedGroupHeaderListener;
+    private OnCheckedChangeItemListener onCheckedChangeItemListener;
+
+    private OnCheckedControllerItemListener onCheckedControllerItemListener;
 
     ExpandableExampleAdapter(Context context, List<Header> deviceGroupHeaderList) {
         this.context = (MainActivity) context;
@@ -75,6 +77,10 @@ public class ExpandableExampleAdapter
 
     void setOnCheckedGroupHeaderListener(OnCheckedGroupHeaderListener onCheckedGroupHeaderListener) {
         this.onCheckedGroupHeaderListener = onCheckedGroupHeaderListener;
+    }
+
+    public void setOnCheckedControllerItemListener(OnCheckedControllerItemListener onCheckedControllerItemListener) {
+        this.onCheckedControllerItemListener = onCheckedControllerItemListener;
     }
 
     @Override
@@ -161,8 +167,7 @@ public class ExpandableExampleAdapter
                                 DeviceGroup deviceGroup = (DeviceGroup) object;
                                 deviceGroup.setSelected(isChecked);
                             }
-//                            notifyDataSetChanged();
-                            onCheckedGroupHeaderListener.onChange(isChecked, (GroupHeaderPinManagement) deviceGroupHeader);
+                            onCheckedGroupHeaderListener.onChecked(isChecked, (GroupHeaderPinManagement) deviceGroupHeader);
                         }
                     }
                 }
@@ -289,6 +294,12 @@ public class ExpandableExampleAdapter
             singleDeviceViewHolder.name.setText(controller.getControllerId());
             singleDeviceViewHolder.port.setText(controller.getPortName());
             singleDeviceViewHolder.switchCompat.setChecked(controller.isActive());
+
+            singleDeviceViewHolder.selection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    onCheckedControllerItemListener.onChecked(isChecked, controller);
+                }
+            });
 
             final PopupMenu singleDeviceItemPopup = new PopupMenu(context, singleDeviceViewHolder.imageViewOptions);
             singleDeviceItemPopup.inflate(R.menu.device_item_popup_menu);

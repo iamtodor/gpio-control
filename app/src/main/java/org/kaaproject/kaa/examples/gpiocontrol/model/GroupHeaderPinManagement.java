@@ -3,11 +3,11 @@ package org.kaaproject.kaa.examples.gpiocontrol.model;
 
 import java.util.List;
 
-public class GroupHeaderPinManagement<GroupPort> extends Header {
+public class GroupHeaderPinManagement<DeviceGroup> extends Header {
 
     private String name;
     private int id;
-    private List<GroupPort> groupPortList;
+    private List<DeviceGroup> deviceGroupList;
     private boolean selected;
 
     @Override public String getName() {
@@ -27,23 +27,28 @@ public class GroupHeaderPinManagement<GroupPort> extends Header {
     }
 
     @Override public int getChildSize() {
-        return groupPortList.size();
+        return deviceGroupList.size();
     }
 
     @Override public void cancelSelection() {
         selected = false;
+        for (DeviceGroup deviceGroupToCastObject : deviceGroupList) {
+            org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroup deviceGroup1 =
+                    (org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroup) deviceGroupToCastObject;
+            deviceGroup1.setSelected(false);
+        }
     }
 
     @Override public int childrenCount() {
-        return groupPortList.size();
+        return deviceGroupList.size();
     }
 
-    @Override public GroupPort childAt(int childPosition) {
-        return groupPortList.get(childPosition);
+    @Override public DeviceGroup childAt(int childPosition) {
+        return deviceGroupList.get(childPosition);
     }
 
-    @Override public List<GroupPort> getChildList() {
-        return groupPortList;
+    @Override public List<DeviceGroup> getChildList() {
+        return deviceGroupList;
     }
 
     public void setSelected(boolean selected) {
@@ -54,17 +59,17 @@ public class GroupHeaderPinManagement<GroupPort> extends Header {
         this.id = id;
     }
 
-    public GroupHeaderPinManagement(String name, int id, List<GroupPort> groupPortList) {
+    public GroupHeaderPinManagement(String name, int id, List<DeviceGroup> deviceGroupList) {
         this.name = name;
         this.id = id;
-        this.groupPortList = groupPortList;
+        this.deviceGroupList = deviceGroupList;
     }
 
     @Override public String toString() {
         return "GroupHeaderPinManagement{" +
                 "name='" + name + '\'' +
                 ", id=" + id +
-                ", groupPortList=" + groupPortList +
+                ", deviceGroupList=" + deviceGroupList +
                 '}';
     }
 }

@@ -5,8 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/content_main"
     android:layout_width="match_parent"
-    android:animateLayoutChanges="true"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:background="#edeef0">
 
     <TextView
@@ -161,28 +161,35 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/ungroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:layout_marginBottom="16dp"
             android:layout_marginLeft="16dp"
-            android:clickable="true"
-            android:gravity="center">
+            android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/ic_ungroup"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                app:srcCompat="@drawable/add_group"/>
-
-            <TextView
+            <LinearLayout
+                android:id="@+id/ungroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
+                android:layout_gravity="center"
                 android:clickable="true"
-                android:gravity="center_vertical"
-                android:text="@string/ungroup"/>
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/ic_ungroup"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    app:srcCompat="@drawable/add_group"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:text="@string/ungroup"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 

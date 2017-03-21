@@ -10,7 +10,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +26,7 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
 import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceGroup;
-import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceHeaderPinManager;
+import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceHeaderPinManagement;
 import org.kaaproject.kaa.examples.gpiocontrol.model.GroupHeaderPinManagement;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseListFragment;
@@ -92,12 +91,6 @@ public class PortManagementFragment extends BaseListFragment implements
         deviceGroupHeaderList = Utils.getMockedHeaderList();
         myItemAdapter = new ExpandableExampleAdapter(context, deviceGroupHeaderList);
 
-        myItemAdapter.setOnCheckedGroupHeaderListener(new OnCheckedGroupHeaderListener() {
-            @Override public void onChange(boolean isChecked, GroupHeaderPinManagement groupHeaderPinManagement) {
-                showOrHideSelectionMenu(groupHeaderPinManagement);
-            }
-        });
-
         myItemAdapter.setOnCheckedChangeItemListener(new OnCheckedChangeItemListener() {
             @Override public void onChange(boolean isChecked, DeviceGroup deviceGroup) {
                 for (Header deviceGroupHeader : deviceGroupHeaderList) {
@@ -111,7 +104,23 @@ public class PortManagementFragment extends BaseListFragment implements
                         }
                     }
                 }
-//                myItemAdapter.updateAdapter(deviceGroupHeaderList);
+                showOrHideSelectionMenu();
+            }
+        });
+
+        myItemAdapter.setOnCheckedControllerItemListener(new OnCheckedControllerItemListener() {
+            @Override public void onChecked(boolean isChecked, Controller controller) {
+                for (Header deviceGroupHeader : deviceGroupHeaderList) {
+                    if (deviceGroupHeader instanceof DeviceHeaderPinManagement) {
+                        ((DeviceHeaderPinManagement) deviceGroupHeader).setSelected(isChecked);
+                        for (Object object : deviceGroupHeader.getChildList()) {
+                            Controller controllerObject = (Controller) object;
+                            if (controller == controllerObject) {
+                                controllerObject.setSelected(isChecked);
+                            }
+                        }
+                    }
+                }
                 showOrHideSelectionMenu();
             }
         });
@@ -137,17 +146,6 @@ public class PortManagementFragment extends BaseListFragment implements
         return view;
     }
 
-    private void showSelectionMenu(int totalSize, int selectedSize) {
-        selectedCountedValue.setText("Selected " + selectedSize + "/" + totalSize);
-        selectionMenu.setVisibility(View.VISIBLE);
-        fab.setVisibility(View.GONE);
-    }
-
-    private void hideSelectionMenu() {
-        selectionMenu.setVisibility(View.GONE);
-        fab.setVisibility(View.VISIBLE);
-    }
-
     private void showOrHideSelectionMenu() {
         boolean isSelected = false;
         int totalSize = 0;
@@ -156,8 +154,17 @@ public class PortManagementFragment extends BaseListFragment implements
             if (deviceGroupHeader instanceof GroupHeaderPinManagement) {
                 for (Object object : deviceGroupHeader.getChildList()) {
                     DeviceGroup deviceGroup = (DeviceGroup) object;
-                    totalSize = deviceGroupHeader.getChildSize();
                     if (deviceGroup.isSelected()) {
+                        totalSize = deviceGroupHeader.getChildSize();
+                        selectedSize++;
+                        isSelected = true;
+                    }
+                }
+            } else if(deviceGroupHeader instanceof DeviceHeaderPinManagement) {
+                for (Object object : deviceGroupHeader.getChildList()) {
+                    Controller controller = (Controller) object;
+                    if (controller.isSelected()) {
+                        totalSize = deviceGroupHeader.getChildSize();
                         selectedSize++;
                         isSelected = true;
                     }
@@ -238,23 +245,8 @@ public class PortManagementFragment extends BaseListFragment implements
     @OnClick(R.id.cancel_selection)
     public void cancelSelection() {
         for (Header header : deviceGroupHeaderList) {
-            if(header instanceof GroupHeaderPinManagement) {
-                GroupHeaderPinManagement groupHeaderPinManagement = (GroupHeaderPinManagement) header;
-                groupHeaderPinManagement.setSelected(false);
-                for (Object object : groupHeaderPinManagement.getChildList()) {
-                    DeviceGroup deviceGroup = (DeviceGroup) object;
-                    deviceGroup.setSelected(false);
-                }
-            } else if(header instanceof DeviceHeaderPinManager) {
-                DeviceHeaderPinManager deviceHeaderPinManager = (DeviceHeaderPinManager) header;
-                deviceHeaderPinManager.setSelected(false);
-                for (Object object : deviceHeaderPinManager.getChildList()) {
-                    Controller controller = (Controller) object;
-                    controller.setSelected(false);
-                }
-            }
+            header.cancelSelection();
         }
-        Log.d(TAG, "cancelSelection: " + deviceGroupHeaderList);
         myItemAdapter.updateAdapter(deviceGroupHeaderList);
     }
 
@@ -277,6 +269,6 @@ public class PortManagementFragment extends BaseListFragment implements
     }
 
     @Override public void onItemAdded() {
-
+        myItemAdapter.notifyDataSetChanged();
     }
 }
