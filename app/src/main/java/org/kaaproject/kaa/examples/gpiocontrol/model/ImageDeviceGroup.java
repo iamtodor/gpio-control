@@ -34,17 +34,9 @@ public class ImageDeviceGroup extends BaseDeviceGroup {
     }
 
     @Override public String toString() {
-        return "VectorDeviceGroup{" +
-                ", imagePath='" + imagePath + '\'' +
-                ", portStatus='" + getPortStatus() + '\'' +
-                ", power='" + getPower() + '\'' +
-                ", toggle=" + isToggle() +
-                ", alarm=" + getAlarm() +
-                ", isSelected=" + isSelected() +
-                ", id=" + getId() +
-                ", deviceGroupList=" + getBaseDeviceGroupList() +
-                ", deviceList=" + getDeviceList() +
+        return "ImageDeviceGroup{" +
+                "imagePath='" + imagePath + '\'' +
+                ", drawableId=" + drawableId +
                 '}';
     }
-
 }

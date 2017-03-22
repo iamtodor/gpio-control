@@ -58,6 +58,10 @@ public class GroupHeaderPinManagement<T> extends Header {
         this.deviceGroupList = deviceGroupList;
     }
 
+    public List<T> getDeviceGroupList() {
+        return deviceGroupList;
+    }
+
     @Override public String toString() {
         return "GroupHeaderPinManagement{" +
                 "name='" + name + '\'' +

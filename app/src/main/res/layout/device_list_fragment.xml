@@ -79,7 +79,6 @@
             android:background="@android:color/darker_gray"/>
 
         <LinearLayout
-            android:id="@+id/create_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -88,6 +87,7 @@
             android:orientation="horizontal">
 
             <LinearLayout
+                android:id="@+id/create_group"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -133,63 +133,6 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/duplicate"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:gravity="center">
-
-                <ImageView
-                    android:id="@+id/ic_duplicate"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    app:srcCompat="@drawable/add_group"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:clickable="true"
-                    android:gravity="center"
-                    android:text="@string/duplicate"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="16dp"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:id="@+id/ungroup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:clickable="true"
-                android:gravity="center">
-
-                <ImageView
-                    android:id="@+id/ic_ungroup"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    app:srcCompat="@drawable/add_group"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:clickable="true"
-                    android:gravity="center_vertical"
-                    android:text="@string/ungroup"/>
-
-            </LinearLayout>
 
         </LinearLayout>
 

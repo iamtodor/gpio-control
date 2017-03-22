@@ -37,7 +37,7 @@ public class Utils {
     public static List<BaseDeviceGroup> getMockedDeviceGroupList() {
         List<Device> deviceList = getMockedDeviceList();
         List<BaseDeviceGroup> baseDeviceGroupList = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 5; i++) {
             if (i % 2 == 0) {
                 baseDeviceGroupList.add(new VectorDeviceGroup("Group vector" + i, R.drawable.empty_group_icon, "Norm", "power",
                         false, new Alarm(), false, i, null, deviceList));

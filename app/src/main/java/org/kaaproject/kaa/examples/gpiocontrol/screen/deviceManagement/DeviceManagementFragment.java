@@ -37,6 +37,8 @@ import org.kaaproject.kaa.examples.gpiocontrol.utils.ChangeFieldListener;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.Utils;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -56,12 +58,9 @@ public class DeviceManagementFragment extends BaseListFragment implements
     @BindView(R.id.selection_menu) protected LinearLayout selectionMenu;
     @BindView(R.id.create_group) protected LinearLayout createGroup;
     @BindView(R.id.add_to_group) protected LinearLayout addGroup;
-    @BindView(R.id.duplicate) protected LinearLayout duplicateGroup;
-    @BindView(R.id.ungroup) protected LinearLayout ungroup;
     @BindView(R.id.selected_count_value) protected TextView selectedCountedValue;
 
-    @BindViews({R.id.ic_create_group, R.id.ic_add_to_group,
-            R.id.ic_duplicate, R.id.ic_ungroup}) protected ImageView[] imageViews;
+    @BindViews({R.id.ic_create_group, R.id.ic_add_to_group}) protected ImageView[] imageViews;
 
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView.Adapter mWrappedAdapter;
@@ -225,19 +224,30 @@ public class DeviceManagementFragment extends BaseListFragment implements
 
     @OnClick(R.id.create_group)
     public void createGroup() {
-
-    }
-
-    @OnClick(R.id.add_to_group)
-    public void addToGroup() {
-        ChangeFieldDialog dialogFactory = DialogFactory.getChangeFieldDialog(getString(R.string.add_group),
-                null, null, "Group name", "Add group", new ChangeFieldListener() {
+        ChangeFieldDialog dialogFactory = DialogFactory.getChangeFieldDialog(getString(R.string.create_group),
+                null, null, getString(R.string.group_name), getString(R.string.create_group), new ChangeFieldListener() {
                     @Override public void onChanged(String newField) {
                         for (Header header : deviceGroupHeaderList) {
                             if (header instanceof GroupHeaderPinManagement) {
+                                List<BaseDeviceGroup> selectedDeviceGroupList = new ArrayList<>();
+                                for (Object object : header.getChildList()) {
+                                    BaseDeviceGroup baseDeviceGroup = (BaseDeviceGroup) object;
+                                    if (baseDeviceGroup.isSelected()) {
+                                        selectedDeviceGroupList.add(baseDeviceGroup);
+                                    }
+                                }
+                                List<BaseDeviceGroup> baseDeviceGroupList = ((GroupHeaderPinManagement) header).getDeviceGroupList();
+                                for (Iterator<BaseDeviceGroup> it = baseDeviceGroupList.iterator(); it.hasNext(); ) {
+                                    BaseDeviceGroup baseDeviceGroup = it.next();
+                                    for(BaseDeviceGroup selectedGroup:selectedDeviceGroupList) {
+                                        if (baseDeviceGroup == selectedGroup) {
+                                            it.remove();
+                                        }
+                                    }
+                                }
                                 GroupHeaderPinManagement groupHeaderPinManagement = (GroupHeaderPinManagement) header;
                                 BaseDeviceGroup vectorDeviceGroup = new VectorDeviceGroup(newField, R.drawable.empty_group_icon,
-                                        null, null, false, null, false, 1, null, null);
+                                        null, null, false, null, false, 1, selectedDeviceGroupList, null);
                                 groupHeaderPinManagement.addGroup(vectorDeviceGroup);
                             }
                         }
@@ -248,8 +258,8 @@ public class DeviceManagementFragment extends BaseListFragment implements
         dialogFactory.show(getBaseActivity().getSupportFragmentManager());
     }
 
-    @OnClick(R.id.duplicate)
-    public void duplicate() {
+    @OnClick(R.id.add_to_group)
+    public void addToGroup() {
 
     }
 

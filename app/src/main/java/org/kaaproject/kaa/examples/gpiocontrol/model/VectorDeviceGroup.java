@@ -34,15 +34,7 @@ public class VectorDeviceGroup extends BaseDeviceGroup {
 
     @Override public String toString() {
         return "VectorDeviceGroup{" +
-                ", iconId='" + iconId + '\'' +
-                ", portStatus='" + getPortStatus() + '\'' +
-                ", power='" + getPower() + '\'' +
-                ", toggle=" + isToggle() +
-                ", alarm=" + getAlarm() +
-                ", isSelected=" + isSelected() +
-                ", id=" + getId() +
-                ", deviceGroupList=" + getBaseDeviceGroupList() +
-                ", deviceList=" + getDeviceList() +
+                "iconId=" + iconId +
                 '}';
     }
 }
