@@ -32,8 +32,8 @@ public class GroupHeaderPinManagement<T> extends Header {
         }
     }
 
-    public void addGroup(T group) {
-        deviceGroupList.add(group);
+    public void addGroup(int index, T group) {
+        deviceGroupList.add(index, group);
     }
 
     @Override public int childrenCount() {

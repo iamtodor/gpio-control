@@ -230,16 +230,20 @@ public class DeviceManagementFragment extends BaseListFragment implements
                         for (Header header : deviceGroupHeaderList) {
                             if (header instanceof GroupHeaderPinManagement) {
                                 List<BaseDeviceGroup> selectedDeviceGroupList = new ArrayList<>();
-                                for (Object object : header.getChildList()) {
-                                    BaseDeviceGroup baseDeviceGroup = (BaseDeviceGroup) object;
+                                int index = -1;
+                                for (int i = 0; i < header.getChildList().size(); i++) {
+                                    BaseDeviceGroup baseDeviceGroup = (BaseDeviceGroup) header.getChildList().get(i);
                                     if (baseDeviceGroup.isSelected()) {
+                                        if (index == -1) {
+                                            index = i;
+                                        }
                                         selectedDeviceGroupList.add(baseDeviceGroup);
                                     }
                                 }
                                 List<BaseDeviceGroup> baseDeviceGroupList = ((GroupHeaderPinManagement) header).getDeviceGroupList();
                                 for (Iterator<BaseDeviceGroup> it = baseDeviceGroupList.iterator(); it.hasNext(); ) {
                                     BaseDeviceGroup baseDeviceGroup = it.next();
-                                    for(BaseDeviceGroup selectedGroup:selectedDeviceGroupList) {
+                                    for (BaseDeviceGroup selectedGroup : selectedDeviceGroupList) {
                                         if (baseDeviceGroup == selectedGroup) {
                                             it.remove();
                                         }
@@ -248,7 +252,7 @@ public class DeviceManagementFragment extends BaseListFragment implements
                                 GroupHeaderPinManagement groupHeaderPinManagement = (GroupHeaderPinManagement) header;
                                 BaseDeviceGroup vectorDeviceGroup = new VectorDeviceGroup(newField, R.drawable.empty_group_icon,
                                         null, null, false, null, false, 1, selectedDeviceGroupList, null);
-                                groupHeaderPinManagement.addGroup(vectorDeviceGroup);
+                                groupHeaderPinManagement.addGroup(index, vectorDeviceGroup);
                             }
                         }
                         myItemAdapter.notifyDataSetChanged();
