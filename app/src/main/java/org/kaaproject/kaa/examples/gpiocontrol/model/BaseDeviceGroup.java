@@ -1,10 +1,13 @@
 package org.kaaproject.kaa.examples.gpiocontrol.model;
 
 
+import android.widget.ImageView;
+
 import java.util.List;
 
-public abstract class BaseDeviceGroup extends SelectableItem {
+public abstract class BaseDeviceGroup {
 
+    private String name;
     private String portStatus;
     private String power;
     private boolean toggle;
@@ -12,12 +15,12 @@ public abstract class BaseDeviceGroup extends SelectableItem {
     private boolean isSelected;
     private long id;
     private List<BaseDeviceGroup> baseDeviceGroupList;
-    private List<Device> deviceList;
+    private List<BaseDevice> deviceList;
 
     BaseDeviceGroup(String name, String portStatus, String power,
                     boolean toggle, Alarm alarm, boolean isSelected, long id,
-                    List<BaseDeviceGroup> baseDeviceGroupList, List<Device> deviceList) {
-        super(name);
+                    List<BaseDeviceGroup> baseDeviceGroupList, List<BaseDevice> deviceList) {
+        this.name = name;
         this.portStatus = portStatus;
         this.power = power;
         this.toggle = toggle;
@@ -26,6 +29,14 @@ public abstract class BaseDeviceGroup extends SelectableItem {
         this.id = id;
         this.baseDeviceGroupList = baseDeviceGroupList;
         this.deviceList = deviceList;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPortStatus() {
@@ -84,16 +95,19 @@ public abstract class BaseDeviceGroup extends SelectableItem {
         this.baseDeviceGroupList = baseDeviceGroupList;
     }
 
-    public List<Device> getDeviceList() {
+    public List<BaseDevice> getDeviceList() {
         return deviceList;
     }
 
-    public void setDeviceList(List<Device> deviceList) {
+    public void setDeviceList(List<BaseDevice> deviceList) {
         this.deviceList = deviceList;
     }
 
+    public abstract void loadImage(ImageView imageView);
+
     @Override public String toString() {
         return "BaseDeviceGroup{" +
+                "name='" + name + '\'' +
                 ", portStatus='" + portStatus + '\'' +
                 ", power='" + power + '\'' +
                 ", toggle=" + toggle +
@@ -104,5 +118,4 @@ public abstract class BaseDeviceGroup extends SelectableItem {
                 ", deviceList=" + deviceList +
                 '}';
     }
-
 }

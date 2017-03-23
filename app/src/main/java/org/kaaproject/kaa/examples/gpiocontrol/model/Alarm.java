@@ -1,13 +1,17 @@
 package org.kaaproject.kaa.examples.gpiocontrol.model;
 
 
-public class Alarm {
+import io.realm.RealmObject;
+
+public class Alarm extends RealmObject {
 
     private String time;
     private String action;
     private String name;
     private String iteration;
     private boolean isActive;
+
+    public Alarm() {}
 
     public String getTime() {
         return time;

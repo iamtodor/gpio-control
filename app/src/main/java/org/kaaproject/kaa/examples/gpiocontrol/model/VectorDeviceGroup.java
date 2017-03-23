@@ -13,8 +13,8 @@ public class VectorDeviceGroup extends BaseDeviceGroup {
 
     public VectorDeviceGroup(String name, int iconId, String portStatus, String power,
                              boolean toggle, Alarm alarm, boolean isSelected, long id,
-                             List<BaseDeviceGroup> deviceGroupVectorList, List<Device> deviceList) {
-        super(name, portStatus, power, toggle, alarm, isSelected, id, deviceGroupVectorList, deviceList);
+                             List<BaseDeviceGroup> deviceGroupVectorList, List<BaseDevice> baseDeviceList) {
+        super(name, portStatus, power, toggle, alarm, isSelected, id, deviceGroupVectorList, baseDeviceList);
         this.iconId = iconId;
     }
 

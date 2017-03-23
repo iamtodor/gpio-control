@@ -16,7 +16,7 @@ public class ImageDeviceGroup extends BaseDeviceGroup {
 
     public ImageDeviceGroup(String name, String imagePath, String portStatus, String power,
                             boolean toggle, Alarm alarm, boolean isSelected, long id,
-                            List<BaseDeviceGroup> baseDeviceGroupList, List<Device> deviceList) {
+                            List<BaseDeviceGroup> baseDeviceGroupList, List<BaseDevice> deviceList) {
         super(name, portStatus, power, toggle, alarm, isSelected, id, baseDeviceGroupList, deviceList);
         this.imagePath = imagePath;
     }

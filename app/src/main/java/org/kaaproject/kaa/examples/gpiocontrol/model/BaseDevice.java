@@ -3,20 +3,20 @@ package org.kaaproject.kaa.examples.gpiocontrol.model;
 
 import android.widget.ImageView;
 
-import com.squareup.picasso.Picasso;
-
-public class Device extends SelectableItem {
+public abstract class BaseDevice {
 
     private String name;
-    private String imagePath;
     private String portTitle;
     private String portId;
     private boolean isOn;
     private boolean isLocked;
 
-    public Device(String name) {
-        super(name);
+    public BaseDevice(String name, String portTitle, String portId, boolean isOn, boolean isLocked) {
         this.name = name;
+        this.portTitle = portTitle;
+        this.portId = portId;
+        this.isOn = isOn;
+        this.isLocked = isLocked;
     }
 
     public String getName() {
@@ -27,17 +27,7 @@ public class Device extends SelectableItem {
         this.name = name;
     }
 
-    @Override public void loadImage(ImageView imageView) {
-        Picasso.with(imageView.getContext()).load(imagePath).fit().centerCrop().into(imageView);
-    }
-
-    public String getImagePath() {
-        return imagePath;
-    }
-
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
-    }
+    abstract public void loadImage(ImageView imageView);
 
     public String getPortTitle() {
         return portTitle;
@@ -72,9 +62,8 @@ public class Device extends SelectableItem {
     }
 
     @Override public String toString() {
-        return "Device{" +
+        return "BaseDevice{" +
                 "name='" + name + '\'' +
-                ", imagePath='" + imagePath + '\'' +
                 ", portTitle='" + portTitle + '\'' +
                 ", portId='" + portId + '\'' +
                 ", isOn=" + isOn +

@@ -8,12 +8,13 @@ import android.support.annotation.NonNull;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Alarm;
 import org.kaaproject.kaa.examples.gpiocontrol.model.BaseController;
+import org.kaaproject.kaa.examples.gpiocontrol.model.BaseDevice;
 import org.kaaproject.kaa.examples.gpiocontrol.model.BaseDeviceGroup;
-import org.kaaproject.kaa.examples.gpiocontrol.model.Device;
 import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceHeaderPinManagement;
 import org.kaaproject.kaa.examples.gpiocontrol.model.GroupHeaderPinManagement;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
 import org.kaaproject.kaa.examples.gpiocontrol.model.ImageController;
+import org.kaaproject.kaa.examples.gpiocontrol.model.ImageDevice;
 import org.kaaproject.kaa.examples.gpiocontrol.model.ImageDeviceGroup;
 import org.kaaproject.kaa.examples.gpiocontrol.model.VectorController;
 import org.kaaproject.kaa.examples.gpiocontrol.model.VectorDeviceGroup;
@@ -26,16 +27,17 @@ import java.util.List;
 
 public class Utils {
 
-    private static List<Device> getMockedDeviceList() {
-        List<Device> deviceList = new ArrayList<>();
+    private static List<BaseDevice> getMockedDeviceList() {
+        List<BaseDevice> deviceList = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
-            deviceList.add(new Device("Device " + i));
+            deviceList.add(new ImageDevice("ImageDevice " + i, "Port title " + i + 5, "Port id " + i + 1, false, false, "smth"));
+            ;
         }
         return deviceList;
     }
 
     public static List<BaseDeviceGroup> getMockedDeviceGroupList() {
-        List<Device> deviceList = getMockedDeviceList();
+        List<BaseDevice> deviceList = getMockedDeviceList();
         List<BaseDeviceGroup> baseDeviceGroupList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             if (i % 2 == 0) {
