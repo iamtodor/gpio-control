@@ -5,7 +5,9 @@ import android.widget.ImageView;
 
 import java.util.List;
 
-public abstract class BaseDeviceGroup {
+import io.realm.RealmModel;
+
+public abstract class BaseDeviceGroup implements RealmModel{
 
     private String name;
     private String portStatus;
@@ -16,6 +18,9 @@ public abstract class BaseDeviceGroup {
     private long id;
     private List<BaseDeviceGroup> baseDeviceGroupList;
     private List<BaseDevice> deviceList;
+
+    public BaseDeviceGroup() {
+    }
 
     BaseDeviceGroup(String name, String portStatus, String power,
                     boolean toggle, Alarm alarm, boolean isSelected, long id,

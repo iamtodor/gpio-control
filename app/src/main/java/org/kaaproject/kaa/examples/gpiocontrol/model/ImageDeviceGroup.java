@@ -9,10 +9,15 @@ import org.kaaproject.kaa.examples.gpiocontrol.R;
 
 import java.util.List;
 
-public class ImageDeviceGroup extends BaseDeviceGroup {
+import io.realm.RealmModel;
+
+public class ImageDeviceGroup extends BaseDeviceGroup implements RealmModel {
 
     private String imagePath;
     private int drawableId = R.drawable.xboxone_frontview_stockblack;
+
+    public ImageDeviceGroup() {
+    }
 
     public ImageDeviceGroup(String name, String imagePath, String portStatus, String power,
                             boolean toggle, Alarm alarm, boolean isSelected, long id,

@@ -10,6 +10,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
@@ -22,6 +23,8 @@ import org.kaaproject.kaa.examples.gpiocontrol.screen.signIn.SingInActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.ChangeFieldListener;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.PreferencesImpl;
+import org.kaaproject.kaa.examples.gpiocontrol.utils.RealmUtils;
+import org.kaaproject.kaa.examples.gpiocontrol.utils.Utils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,6 +49,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        RealmUtils realmUtils = new RealmUtils();
+        realmUtils.saveDeviceGroupListToDB(Utils.getMockedDeviceGroupList());
+        Log.d(TAG, "onCreate: " + realmUtils.getDeviceGroupListFromDB());
 
         defineApplicationFlow();
     }

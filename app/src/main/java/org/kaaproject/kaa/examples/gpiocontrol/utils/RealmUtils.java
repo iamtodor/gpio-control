@@ -11,7 +11,7 @@ import io.realm.Realm;
 
 public class RealmUtils {
 
-    private Realm instance;
+    private Realm instance = Realm.getDefaultInstance();
 
     public void saveControllersToDB(final List<BaseController> controllerList) {
         instance.executeTransaction(new Realm.Transaction() {
@@ -34,7 +34,7 @@ public class RealmUtils {
     public void saveDeviceGroupListToDB(final List<BaseDeviceGroup> deviceGroupList) {
         instance.executeTransaction(new Realm.Transaction() {
             @Override public void execute(Realm realm) {
-//                realm.copyToRealmOrUpdate(deviceGroupList);
+                realm.copyToRealmOrUpdate(deviceGroupList);
             }
         });
     }
@@ -43,7 +43,7 @@ public class RealmUtils {
         final List<BaseDeviceGroup> deviceGroupList = new ArrayList<>();
         instance.executeTransaction(new Realm.Transaction() {
             @Override public void execute(Realm realm) {
-//                deviceGroupList.addAll(realm.where(BaseDeviceGroup.class).findAll());
+                deviceGroupList.addAll(realm.where(BaseDeviceGroup.class).findAll());
             }
         });
         return deviceGroupList;

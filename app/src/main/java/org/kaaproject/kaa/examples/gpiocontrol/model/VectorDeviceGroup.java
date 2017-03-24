@@ -7,9 +7,13 @@ import android.widget.ImageView;
 
 import java.util.List;
 
-public class VectorDeviceGroup extends BaseDeviceGroup {
+import io.realm.RealmModel;
+
+public class VectorDeviceGroup extends BaseDeviceGroup implements RealmModel {
 
     private int iconId;
+
+    public VectorDeviceGroup() {}
 
     public VectorDeviceGroup(String name, int iconId, String portStatus, String power,
                              boolean toggle, Alarm alarm, boolean isSelected, long id,
