@@ -22,8 +22,8 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemVie
 import com.squareup.picasso.Picasso;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
-import org.kaaproject.kaa.examples.gpiocontrol.model.BaseController;
 import org.kaaproject.kaa.examples.gpiocontrol.model.BaseDeviceGroup;
+import org.kaaproject.kaa.examples.gpiocontrol.model.Device;
 import org.kaaproject.kaa.examples.gpiocontrol.model.GroupHeaderPinManagement;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChangeFieldDialog;
@@ -32,6 +32,7 @@ import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChooseImageListener
 import org.kaaproject.kaa.examples.gpiocontrol.screen.main.MainActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.ChangeFieldListener;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
+import org.kaaproject.kaa.examples.gpiocontrol.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +40,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ExpandableExampleAdapter
+class ExpandableExampleAdapter
         extends AbstractExpandableItemAdapter<ExpandableExampleAdapter.BaseHeaderViewHolder, ExpandableExampleAdapter.BaseItemViewHolder> {
 
     private static final String TAG = ExpandableExampleAdapter.class.getSimpleName();
@@ -53,7 +54,7 @@ public class ExpandableExampleAdapter
     private final List<Header> deviceGroupHeaderList = new ArrayList<>();
 
     private OnCheckedGroupItemListener onCheckedGroupItemListener;
-    private OnCheckedControllerItemListener onCheckedControllerItemListener;
+    private OnCheckedDeviceItemListener onCheckedDeviceItemListener;
 
     ExpandableExampleAdapter(Context context, List<Header> deviceGroupHeaderList) {
         this.context = (MainActivity) context;
@@ -73,8 +74,8 @@ public class ExpandableExampleAdapter
         this.onCheckedGroupItemListener = onCheckedGroupItemListener;
     }
 
-    void setOnCheckedControllerItemListener(OnCheckedControllerItemListener onCheckedControllerItemListener) {
-        this.onCheckedControllerItemListener = onCheckedControllerItemListener;
+    void setOnCheckedDeviceItemListener(OnCheckedDeviceItemListener onCheckedDeviceItemListener) {
+        this.onCheckedDeviceItemListener = onCheckedDeviceItemListener;
     }
 
     @Override
@@ -98,8 +99,8 @@ public class ExpandableExampleAdapter
             final BaseDeviceGroup baseDeviceGroup = (BaseDeviceGroup) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
             return baseDeviceGroup.getId();
         } else {
-            final BaseController controller = (BaseController) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
-            return controller.getId();
+            final Device device = (Device) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
+            return device.getId();
         }
     }
 
@@ -256,17 +257,17 @@ public class ExpandableExampleAdapter
             });
         } else if (viewType == SINGLE_DEVICE_ITEM_VIEW_TYPE) {
             final SingleDeviceItemViewHolder singleDeviceViewHolder = (SingleDeviceItemViewHolder) holder;
-            final BaseController controller = (BaseController) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
+            final Device device = (Device) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
 
-            singleDeviceViewHolder.selection.setChecked(controller.isSelected());
-            controller.loadImage(singleDeviceViewHolder.imagePort);
-            singleDeviceViewHolder.name.setText(controller.getControllerId());
-            singleDeviceViewHolder.port.setText(controller.getPortName());
-            singleDeviceViewHolder.switchCompat.setChecked(controller.isActive());
+//            singleDeviceViewHolder.selection.setChecked(device.isSelected());
+            Utils.loadImage(device, singleDeviceViewHolder.imagePort);
+            singleDeviceViewHolder.name.setText(device.getName());
+            singleDeviceViewHolder.port.setText(device.getPortId());
+            singleDeviceViewHolder.switchCompat.setChecked(device.isOn());
 
             singleDeviceViewHolder.selection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    onCheckedControllerItemListener.onChecked(isChecked, controller);
+                    onCheckedDeviceItemListener.onChecked(isChecked, device);
                 }
             });
 
@@ -296,10 +297,10 @@ public class ExpandableExampleAdapter
                             break;
                         case R.id.edit_name:
                             ChangeFieldDialog dialog = DialogFactory.getChangeFieldDialog(context.getString(R.string.edit_name),
-                                    null, controller.getControllerId(), context.getString(R.string.controller_id),
+                                    null, device.getName(), context.getString(R.string.controller_id),
                                     context.getString(R.string.edit_name), new ChangeFieldListener() {
                                         @Override public void onChanged(String newField) {
-                                            controller.setControllerId(newField);
+//                                            device.(newField);
                                             notifyDataSetChanged();
                                         }
                                     });

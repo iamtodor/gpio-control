@@ -41,8 +41,8 @@ public class DeviceHeaderPinManagement<T> extends Header {
 
     @Override public void cancelSelection() {
         for (T controllerToCastObject : controllerList) {
-            BaseController baseController = (BaseController) controllerToCastObject;
-            baseController.setSelected(false);
+            Device device = (Device) controllerToCastObject;
+//            device.setSelected(false);
         }
     }
 

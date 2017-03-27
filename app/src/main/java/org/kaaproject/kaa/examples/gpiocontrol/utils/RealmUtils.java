@@ -1,8 +1,8 @@
 package org.kaaproject.kaa.examples.gpiocontrol.utils;
 
 
-import org.kaaproject.kaa.examples.gpiocontrol.model.BaseController;
 import org.kaaproject.kaa.examples.gpiocontrol.model.BaseDeviceGroup;
+import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,7 @@ public class RealmUtils {
 
     private Realm instance;
 
-    public void saveControllersToDB(final List<BaseController> controllerList) {
+    public void saveControllersToDB(final List<Controller> controllerList) {
         instance.executeTransaction(new Realm.Transaction() {
             @Override public void execute(Realm realm) {
 //                realm.copyToRealmOrUpdate(controllerList);
@@ -21,8 +21,8 @@ public class RealmUtils {
         });
     }
 
-    public List<BaseController> getControllersFromDB() {
-        final List<BaseController> controllerList = new ArrayList<>();
+    public List<Controller> getControllersFromDB() {
+        final List<Controller> controllerList = new ArrayList<>();
         instance.executeTransaction(new Realm.Transaction() {
             @Override public void execute(Realm realm) {
 //                controllerList.addAll(realm.where(BaseController.class).findAll());

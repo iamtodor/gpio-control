@@ -12,6 +12,8 @@ public class Device {
     private String portId;
     private boolean isOn;
     private boolean isLocked;
+    private int id = -1;
+    private boolean isSelected;
 
     public String getName() {
         return name;
@@ -31,6 +33,22 @@ public class Device {
 
     public boolean isLocked() {
         return isLocked;
+    }
+
+    @Nullable public String getImagePath() {
+        return imagePath;
+    }
+
+    public int getVectorId() {
+        return vectorId;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public boolean isSelected() {
+        return isSelected();
     }
 
     @Override public String toString() {
@@ -86,6 +104,16 @@ public class Device {
             return this;
         }
 
+        public Builder setId(int id) {
+            this.device.id = id;
+            return this;
+        }
+
+        public Builder setIsSelected(boolean isSelected) {
+            this.device.isSelected = isSelected;
+            return this;
+        }
+
         public Device build() {
             if (this.device.name == null) {
                 throw new NullPointerException("Device name is empty");
@@ -95,6 +123,8 @@ public class Device {
                 throw new NullPointerException("Device port title is empty");
             } else if (this.device.portId == null) {
                 throw new NullPointerException("Device port id is null");
+            } else if (this.device.id == -1) {
+                throw new NullPointerException("Device id isn't specified");
             }
             return this.device;
         }

@@ -24,12 +24,11 @@ import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandab
 import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
-import org.kaaproject.kaa.examples.gpiocontrol.model.BaseController;
 import org.kaaproject.kaa.examples.gpiocontrol.model.BaseDeviceGroup;
+import org.kaaproject.kaa.examples.gpiocontrol.model.Device;
 import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceHeaderPinManagement;
 import org.kaaproject.kaa.examples.gpiocontrol.model.GroupHeaderPinManagement;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
-import org.kaaproject.kaa.examples.gpiocontrol.model.VectorDeviceGroup;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseListFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.AddControllerOrGroupDialog;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChangeFieldDialog;
@@ -110,14 +109,14 @@ public class DeviceManagementFragment extends BaseListFragment implements
             }
         });
 
-        myItemAdapter.setOnCheckedControllerItemListener(new OnCheckedControllerItemListener() {
-            @Override public void onChecked(boolean isChecked, BaseController controller) {
+        myItemAdapter.setOnCheckedDeviceItemListener(new OnCheckedDeviceItemListener() {
+            @Override public void onChecked(boolean isChecked, Device currentSelectedDevice) {
                 for (Header deviceGroupHeader : deviceGroupHeaderList) {
                     if (deviceGroupHeader instanceof DeviceHeaderPinManagement) {
                         for (Object object : deviceGroupHeader.getChildList()) {
-                            BaseController controllerObject = (BaseController) object;
-                            if (controller == controllerObject) {
-                                controllerObject.setSelected(isChecked);
+                            Device selectableDevice = (Device) object;
+                            if (currentSelectedDevice == selectableDevice) {
+//                                selectableDevice.setSelected(isChecked);
                             }
                         }
                     }
@@ -163,8 +162,8 @@ public class DeviceManagementFragment extends BaseListFragment implements
                 }
             } else if (deviceGroupHeader instanceof DeviceHeaderPinManagement) {
                 for (Object object : deviceGroupHeader.getChildList()) {
-                    BaseController controller = (BaseController) object;
-                    if (controller.isSelected()) {
+                    Device device = (Device) object;
+                    if (device.isSelected()) {
                         totalSize = deviceGroupHeader.getChildSize();
                         selectedSize++;
                         isSelected = true;
@@ -250,9 +249,9 @@ public class DeviceManagementFragment extends BaseListFragment implements
                                     }
                                 }
                                 GroupHeaderPinManagement groupHeaderPinManagement = (GroupHeaderPinManagement) header;
-                                BaseDeviceGroup vectorDeviceGroup = new VectorDeviceGroup(newField, R.drawable.empty_group_icon,
-                                        null, null, false, null, false, 1, selectedDeviceGroupList, null);
-                                groupHeaderPinManagement.addGroup(index, vectorDeviceGroup);
+//                                BaseDeviceGroup vectorDeviceGroup = new VectorDeviceGroup(newField, R.drawable.empty_group_icon,
+//                                        null, null, false, null, false, 1, selectedDeviceGroupList, null);
+//                                groupHeaderPinManagement.addGroup(index, vectorDeviceGroup);
                             }
                         }
                         myItemAdapter.notifyDataSetChanged();

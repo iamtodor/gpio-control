@@ -15,11 +15,13 @@ public abstract class BaseDeviceGroup {
     private boolean isSelected;
     private long id;
     private List<BaseDeviceGroup> baseDeviceGroupList;
-    private List<BaseDevice> deviceList;
+//    private List<BaseDevice> deviceList;
 
     BaseDeviceGroup(String name, String portStatus, String power,
                     boolean toggle, Alarm alarm, boolean isSelected, long id,
-                    List<BaseDeviceGroup> baseDeviceGroupList, List<BaseDevice> deviceList) {
+                    List<BaseDeviceGroup> baseDeviceGroupList
+//            ,List<BaseDevice> deviceList
+    ) {
         this.name = name;
         this.portStatus = portStatus;
         this.power = power;
@@ -28,7 +30,7 @@ public abstract class BaseDeviceGroup {
         this.isSelected = isSelected;
         this.id = id;
         this.baseDeviceGroupList = baseDeviceGroupList;
-        this.deviceList = deviceList;
+//        this.deviceList = deviceList;
     }
 
     public String getName() {
@@ -95,13 +97,13 @@ public abstract class BaseDeviceGroup {
         this.baseDeviceGroupList = baseDeviceGroupList;
     }
 
-    public List<BaseDevice> getDeviceList() {
-        return deviceList;
-    }
+//    public List<BaseDevice> getDeviceList() {
+//        return deviceList;
+//    }
 
-    public void setDeviceList(List<BaseDevice> deviceList) {
-        this.deviceList = deviceList;
-    }
+//    public void setDeviceList(List<BaseDevice> deviceList) {
+//        this.deviceList = deviceList;
+//    }
 
     public abstract void loadImage(ImageView imageView);
 
@@ -115,7 +117,7 @@ public abstract class BaseDeviceGroup {
                 ", isSelected=" + isSelected +
                 ", id=" + id +
                 ", baseDeviceGroupList=" + baseDeviceGroupList +
-                ", deviceList=" + deviceList +
+//                ", deviceList=" + deviceList +
                 '}';
     }
 }

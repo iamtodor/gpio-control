@@ -12,14 +12,12 @@ import com.squareup.picasso.Picasso;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Alarm;
-import org.kaaproject.kaa.examples.gpiocontrol.model.BaseController;
+import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Device;
 import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceHeaderPinManagement;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Group;
 import org.kaaproject.kaa.examples.gpiocontrol.model.GroupHeaderPinManagement;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
-import org.kaaproject.kaa.examples.gpiocontrol.model.ImageController;
-import org.kaaproject.kaa.examples.gpiocontrol.model.VectorController;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -32,12 +30,25 @@ public class Utils {
     private static List<Device> getMockedDeviceList() {
         List<Device> deviceList = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
-            Device device = new Device.Builder().setName("ImageDevice " + i)
-                    .setPortTitle("Port title " + i + 5)
-                    .setPortId("Port id " + i + 1)
-                    .setVectorId(R.drawable.group_icon)
-                    .build();
-            deviceList.add(device);
+            if (i % 2 == 0) {
+                Device device = new Device.Builder().setName("ImageDevice " + i)
+                        .setPortTitle("Port title " + i + 5)
+                        .setPortId("Port id " + i + 1)
+                        .setVectorId(R.drawable.group_icon)
+                        .setIsOn(true)
+                        .setId(i)
+                        .build();
+                deviceList.add(device);
+            } else {
+                Device device = new Device.Builder().setName("ImageDevice " + i)
+                        .setPortTitle("Port title " + i + 5)
+                        .setPortId("Port id " + i + 1)
+                        .setVectorId(R.drawable.group_icon)
+                        .setIsOn(false)
+                        .setId(i)
+                        .build();
+                deviceList.add(device);
+            }
         }
         return deviceList;
     }
@@ -71,17 +82,30 @@ public class Utils {
         return groupList;
     }
 
-    private static List<BaseController> getMockedControllerList() {
-        List<BaseController> controllerList = new ArrayList<>();
+    private static List<Controller> getMockedControllerList() {
+        List<Controller> controllerList = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             if (i % 2 == 0) {
-                controllerList.add(new VectorController("VectorController " + i, "Device name " + i,
-                        true, false, i, R.drawable.flat_tv));
+                Controller controller = new Controller.Builder()
+                        .setControllerId("VectorController " + i)
+                        .setPortName("Device name " + i)
+                        .setVectorId(R.drawable.flat_tv)
+                        .build();
+                controllerList.add(controller);
             } else if (i % 3 == 0) {
-                controllerList.add(new VectorController("VectorController " + i, "Device name " + i,
-                        true, false, i, R.drawable.kitchen));
+                Controller controller = new Controller.Builder()
+                        .setControllerId("VectorController " + i)
+                        .setPortName("Device name " + i)
+                        .setVectorId(R.drawable.kitchen)
+                        .build();
+                controllerList.add(controller);
             } else {
-                controllerList.add(new ImageController("ImageController " + i, "Device name " + i, false, false, i, "some path"));
+                Controller controller = new Controller.Builder()
+                        .setControllerId("VectorController " + i)
+                        .setPortName("Device name " + i)
+                        .setImagePath("https://avatars.yandex.net/get-music-content/97284/4583694d.a.4229094-1/400x400")
+                        .build();
+                controllerList.add(controller);
             }
         }
         return controllerList;
@@ -117,13 +141,13 @@ public class Utils {
 
     public static List<Header> getMockedHeaderList() {
         List<Header> deviceGroupHeaderList = new ArrayList<>();
-        List<BaseController> controllerList = Utils.getMockedControllerList();
+        List<Device> deviceList = Utils.getMockedDeviceList();
         List<Group> baseDeviceGroupList = Utils.getMockedGroupList();
 
         deviceGroupHeaderList.add(new GroupHeaderPinManagement<>("Device groups (" + baseDeviceGroupList.size() + ")",
                 0, baseDeviceGroupList));
-        deviceGroupHeaderList.add(new DeviceHeaderPinManagement<>("Devices (" + controllerList.size() + ")",
-                1, controllerList));
+        deviceGroupHeaderList.add(new DeviceHeaderPinManagement<>("Devices (" + deviceList.size() + ")",
+                1, deviceList));
         return deviceGroupHeaderList;
     }
 
@@ -133,6 +157,18 @@ public class Utils {
         } else if (group.getVectorId() != -1) {
             final Drawable drawable = VectorDrawableCompat.create(imageView.getContext().getResources(),
                     group.getVectorId(), null);
+            imageView.setImageDrawable(drawable);
+        } else {
+            throw new RuntimeException("Group should has either vector or photo");
+        }
+    }
+
+    public static void loadImage(Device device, ImageView imageView) {
+        if (device.getImagePath() != null) {
+            Picasso.with(imageView.getContext()).load(device.getImagePath()).fit().centerCrop().into(imageView);
+        } else if (device.getVectorId() != -1) {
+            final Drawable drawable = VectorDrawableCompat.create(imageView.getContext().getResources(),
+                    device.getVectorId(), null);
             imageView.setImageDrawable(drawable);
         } else {
             throw new RuntimeException("Group should has either vector or photo");
