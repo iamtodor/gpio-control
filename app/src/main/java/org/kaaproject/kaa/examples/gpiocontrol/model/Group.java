@@ -15,10 +15,23 @@ public class Group {
     private boolean toggle;
     private Alarm alarm;
     private long id;
+    private boolean isSelected;
     private List<Group> groupList;
     private List<Device> deviceList;
 
     private Group() {
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
     }
 
     public String getName() {
@@ -102,7 +115,7 @@ public class Group {
             return this;
         }
 
-        public Builder setPortPower(String power) {
+        public Builder setPower(String power) {
             this.group.power = power;
             return this;
         }
@@ -141,8 +154,6 @@ public class Group {
                 throw new NullPointerException("Group port status is empty");
             } else if (this.group.power == null) {
                 throw new NullPointerException("Group power is empty");
-            } else if (this.group.deviceList == null) {
-                throw new NullPointerException("Group device list is null");
             }
             return this.group;
         }

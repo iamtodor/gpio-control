@@ -62,7 +62,7 @@ public class Utils {
                         .setName("Group vector" + i)
                         .setVectorImage(R.drawable.empty_group_icon)
                         .setPortStatus("Status ok" + i + 12 / 2)
-                        .setPortPower("Power")
+                        .setPower("Power")
                         .setId(i)
                         .setDeviceList(deviceList)
                         .build();
@@ -72,7 +72,7 @@ public class Utils {
                         .setName("Group vector" + i)
                         .setImagePath("https://avatars.yandex.net/get-music-content/97284/4583694d.a.4229094-1/400x400")
                         .setPortStatus("Status ok" + i + 12 / 2)
-                        .setPortPower("Power")
+                        .setPower("Power")
                         .setId(i)
                         .setDeviceList(deviceList)
                         .build();

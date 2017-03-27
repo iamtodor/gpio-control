@@ -22,6 +22,10 @@ public class Device {
         this.name = name;
     }
 
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
     public String getName() {
         return name;
     }
@@ -113,11 +117,6 @@ public class Device {
 
         public Builder setId(int id) {
             this.device.id = id;
-            return this;
-        }
-
-        public Builder setIsSelected(boolean isSelected) {
-            this.device.isSelected = isSelected;
             return this;
         }
 

@@ -22,8 +22,8 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemVie
 import com.squareup.picasso.Picasso;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
-import org.kaaproject.kaa.examples.gpiocontrol.model.BaseDeviceGroup;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Device;
+import org.kaaproject.kaa.examples.gpiocontrol.model.Group;
 import org.kaaproject.kaa.examples.gpiocontrol.model.GroupHeaderPinManagement;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChangeFieldDialog;
@@ -96,8 +96,8 @@ class ExpandableExampleAdapter
     @Override
     public long getChildId(int groupPosition, int childPosition) {
         if (deviceGroupHeaderList.get(groupPosition) instanceof GroupHeaderPinManagement) {
-            final BaseDeviceGroup baseDeviceGroup = (BaseDeviceGroup) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
-            return baseDeviceGroup.getId();
+            final Group group = (Group) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
+            return group.getId();
         } else {
             final Device device = (Device) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
             return device.getId();
@@ -185,16 +185,16 @@ class ExpandableExampleAdapter
     public void onBindChildViewHolder(BaseItemViewHolder holder, int groupPosition, int childPosition, int viewType) {
         if (viewType == DEVICE_GROUP_ITEM_VIEW_TYPE) {
             final DeviceGroupItemViewHolder deviceGroupViewHolder = (DeviceGroupItemViewHolder) holder;
-            final BaseDeviceGroup baseDeviceGroup = (BaseDeviceGroup) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
+            final Group group = (Group) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
 
-            deviceGroupViewHolder.selection.setChecked(baseDeviceGroup.isSelected());
-            baseDeviceGroup.loadImage(deviceGroupViewHolder.icon);
-            deviceGroupViewHolder.name.setText(baseDeviceGroup.getName());
-            deviceGroupViewHolder.port.setText(baseDeviceGroup.getPortStatus());
+            deviceGroupViewHolder.selection.setChecked(group.isSelected());
+            Utils.loadImage(group, deviceGroupViewHolder.icon);
+            deviceGroupViewHolder.name.setText(group.getName());
+            deviceGroupViewHolder.port.setText(group.getPortStatus());
 
             deviceGroupViewHolder.selection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    onCheckedGroupItemListener.onChange(isChecked, baseDeviceGroup);
+                    onCheckedGroupItemListener.onChange(isChecked, group);
                 }
             });
 
@@ -224,10 +224,10 @@ class ExpandableExampleAdapter
                             break;
                         case R.id.edit_name:
                             ChangeFieldDialog dialog = DialogFactory.getChangeFieldDialog(context.getString(R.string.edit_name),
-                                    null, baseDeviceGroup.getName(), context.getString(R.string.group_name),
+                                    null, group.getName(), context.getString(R.string.group_name),
                                     context.getString(R.string.edit_name), new ChangeFieldListener() {
                                         @Override public void onChanged(String newField) {
-                                            baseDeviceGroup.getName();
+                                            group.setName(newField);
                                             notifyDataSetChanged();
                                         }
                                     });
