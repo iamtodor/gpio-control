@@ -12,6 +12,9 @@ public class Controller {
     private boolean isActive;
     private long id;
 
+    private Controller() {
+    }
+
     public String getControllerId() {
         return controllerId;
     }

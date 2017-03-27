@@ -300,7 +300,7 @@ class ExpandableExampleAdapter
                                     null, device.getName(), context.getString(R.string.controller_id),
                                     context.getString(R.string.edit_name), new ChangeFieldListener() {
                                         @Override public void onChanged(String newField) {
-//                                            device.(newField);
+                                            device.setName(newField);
                                             notifyDataSetChanged();
                                         }
                                     });

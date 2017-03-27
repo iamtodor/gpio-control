@@ -15,6 +15,13 @@ public class Device {
     private int id = -1;
     private boolean isSelected;
 
+    private Device() {
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }

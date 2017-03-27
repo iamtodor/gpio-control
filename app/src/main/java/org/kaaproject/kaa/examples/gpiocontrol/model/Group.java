@@ -18,6 +18,9 @@ public class Group {
     private List<Group> groupList;
     private List<Device> deviceList;
 
+    private Group() {
+    }
+
     public String getName() {
         return name;
     }
