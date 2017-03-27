@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
-import org.kaaproject.kaa.examples.gpiocontrol.model.BaseDeviceGroup;
+import org.kaaproject.kaa.examples.gpiocontrol.model.Group;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseListFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.AddControllerOrGroupDialog;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.Utils;
@@ -34,13 +34,13 @@ public class DeviceSwitchManagementFragment extends BaseListFragment {
         getSupportActionBar().setTitle(getString(R.string.device_switch_management));
 
         setupRecyclerView(recyclerView, fab);
-
-        List<BaseDeviceGroup> baseDeviceGroupList = Utils.getMockedDeviceGroupList();
-
-        DeviceSwitchManagementAdapter deviceSwitchManagementAdapter = new DeviceSwitchManagementAdapter(baseDeviceGroupList);
+        DeviceSwitchManagementAdapter deviceSwitchManagementAdapter = new DeviceSwitchManagementAdapter();
         recyclerView.setAdapter(deviceSwitchManagementAdapter);
 
-        if (baseDeviceGroupList.isEmpty()) {
+        List<Group> groupList = Utils.getMockedGroupList();
+        deviceSwitchManagementAdapter.updateAdapter(groupList);
+
+        if (groupList.isEmpty()) {
             showNoDevices();
         } else {
             showDevices();

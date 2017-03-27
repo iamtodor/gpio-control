@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
-import org.kaaproject.kaa.examples.gpiocontrol.model.BaseDeviceGroup;
+import org.kaaproject.kaa.examples.gpiocontrol.model.Group;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,11 +17,11 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.GroupViewHolder> {
+class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.GroupViewHolder> {
 
-    private List<BaseDeviceGroup> deviceGroupList = new ArrayList<>();
+    private List<Group> deviceGroupList = new ArrayList<>();
 
-    void updateAdapter(List<BaseDeviceGroup> groupList) {
+    void updateAdapter(List<Group> groupList) {
         deviceGroupList.clear();
         deviceGroupList.addAll(groupList);
         notifyDataSetChanged();
@@ -33,7 +33,7 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.Grou
     }
 
     @Override public void onBindViewHolder(GroupViewHolder holder, int position) {
-        BaseDeviceGroup group = deviceGroupList.get(position);
+        Group group = deviceGroupList.get(position);
         holder.bind(group);
     }
 
@@ -52,10 +52,10 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.Grou
             ButterKnife.bind(itemView);
         }
 
-        void bind(BaseDeviceGroup group) {
+        void bind(Group group) {
             name.setText(group.getName());
             portStatus.setText(group.getPortStatus());
-            group.loadImage(icon);
+            group.setIconTo(icon);
         }
     }
 }

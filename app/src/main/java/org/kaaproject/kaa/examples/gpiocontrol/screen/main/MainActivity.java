@@ -17,6 +17,7 @@ import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.deviceManagement.DeviceManagementFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.deviceSwitchManagement.DeviceSwitchManagementFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChangeFieldDialog;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.groupListFragment.GroupListFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.resetDevices.ResetDevicesFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.signIn.SingInActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.ChangeFieldListener;
@@ -53,7 +54,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private void defineApplicationFlow() {
         if (PreferencesImpl.getInstance().isEmailExists()) {
             navigationView.getMenu().getItem(0).setChecked(true);
-            showFragment(new DeviceSwitchManagementFragment());
+            showFragment(new GroupListFragment());
         } else {
             showSignInActivity();
         }

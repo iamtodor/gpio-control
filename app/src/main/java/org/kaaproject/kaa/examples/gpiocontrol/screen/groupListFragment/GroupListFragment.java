@@ -10,7 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
+import org.kaaproject.kaa.examples.gpiocontrol.model.Group;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseFragment;
+import org.kaaproject.kaa.examples.gpiocontrol.utils.Utils;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,6 +29,10 @@ public class GroupListFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.group_list_fragment, container, false);
         ButterKnife.bind(this, view);
         setupRecyclerView();
+
+        List<Group> groupList = Utils.getMockedGroupList();
+        adapter.updateAdapter(groupList);
+
         return view;
     }
 
