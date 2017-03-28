@@ -6,13 +6,13 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.graphics.drawable.VectorDrawableCompat;
+import android.support.v4.util.LruCache;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Alarm;
-import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Device;
 import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceHeaderPinManagement;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Group;
@@ -27,23 +27,26 @@ import java.util.List;
 
 public class Utils {
 
+    private final static int IMAGE_MEM_CACHE_MAX_SIZE = 10;
+    private static LruCache<Integer, Drawable> vectorHashMap = new LruCache<>(IMAGE_MEM_CACHE_MAX_SIZE);
+
     private static List<Device> getMockedDeviceList() {
         List<Device> deviceList = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             if (i % 2 == 0) {
-                Device device = new Device.Builder().setName("ImageDevice " + i)
+                Device device = new Device.Builder().setName("Device " + i)
                         .setPortTitle("Port title " + i + 5)
                         .setPortId("Port id " + i + 1)
-                        .setVectorId(R.drawable.group_icon)
+                        .setVectorId(R.drawable.kitchen)
                         .setIsOn(true)
                         .setId(i)
                         .build();
                 deviceList.add(device);
             } else {
-                Device device = new Device.Builder().setName("ImageDevice " + i)
+                Device device = new Device.Builder().setName("Device " + i)
                         .setPortTitle("Port title " + i + 5)
                         .setPortId("Port id " + i + 1)
-                        .setVectorId(R.drawable.group_icon)
+                        .setVectorId(R.drawable.fan)
                         .setIsOn(false)
                         .setId(i)
                         .build();
@@ -59,7 +62,7 @@ public class Utils {
         for (int i = 0; i < 5; i++) {
             if (i % 2 == 0) {
                 Group group = new Group.Builder()
-                        .setName("Group vector" + i)
+                        .setName("Group" + i)
                         .setVectorImage(R.drawable.empty_group_icon)
                         .setPortStatus("Status ok" + i + 12 / 2)
                         .setPower("Power")
@@ -69,7 +72,7 @@ public class Utils {
                 groupList.add(group);
             } else {
                 Group group = new Group.Builder()
-                        .setName("Group vector" + i)
+                        .setName("Group" + i)
                         .setImagePath("https://avatars.yandex.net/get-music-content/97284/4583694d.a.4229094-1/400x400")
                         .setPortStatus("Status ok" + i + 12 / 2)
                         .setPower("Power")
@@ -80,35 +83,6 @@ public class Utils {
             }
         }
         return groupList;
-    }
-
-    private static List<Controller> getMockedControllerList() {
-        List<Controller> controllerList = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            if (i % 2 == 0) {
-                Controller controller = new Controller.Builder()
-                        .setControllerId("VectorController " + i)
-                        .setPortName("Device name " + i)
-                        .setVectorId(R.drawable.flat_tv)
-                        .build();
-                controllerList.add(controller);
-            } else if (i % 3 == 0) {
-                Controller controller = new Controller.Builder()
-                        .setControllerId("VectorController " + i)
-                        .setPortName("Device name " + i)
-                        .setVectorId(R.drawable.kitchen)
-                        .build();
-                controllerList.add(controller);
-            } else {
-                Controller controller = new Controller.Builder()
-                        .setControllerId("VectorController " + i)
-                        .setPortName("Device name " + i)
-                        .setImagePath("https://avatars.yandex.net/get-music-content/97284/4583694d.a.4229094-1/400x400")
-                        .build();
-                controllerList.add(controller);
-            }
-        }
-        return controllerList;
     }
 
     @NonNull
@@ -155,8 +129,12 @@ public class Utils {
         if (group.getImagePath() != null) {
             Picasso.with(imageView.getContext()).load(group.getImagePath()).fit().centerCrop().into(imageView);
         } else if (group.getVectorId() != -1) {
-            final Drawable drawable = VectorDrawableCompat.create(imageView.getContext().getResources(),
-                    group.getVectorId(), null);
+            Drawable drawable = vectorHashMap.get(group.getVectorId());
+            if (drawable == null) {
+                drawable = VectorDrawableCompat.create(imageView.getContext().getResources(),
+                        group.getVectorId(), null);
+                vectorHashMap.put(group.getVectorId(), drawable);
+            }
             imageView.setImageDrawable(drawable);
         } else {
             throw new RuntimeException("Group should has either vector or photo");
@@ -167,8 +145,12 @@ public class Utils {
         if (device.getImagePath() != null) {
             Picasso.with(imageView.getContext()).load(device.getImagePath()).fit().centerCrop().into(imageView);
         } else if (device.getVectorId() != -1) {
-            final Drawable drawable = VectorDrawableCompat.create(imageView.getContext().getResources(),
-                    device.getVectorId(), null);
+            Drawable drawable = vectorHashMap.get(device.getVectorId());
+            if (drawable == null) {
+                drawable = VectorDrawableCompat.create(imageView.getContext().getResources(),
+                        device.getVectorId(), null);
+                vectorHashMap.put(device.getVectorId(), drawable);
+            }
             imageView.setImageDrawable(drawable);
         } else {
             throw new RuntimeException("Group should has either vector or photo");
