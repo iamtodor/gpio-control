@@ -16,11 +16,14 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
+import org.kaaproject.kaa.examples.gpiocontrol.App;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
+import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.deviceManagement.AddItemListener;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChooseImageDialog;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChooseImageListener;
+import org.kaaproject.kaa.examples.gpiocontrol.storage.Repository;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,6 +35,8 @@ public class AddControllerFragment extends BaseFragment implements ChooseImageLi
     @BindView(R.id.ports_name) protected EditText portsName;
     @BindView(R.id.image_for_ports) protected ImageView imageForPorts;
     private AddItemListener listener;
+    private String imagePath;
+    private int vectorId = R.drawable.no_image_selected;
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.add_controller_fragment, container, false);
@@ -72,9 +77,18 @@ public class AddControllerFragment extends BaseFragment implements ChooseImageLi
     }
 
     private void addController() {
+        Controller controller = new Controller();
+        Repository repository = ((App) (getBaseActivity().getApplication())).getRealmRepository();
+        controller.setControllerId(controllerId.getText().toString());
+        controller.setPortName(portsName.getText().toString());
+        if(imagePath != null) {
+            controller.setImagePath(imagePath);
+        } else {
+            controller.setVectorId(vectorId);
+        }
+        controller.setId(repository.getIdForModel(Controller.class));
+        repository.saveModelToDB(controller);
         listener.onItemAdded();
-//        BaseController controller = new VectorController(controllerId.getText().toString(),
-//                portsName.getText().toString(), false, false, 1, imagePortsDrawableId);
     }
 
     private boolean isInfoValid() {
@@ -89,6 +103,7 @@ public class AddControllerFragment extends BaseFragment implements ChooseImageLi
     }
 
     @Override public void onImageChosen(Uri path) {
+        imagePath = path.getPath();
         Picasso.with(getContext()).load(path).fit().centerCrop().into(imageForPorts);
     }
 

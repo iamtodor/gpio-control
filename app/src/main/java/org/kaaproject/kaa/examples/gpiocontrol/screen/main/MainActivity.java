@@ -10,8 +10,10 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 
+import org.kaaproject.kaa.examples.gpiocontrol.App;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.deviceManagement.DeviceManagementFragment;
@@ -90,6 +92,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             showFragment(new ResetDevicesFragment());
         } else if (id == R.id.log_out) {
             showLogoutDialog();
+            Log.d(TAG, ((App) (getApplication())).getRealmRepository().getControllersFromDB().toString());
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

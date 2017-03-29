@@ -3,28 +3,57 @@ package org.kaaproject.kaa.examples.gpiocontrol.model;
 
 import android.support.annotation.Nullable;
 
-public class Controller {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class Controller extends RealmObject{
 
     private String controllerId;
     private @Nullable String imagePath;
     private int vectorId;
     private String portName;
     private boolean isActive;
+    @PrimaryKey
     private long id;
-
-    private Controller() {
-    }
 
     public String getControllerId() {
         return controllerId;
+    }
+
+    public void setControllerId(String controllerId) {
+        this.controllerId = controllerId;
+    }
+
+    @Nullable public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(@Nullable String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public int getVectorId() {
+        return vectorId;
+    }
+
+    public void setVectorId(int vectorId) {
+        this.vectorId = vectorId;
     }
 
     public String getPortName() {
         return portName;
     }
 
+    public void setPortName(String portName) {
+        this.portName = portName;
+    }
+
     public boolean isActive() {
         return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 
     public long getId() {
@@ -35,49 +64,14 @@ public class Controller {
         this.id = id;
     }
 
-    public static class Builder {
-
-        private Controller controller;
-
-        public Builder() {
-            this.controller = new Controller();
-        }
-
-        public Builder setControllerId(String controllerId) {
-            this.controller.controllerId = controllerId;
-            return this;
-        }
-
-        public Builder setImagePath(String imagePath) {
-            this.controller.imagePath = imagePath;
-            return this;
-        }
-
-        public Builder setVectorId(int vectorId) {
-            this.controller.vectorId = vectorId;
-            return this;
-        }
-
-        public Builder setPortName(String portName) {
-            this.controller.portName = portName;
-            return this;
-        }
-
-        public Builder setIsActive(boolean isActive) {
-            this.controller.isActive = isActive;
-            return this;
-        }
-
-        public Controller build() {
-            if (this.controller.controllerId == null) {
-                throw new NullPointerException("Controller id is empty");
-            } else if (this.controller.imagePath == null & this.controller.vectorId == -1) {
-                throw new NullPointerException("Controller icon is empty");
-            } else if (this.controller.portName == null) {
-                throw new NullPointerException("Controller port name is empty");
-            }
-            return this.controller;
-        }
-
+    @Override public String toString() {
+        return "Controller{" +
+                "controllerId='" + controllerId + '\'' +
+                ", imagePath='" + imagePath + '\'' +
+                ", vectorId=" + vectorId +
+                ", portName='" + portName + '\'' +
+                ", isActive=" + isActive +
+                ", id=" + id +
+                '}';
     }
 }

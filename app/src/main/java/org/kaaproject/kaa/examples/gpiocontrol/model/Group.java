@@ -5,7 +5,11 @@ import android.support.annotation.Nullable;
 
 import java.util.List;
 
-public class Group {
+import io.realm.RealmList;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class Group extends RealmObject {
 
     private String name;
     private @Nullable String imagePath;
@@ -14,10 +18,11 @@ public class Group {
     private String power;
     private boolean toggle;
     private Alarm alarm;
+    @PrimaryKey
     private long id;
     private boolean isSelected;
-    private List<Group> groupList;
-    private List<Device> deviceList;
+    private RealmList<Group> groupList;
+    private RealmList<Device> deviceList;
 
     public String getName() {
         return name;
@@ -95,7 +100,7 @@ public class Group {
         return groupList;
     }
 
-    public void setGroupList(List<Group> groupList) {
+    public void setGroupList(RealmList<Group> groupList) {
         this.groupList = groupList;
     }
 
@@ -103,7 +108,7 @@ public class Group {
         return deviceList;
     }
 
-    public void setDeviceList(List<Device> deviceList) {
+    public void setDeviceList(RealmList<Device> deviceList) {
         this.deviceList = deviceList;
     }
 

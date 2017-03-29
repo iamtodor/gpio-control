@@ -3,7 +3,10 @@ package org.kaaproject.kaa.examples.gpiocontrol.model;
 
 import android.support.annotation.Nullable;
 
-public class Device {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class Device extends RealmObject {
 
     private String name;
     private @Nullable String imagePath;
@@ -12,6 +15,7 @@ public class Device {
     private String portId;
     private boolean isOn;
     private boolean isLocked;
+    @PrimaryKey
     private int id = -1;
     private boolean isSelected;
 

@@ -25,13 +25,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.RealmList;
+
 public class Utils {
 
     private final static int IMAGE_MEM_CACHE_MAX_SIZE = 10;
     private static LruCache<Integer, Drawable> vectorHashMap = new LruCache<>(IMAGE_MEM_CACHE_MAX_SIZE);
 
-    private static List<Device> getMockedDeviceList() {
-        List<Device> deviceList = new ArrayList<>();
+    private static RealmList<Device> getMockedDeviceList() {
+        RealmList<Device> deviceList = new RealmList<>();
         for (int i = 0; i < 100; i++) {
             Device device = new Device();
             if (i % 2 == 0) {
@@ -55,7 +57,7 @@ public class Utils {
     }
 
     public static List<Group> getMockedGroupList() {
-        List<Device> deviceList = getMockedDeviceList();
+        RealmList<Device> deviceList = getMockedDeviceList();
         List<Group> groupList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             Group group = new Group();
