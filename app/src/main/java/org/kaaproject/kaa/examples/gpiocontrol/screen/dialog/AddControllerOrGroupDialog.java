@@ -2,6 +2,7 @@ package org.kaaproject.kaa.examples.gpiocontrol.screen.dialog;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -13,11 +14,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
-import org.kaaproject.kaa.examples.gpiocontrol.screen.addController.AddControllerFragment;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.addController.AddControllerActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.deviceManagement.AddItemListener;
-import org.kaaproject.kaa.examples.gpiocontrol.screen.main.MainActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.ChangeFieldListener;
-import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -63,9 +62,7 @@ public class AddControllerOrGroupDialog extends BaseDialog implements ChangeFiel
     @OnClick(R.id.add_controller)
     public void addController() {
         dismiss();
-        AddControllerFragment addControllerFragment = new AddControllerFragment();
-        addControllerFragment.setAddItemListener(addItemListener);
-        ((MainActivity) getActivity()).showFragment(addControllerFragment, DialogFactory.class.getSimpleName());
+        startActivity(new Intent(getActivity(), AddControllerActivity.class));
     }
 
     public AddControllerOrGroupDialog setAddItemListener(AddItemListener addItemListener) {
