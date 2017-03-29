@@ -20,10 +20,10 @@ import org.kaaproject.kaa.examples.gpiocontrol.App;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseActivity;
-import org.kaaproject.kaa.examples.gpiocontrol.screen.deviceManagement.AddItemListener;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChooseImageDialog;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChooseImageListener;
 import org.kaaproject.kaa.examples.gpiocontrol.storage.Repository;
+import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,7 +35,6 @@ public class AddControllerActivity extends BaseActivity implements ChooseImageLi
     @BindView(R.id.controller_id) protected EditText controllerId;
     @BindView(R.id.ports_name) protected EditText portsName;
     @BindView(R.id.image_for_ports) protected ImageView imageForPorts;
-    private AddItemListener listener;
     private String imagePath;
     private int vectorId = R.drawable.no_image_selected;
 
@@ -91,10 +90,6 @@ public class AddControllerActivity extends BaseActivity implements ChooseImageLi
         }
     }
 
-    public void setAddItemListener(AddItemListener listener) {
-        this.listener = listener;
-    }
-
     private void addController() {
         Controller controller = new Controller();
         Repository repository = ((App) (getApplication())).getRealmRepository();
@@ -107,7 +102,7 @@ public class AddControllerActivity extends BaseActivity implements ChooseImageLi
         }
         controller.setId(repository.getIdForModel(Controller.class));
         repository.saveModelToDB(controller);
-        listener.onItemAdded();
+        DialogFactory.getConfirmationDialog(this, getString(R.string.controller_was_added), getString(R.string.ok), null).show();
     }
 
     private boolean isInfoValid() {

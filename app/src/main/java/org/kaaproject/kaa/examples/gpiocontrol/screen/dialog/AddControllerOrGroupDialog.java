@@ -2,7 +2,6 @@ package org.kaaproject.kaa.examples.gpiocontrol.screen.dialog;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -14,20 +13,21 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
-import org.kaaproject.kaa.examples.gpiocontrol.screen.addController.AddControllerActivity;
-import org.kaaproject.kaa.examples.gpiocontrol.screen.deviceManagement.AddItemListener;
-import org.kaaproject.kaa.examples.gpiocontrol.utils.ChangeFieldListener;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.deviceSwitchManagement.OnDismissDialogListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AddControllerOrGroupDialog extends BaseDialog implements ChangeFieldListener {
+import static org.kaaproject.kaa.examples.gpiocontrol.screen.deviceSwitchManagement.DeviceSwitchManagementFragment.ADD_CONTROLLER_DIALOG;
+import static org.kaaproject.kaa.examples.gpiocontrol.screen.deviceSwitchManagement.DeviceSwitchManagementFragment.ADD_GROUP_DIALOG;
+
+public class AddControllerOrGroupDialog extends BaseDialog {
 
     @BindView(R.id.ic_add_group) ImageView addGroupImageView;
     @BindView(R.id.ic_add_controller) ImageView addControllerImageView;
 
-    private AddItemListener addItemListener;
+    private OnDismissDialogListener dismissListener;
 
     @Nullable @Override public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.add_device_dialog, container, false);
@@ -47,30 +47,20 @@ public class AddControllerOrGroupDialog extends BaseDialog implements ChangeFiel
         return view;
     }
 
+    public AddControllerOrGroupDialog setOnDismissListener(OnDismissDialogListener onDismissListener) {
+        this.dismissListener = onDismissListener;
+        return this;
+    }
+
     @OnClick(R.id.add_group)
     public void addGroup() {
         dismiss();
-        ChangeFieldDialog dialog = new ChangeFieldDialog()
-                .setTitle(getString(R.string.add_group))
-                .setHint(getString(R.string.group_name))
-                .setAction(getString(R.string.add_group))
-                .setChangeFieldListener(this);
-
-        dialog.show(getActivity().getSupportFragmentManager());
+        dismissListener.onDismiss(ADD_GROUP_DIALOG);
     }
 
     @OnClick(R.id.add_controller)
     public void addController() {
         dismiss();
-        startActivity(new Intent(getActivity(), AddControllerActivity.class));
-    }
-
-    public AddControllerOrGroupDialog setAddItemListener(AddItemListener addItemListener) {
-        this.addItemListener = addItemListener;
-        return this;
-    }
-
-    @Override public void onChanged(String newField) {
-        addItemListener.onItemAdded();
+        dismissListener.onDismiss(ADD_CONTROLLER_DIALOG);
     }
 }

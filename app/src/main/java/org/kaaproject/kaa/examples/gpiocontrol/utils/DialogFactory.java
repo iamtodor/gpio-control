@@ -61,12 +61,11 @@ public class DialogFactory {
         window.setOnClickListener(onClickListener);
     }
 
-    public static AlertDialog.Builder getConfirmationDialog(final Context context, final String message, String positiveButtonText,
+    public static AlertDialog.Builder getConfirmationDialog(final Context context, final String message, final String positiveButtonText,
                                                             final DialogInterface.OnClickListener listener) {
         return new AlertDialog.Builder(context)
                 .setMessage(message)
-                .setPositiveButton(positiveButtonText, listener)
-                .setNegativeButton(R.string.cancel, null);
+                .setPositiveButton(positiveButtonText, listener);
     }
 
     public static ChangeFieldDialog getChangeFieldDialog(String title, String message, String editText,

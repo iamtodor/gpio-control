@@ -58,5 +58,7 @@
     <string name="log_out_question">Log out?</string>
     <string name="group_name">Group name</string>
     <string name="create_group">Create group</string>
+    <string name="controller_was_added">Controller was added</string>
+    <string name="ok">Ok</string>
 
 </resources>

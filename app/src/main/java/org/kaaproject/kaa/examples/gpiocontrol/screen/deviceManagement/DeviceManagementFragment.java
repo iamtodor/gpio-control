@@ -47,7 +47,7 @@ import butterknife.OnClick;
 
 public class DeviceManagementFragment extends BaseListFragment implements
         RecyclerViewExpandableItemManager.OnGroupExpandListener,
-        RecyclerViewExpandableItemManager.OnGroupCollapseListener, AddItemListener {
+        RecyclerViewExpandableItemManager.OnGroupCollapseListener {
 
     private static final String SAVED_STATE_EXPANDABLE_ITEM_MANAGER = "RecyclerViewExpandableItemManager";
 
@@ -217,7 +217,7 @@ public class DeviceManagementFragment extends BaseListFragment implements
 
     @OnClick(R.id.fab)
     public void onFabClick() {
-        AddControllerOrGroupDialog dialog = new AddControllerOrGroupDialog().setAddItemListener(this);
+        AddControllerOrGroupDialog dialog = new AddControllerOrGroupDialog();
         dialog.show(getBaseActivity().getSupportFragmentManager());
     }
 
@@ -250,10 +250,10 @@ public class DeviceManagementFragment extends BaseListFragment implements
                                 }
                                 GroupHeaderPinManagement groupHeaderPinManagement = (GroupHeaderPinManagement) header;
                                 Group group = new Group();
-                                        group.setName(newField);
-                                        group.setVectorId(R.drawable.empty_group_icon);
-                                        group.setPortStatus("Port status");
-                                        group.setPower("Power");
+                                group.setName(newField);
+                                group.setVectorId(R.drawable.empty_group_icon);
+                                group.setPortStatus("Port status");
+                                group.setPower("Power");
                                 groupHeaderPinManagement.addGroup(index, group);
                             }
                         }
@@ -293,9 +293,5 @@ public class DeviceManagementFragment extends BaseListFragment implements
 
     @Override public void onGroupCollapse(int groupPosition, boolean fromUser, Object payload) {
 
-    }
-
-    @Override public void onItemAdded() {
-        myItemAdapter.notifyDataSetChanged();
     }
 }
