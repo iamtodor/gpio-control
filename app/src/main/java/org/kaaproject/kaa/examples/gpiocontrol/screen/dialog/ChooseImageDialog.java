@@ -18,6 +18,7 @@ import org.kaaproject.kaa.examples.gpiocontrol.utils.Utils;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 public class ChooseImageDialog extends BaseDialog {
 
@@ -25,12 +26,18 @@ public class ChooseImageDialog extends BaseDialog {
     private static final int REQUEST_IMAGE_CAPTURE = 201;
 
     private ChooseImageListener listener;
+    private Unbinder unbinder;
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.choose_image_dialog, container, false);
-        ButterKnife.bind(this, rootView);
+        unbinder = ButterKnife.bind(this, rootView);
 
         return rootView;
+    }
+
+    @Override public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     @OnClick(R.id.templates)

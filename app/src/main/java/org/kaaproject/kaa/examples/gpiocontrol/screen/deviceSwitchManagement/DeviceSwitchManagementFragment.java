@@ -24,6 +24,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 public class DeviceSwitchManagementFragment extends BaseListFragment implements OnDismissDialogListener, ChangeFieldListener {
 
@@ -36,12 +37,13 @@ public class DeviceSwitchManagementFragment extends BaseListFragment implements 
     @BindView(R.id.fab) protected FloatingActionButton fab;
 
     private DeviceSwitchManagementAdapter deviceSwitchManagementAdapter;
+    private Unbinder unbinder;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.device_list_fragment, container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
         getSupportActionBar().setTitle(getString(R.string.device_switch_management));
 
         setupRecyclerView(recyclerView, fab);
@@ -58,6 +60,11 @@ public class DeviceSwitchManagementFragment extends BaseListFragment implements 
         }
 
         return view;
+    }
+
+    @Override public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     @OnClick(R.id.fab)

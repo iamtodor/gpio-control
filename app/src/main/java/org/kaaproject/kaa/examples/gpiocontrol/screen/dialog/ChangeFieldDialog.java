@@ -17,6 +17,7 @@ import org.kaaproject.kaa.examples.gpiocontrol.utils.ChangeFieldListener;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 public class ChangeFieldDialog extends BaseDialog {
 
@@ -26,6 +27,7 @@ public class ChangeFieldDialog extends BaseDialog {
     private String editTextValue;
     private String hint;
     private String action;
+    private Unbinder unbinder;
 
     @BindView(R.id.title) TextView title;
     @BindView(R.id.message) TextView message;
@@ -35,7 +37,7 @@ public class ChangeFieldDialog extends BaseDialog {
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.change_field_dialog, container, false);
-        ButterKnife.bind(this, rootView);
+        unbinder = ButterKnife.bind(this, rootView);
 
         title.setText(titleValue);
         if (!TextUtils.isEmpty(messageValue)) {
@@ -47,6 +49,11 @@ public class ChangeFieldDialog extends BaseDialog {
         button.setText(action);
 
         return rootView;
+    }
+
+    @Override public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     public ChangeFieldDialog setChangeFieldListener(ChangeFieldListener changeFieldListener) {

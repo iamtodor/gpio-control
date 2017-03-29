@@ -19,17 +19,20 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 public class GroupListFragment extends BaseListFragment {
 
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
     @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.no_group_message) TextView noGroupMessage;
+
     private GroupListAdapter adapter = new GroupListAdapter();
+    private Unbinder unbinder;
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.group_list_fragment, container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
         setupRecyclerView(recyclerView, fab);
         recyclerView.setAdapter(adapter);
 
@@ -43,6 +46,11 @@ public class GroupListFragment extends BaseListFragment {
         }
 
         return view;
+    }
+
+    @Override public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     private void showNoDevices() {

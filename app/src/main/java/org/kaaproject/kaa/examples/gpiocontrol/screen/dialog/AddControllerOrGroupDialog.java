@@ -18,6 +18,7 @@ import org.kaaproject.kaa.examples.gpiocontrol.screen.deviceSwitchManagement.OnD
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 import static org.kaaproject.kaa.examples.gpiocontrol.screen.deviceSwitchManagement.DeviceSwitchManagementFragment.ADD_CONTROLLER_DIALOG;
 import static org.kaaproject.kaa.examples.gpiocontrol.screen.deviceSwitchManagement.DeviceSwitchManagementFragment.ADD_GROUP_DIALOG;
@@ -26,12 +27,13 @@ public class AddControllerOrGroupDialog extends BaseDialog {
 
     @BindView(R.id.ic_add_group) ImageView addGroupImageView;
     @BindView(R.id.ic_add_controller) ImageView addControllerImageView;
+    private Unbinder unbinder;
 
     private OnDismissDialogListener dismissListener;
 
     @Nullable @Override public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.add_device_dialog, container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
 
         final Context context = getContext();
         final int blueColor = ContextCompat.getColor(context, R.color.lightBlueActiveElement);
@@ -45,6 +47,11 @@ public class AddControllerOrGroupDialog extends BaseDialog {
         addControllerImageView.setImageDrawable(addControllerIcon);
 
         return view;
+    }
+
+    @Override public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     public AddControllerOrGroupDialog setOnDismissListener(OnDismissDialogListener onDismissListener) {

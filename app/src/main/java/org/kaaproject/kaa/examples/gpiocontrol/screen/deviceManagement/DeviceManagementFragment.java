@@ -44,6 +44,7 @@ import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 public class DeviceManagementFragment extends BaseListFragment implements
         RecyclerViewExpandableItemManager.OnGroupExpandListener,
@@ -66,12 +67,13 @@ public class DeviceManagementFragment extends BaseListFragment implements
     private RecyclerViewExpandableItemManager recyclerViewExpandableItemManager;
     private ExpandableExampleAdapter myItemAdapter;
     private List<Header> deviceGroupHeaderList;
+    private Unbinder unbinder;
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.device_list_fragment, container, false);
         final Context context = getContext();
 
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
         getSupportActionBar().setTitle(getString(R.string.device_management));
 
         final Drawable addGroupIcon = ContextCompat.getDrawable(context, R.drawable.add_group);
@@ -211,7 +213,7 @@ public class DeviceManagementFragment extends BaseListFragment implements
             mWrappedAdapter = null;
         }
         mLayoutManager = null;
-
+        unbinder.unbind();
         super.onDestroyView();
     }
 
