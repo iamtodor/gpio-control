@@ -33,25 +33,23 @@ public class Utils {
     private static List<Device> getMockedDeviceList() {
         List<Device> deviceList = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
+            Device device = new Device();
             if (i % 2 == 0) {
-                Device device = new Device.Builder().setName("Device " + i)
-                        .setPortTitle("Port title " + i + 5)
-                        .setPortId("Port id " + i + 1)
-                        .setVectorId(R.drawable.kitchen)
-                        .setIsOn(true)
-                        .setId(i)
-                        .build();
-                deviceList.add(device);
+                device.setName("Device " + i);
+                device.setPortTitle("Port title " + i + 5);
+                device.setPortId("Port id " + i + 1);
+                device.setVectorId(R.drawable.kitchen);
+                device.setOn(false);
+                device.setId(i);
             } else {
-                Device device = new Device.Builder().setName("Device " + i)
-                        .setPortTitle("Port title " + i + 5)
-                        .setPortId("Port id " + i + 1)
-                        .setVectorId(R.drawable.fan)
-                        .setIsOn(false)
-                        .setId(i)
-                        .build();
-                deviceList.add(device);
+                device.setName("Device " + i);
+                device.setPortTitle("Port title " + i + 5);
+                device.setPortId("Port id " + i + 1);
+                device.setVectorId(R.drawable.fan);
+                device.setOn(true);
+                device.setId(i);
             }
+            deviceList.add(device);
         }
         return deviceList;
     }
@@ -60,27 +58,23 @@ public class Utils {
         List<Device> deviceList = getMockedDeviceList();
         List<Group> groupList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
+            Group group = new Group();
             if (i % 2 == 0) {
-                Group group = new Group.Builder()
-                        .setName("Group" + i)
-                        .setVectorImage(R.drawable.empty_group_icon)
-                        .setPortStatus("Status ok" + i + 12 / 2)
-                        .setPower("Power")
-                        .setId(i)
-                        .setDeviceList(deviceList)
-                        .build();
-                groupList.add(group);
+                group.setName("Group" + i);
+                group.setVectorId(R.drawable.empty_group_icon);
+                group.setPortStatus("Status ok" + i + 12 / 2);
+                group.setPower("Power");
+                group.setId(i);
+                group.setDeviceList(deviceList);
             } else {
-                Group group = new Group.Builder()
-                        .setName("Group" + i)
-                        .setImagePath("https://avatars.yandex.net/get-music-content/97284/4583694d.a.4229094-1/400x400")
-                        .setPortStatus("Status ok" + i + 12 / 2)
-                        .setPower("Power")
-                        .setId(i)
-                        .setDeviceList(deviceList)
-                        .build();
-                groupList.add(group);
+                group.setName("Group" + i);
+                group.setImagePath("https://avatars.yandex.net/get-music-content/97284/4583694d.a.4229094-1/400x400");
+                group.setPortStatus("Status ok" + i + 12 / 2);
+                group.setPower("Power");
+                group.setId(i);
+                group.setDeviceList(deviceList);
             }
+            groupList.add(group);
         }
         return groupList;
     }

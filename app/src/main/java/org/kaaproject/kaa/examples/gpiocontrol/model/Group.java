@@ -19,59 +19,92 @@ public class Group {
     private List<Group> groupList;
     private List<Device> deviceList;
 
-    private Group() {
+    public String getName() {
+        return name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setSelected(boolean selected) {
-        isSelected = selected;
-    }
-
-    public boolean isSelected() {
-        return isSelected;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getPortStatus() {
-        return portStatus;
-    }
-
-    public String getPower() {
-        return power;
-    }
-
-    public boolean isToggle() {
-        return toggle;
-    }
-
-    public Alarm getAlarm() {
-        return alarm;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public List<Group> getGroupList() {
-        return groupList;
-    }
-
     @Nullable public String getImagePath() {
         return imagePath;
+    }
+
+    public void setImagePath(@Nullable String imagePath) {
+        this.imagePath = imagePath;
     }
 
     public int getVectorId() {
         return vectorId;
     }
 
+    public void setVectorId(int vectorId) {
+        this.vectorId = vectorId;
+    }
+
+    public String getPortStatus() {
+        return portStatus;
+    }
+
+    public void setPortStatus(String portStatus) {
+        this.portStatus = portStatus;
+    }
+
+    public String getPower() {
+        return power;
+    }
+
+    public void setPower(String power) {
+        this.power = power;
+    }
+
+    public boolean isToggle() {
+        return toggle;
+    }
+
+    public void setToggle(boolean toggle) {
+        this.toggle = toggle;
+    }
+
+    public Alarm getAlarm() {
+        return alarm;
+    }
+
+    public void setAlarm(Alarm alarm) {
+        this.alarm = alarm;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
+    public List<Group> getGroupList() {
+        return groupList;
+    }
+
+    public void setGroupList(List<Group> groupList) {
+        this.groupList = groupList;
+    }
+
     public List<Device> getDeviceList() {
         return deviceList;
+    }
+
+    public void setDeviceList(List<Device> deviceList) {
+        this.deviceList = deviceList;
     }
 
     @Override public String toString() {
@@ -85,78 +118,6 @@ public class Group {
                 ", groupList=" + groupList +
                 ", deviceList=" + deviceList +
                 '}';
-    }
-
-    public static class Builder {
-
-        private Group group;
-
-        public Builder() {
-            this.group = new Group();
-        }
-
-        public Builder setName(String name) {
-            this.group.name = name;
-            return this;
-        }
-
-        public Builder setImagePath(String path) {
-            this.group.imagePath = path;
-            return this;
-        }
-
-        public Builder setVectorImage(int vectorId) {
-            this.group.vectorId = vectorId;
-            return this;
-        }
-
-        public Builder setPortStatus(String portStatus) {
-            this.group.portStatus = portStatus;
-            return this;
-        }
-
-        public Builder setPower(String power) {
-            this.group.power = power;
-            return this;
-        }
-
-        public Builder setToggle(boolean isToggle) {
-            this.group.toggle = isToggle;
-            return this;
-        }
-
-        public Builder setAlarm(Alarm alarm) {
-            this.group.alarm = alarm;
-            return this;
-        }
-
-        public Builder setId(int id) {
-            this.group.id = id;
-            return this;
-        }
-
-        public Builder setGroupList(List<Group> groupList) {
-            this.group.groupList = groupList;
-            return this;
-        }
-
-        public Builder setDeviceList(List<Device> deviceList) {
-            group.deviceList = deviceList;
-            return this;
-        }
-
-        public Group build() {
-            if (this.group.name == null) {
-                throw new NullPointerException("Group name is empty");
-            } else if (this.group.imagePath == null & this.group.vectorId == -1) {
-                throw new NullPointerException("Group icon is empty");
-            } else if (this.group.portStatus == null) {
-                throw new NullPointerException("Group port status is empty");
-            } else if (this.group.power == null) {
-                throw new NullPointerException("Group power is empty");
-            }
-            return this.group;
-        }
     }
 
 }

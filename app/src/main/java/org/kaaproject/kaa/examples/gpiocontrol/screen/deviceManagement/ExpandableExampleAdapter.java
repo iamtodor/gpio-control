@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -186,16 +187,16 @@ class ExpandableExampleAdapter
             final DeviceGroupItemViewHolder deviceGroupViewHolder = (DeviceGroupItemViewHolder) holder;
             final Group group = (Group) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
 
-//            deviceGroupViewHolder.selection.setChecked(group.isSelected());
+            deviceGroupViewHolder.selection.setChecked(group.isSelected());
             Utils.loadImage(group, deviceGroupViewHolder.icon);
             deviceGroupViewHolder.name.setText(group.getName());
             deviceGroupViewHolder.port.setText(group.getPortStatus());
 
-//            deviceGroupViewHolder.selection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//                @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                    onCheckedGroupItemListener.onChange(isChecked, group);
-//                }
-//            });
+            deviceGroupViewHolder.selection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    onCheckedGroupItemListener.onChange(isChecked, group);
+                }
+            });
 
             deviceGroupViewHolder.imageViewOptions.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
@@ -258,17 +259,17 @@ class ExpandableExampleAdapter
             final SingleDeviceItemViewHolder singleDeviceViewHolder = (SingleDeviceItemViewHolder) holder;
             final Device device = (Device) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
 
-//            singleDeviceViewHolder.selection.setChecked(device.isSelected());
+            singleDeviceViewHolder.selection.setChecked(device.isSelected());
             Utils.loadImage(device, singleDeviceViewHolder.imagePort);
             singleDeviceViewHolder.name.setText(device.getName());
             singleDeviceViewHolder.port.setText(device.getPortId());
             singleDeviceViewHolder.switchCompat.setChecked(device.isOn());
 
-//            singleDeviceViewHolder.selection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//                @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                    onCheckedDeviceItemListener.onChecked(isChecked, device);
-//                }
-//            });
+            singleDeviceViewHolder.selection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    onCheckedDeviceItemListener.onChecked(isChecked, device);
+                }
+            });
 
             singleDeviceViewHolder.imageViewOptions.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {

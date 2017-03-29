@@ -249,12 +249,11 @@ public class DeviceManagementFragment extends BaseListFragment implements
                                     }
                                 }
                                 GroupHeaderPinManagement groupHeaderPinManagement = (GroupHeaderPinManagement) header;
-                                Group group = new Group.Builder().
-                                        setName(newField)
-                                        .setVectorImage(R.drawable.empty_group_icon)
-                                        .setPortStatus("Port status")
-                                        .setPower("Power")
-                                        .build();
+                                Group group = new Group();
+                                        group.setName(newField);
+                                        group.setVectorId(R.drawable.empty_group_icon);
+                                        group.setPortStatus("Port status");
+                                        group.setPower("Power");
                                 groupHeaderPinManagement.addGroup(index, group);
                             }
                         }
