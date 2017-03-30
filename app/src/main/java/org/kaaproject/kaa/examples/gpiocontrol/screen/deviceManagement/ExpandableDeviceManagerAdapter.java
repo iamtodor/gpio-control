@@ -124,7 +124,7 @@ class ExpandableDeviceManagerAdapter
     public BaseHeaderViewHolder onCreateGroupViewHolder(ViewGroup parent, int viewType) {
         final LayoutInflater inflater = LayoutInflater.from(context);
         if (viewType == DEVICE_GROUP_HEADER_VIEW_TYPE) {
-            final View v = inflater.inflate(R.layout.device_group_header_port_manager, parent, false);
+            final View v = inflater.inflate(R.layout.group_header_device_manager, parent, false);
             return new DeviceGroupHeaderViewHolder(v);
         } else if (viewType == DEVICE_LIST_HEADER_VIEW_TYPE) {
             final View v = inflater.inflate(R.layout.single_device_header_port_manager, parent, false);
@@ -137,7 +137,7 @@ class ExpandableDeviceManagerAdapter
     public BaseItemViewHolder onCreateChildViewHolder(ViewGroup parent, int viewType) {
         final LayoutInflater inflater = LayoutInflater.from(context);
         if (viewType == DEVICE_GROUP_ITEM_VIEW_TYPE) {
-            final View v = inflater.inflate(R.layout.device_group_item_port_manager, parent, false);
+            final View v = inflater.inflate(R.layout.group_item_device_management, parent, false);
             return new DeviceGroupItemViewHolder(v);
         } else if (viewType == SINGLE_DEVICE_ITEM_VIEW_TYPE) {
             final View v = inflater.inflate(R.layout.single_device_item_port_manager, parent, false);

@@ -52,7 +52,7 @@
                     android:alpha="0.87"
                     android:textColor="@android:color/black"
                     android:textStyle="bold"
-                    tools:text="Some group"/>
+                    tools:text="Some device"/>
 
                 <TextView
                     android:id="@+id/status"
@@ -60,7 +60,7 @@
                     android:layout_height="wrap_content"
                     android:alpha="0.54"
                     android:textColor="@android:color/black"
-                    tools:text="Some group"/>
+                    tools:text="Some device"/>
 
             </LinearLayout>
 
@@ -83,14 +83,14 @@
                 android:theme="@style/SwitchStyle"/>
 
             <ImageView
-                android:id="@+id/alarm"
+                android:id="@+id/lock"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginLeft="16dp"
                 android:layout_weight="1"
                 android:alpha="0.87"
-                android:contentDescription="@string/alarm_for_group"
-                app:srcCompat="@drawable/alarm_activated"/>
+                android:contentDescription="@string/lock_for_device"
+                app:srcCompat="@drawable/lock_notactivated"/>
 
         </LinearLayout>
 

@@ -76,13 +76,7 @@ public class DeviceManagementFragment extends BaseListFragment implements
         unbinder = ButterKnife.bind(this, view);
         getSupportActionBar().setTitle(getString(R.string.device_management));
 
-        final Drawable addGroupIcon = ContextCompat.getDrawable(context, R.drawable.add_group);
-        addGroupIcon.setColorFilter(ContextCompat.getColor(context, R.color.lightBlueActiveElement),
-                PorterDuff.Mode.SRC_ATOP);
-
-        for (ImageView imageView : imageViews) {
-            imageView.setImageDrawable(addGroupIcon);
-        }
+        setupSelectionMenuIcons(context);
 
         mLayoutManager = new LinearLayoutManager(context);
 
@@ -146,6 +140,16 @@ public class DeviceManagementFragment extends BaseListFragment implements
         recyclerViewExpandableItemManager.attachRecyclerView(recyclerView);
 
         return view;
+    }
+
+    private void setupSelectionMenuIcons(Context context) {
+        final Drawable addGroupIcon = ContextCompat.getDrawable(context, R.drawable.add_group);
+        addGroupIcon.setColorFilter(ContextCompat.getColor(context, R.color.lightBlueActiveElement),
+                PorterDuff.Mode.SRC_ATOP);
+
+        for (ImageView imageView : imageViews) {
+            imageView.setImageDrawable(addGroupIcon);
+        }
     }
 
     private void showOrHideSelectionMenu() {

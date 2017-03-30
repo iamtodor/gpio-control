@@ -92,13 +92,13 @@
                 app:srcCompat="@drawable/toggle_active"/>
 
             <ImageView
-                android:id="@+id/alarm"
+                android:id="@+id/lock"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginLeft="16dp"
                 android:layout_weight="1"
                 android:alpha="0.87"
-                android:contentDescription="@string/alarm_for_group"
+                android:contentDescription="@string/lock_for_device"
                 app:srcCompat="@drawable/alarm_activated"/>
 
         </LinearLayout>
