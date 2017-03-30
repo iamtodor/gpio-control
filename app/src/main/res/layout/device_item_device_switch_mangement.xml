@@ -23,7 +23,7 @@
             android:orientation="horizontal">
 
             <CheckBox
-                android:id="@+id/checkbox"
+                android:id="@+id/selection"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"/>
@@ -84,9 +84,8 @@
 
             <ImageView
                 android:id="@+id/lock"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginLeft="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:alpha="0.87"
                 android:contentDescription="@string/lock_for_device"

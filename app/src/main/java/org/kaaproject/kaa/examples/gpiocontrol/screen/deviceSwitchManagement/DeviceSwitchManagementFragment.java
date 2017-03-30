@@ -24,7 +24,6 @@ import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandab
 import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
-import org.kaaproject.kaa.examples.gpiocontrol.model.Group;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.addController.AddControllerActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseFragment;
@@ -56,8 +55,7 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView.Adapter mWrappedAdapter;
     private RecyclerViewExpandableItemManager recyclerViewExpandableItemManager;
-    private ExpandableSwitchManagementAdapter myItemAdapter;
-    private DeviceSwitchManagementAdapter deviceSwitchManagementAdapter;
+    private ExpandableSwitchManagementAdapter adapter;
     private Unbinder unbinder;
 
     @Override
@@ -114,8 +112,11 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
         final Parcelable eimSavedState = (savedInstanceState != null) ? savedInstanceState.getParcelable(SAVED_STATE_EXPANDABLE_ITEM_MANAGER) : null;
         recyclerViewExpandableItemManager = new RecyclerViewExpandableItemManager(eimSavedState);
 
+        List<Header> deviceGroupHeaderList = Utils.getMockedHeaderList();
+        adapter = new ExpandableSwitchManagementAdapter(context, deviceGroupHeaderList);
+
         // wrap for expanding
-        mWrappedAdapter = recyclerViewExpandableItemManager.createWrappedAdapter(myItemAdapter);
+        mWrappedAdapter = recyclerViewExpandableItemManager.createWrappedAdapter(adapter);
 
         final GeneralItemAnimator animator = new RefactoredDefaultItemAnimator();
 
@@ -132,15 +133,7 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
 
         recyclerViewExpandableItemManager.attachRecyclerView(recyclerView);
 
-//        deviceSwitchManagementAdapter = new DeviceSwitchManagementAdapter();
-        List<Header> deviceGroupHeaderList = Utils.getMockedHeaderList();
-        myItemAdapter = new ExpandableSwitchManagementAdapter(context, deviceGroupHeaderList);
-//        recyclerView.setAdapter(deviceSwitchManagementAdapter);
-
-        List<Group> groupList = Utils.getMockedGroupList();
-        deviceSwitchManagementAdapter.updateAdapter(groupList);
-
-        if (groupList.isEmpty()) {
+        if (deviceGroupHeaderList.isEmpty()) {
             showNoDevices();
         } else {
             showDevices();
@@ -168,7 +161,7 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == ADD_CONTROLLER_CODE) {
-                deviceSwitchManagementAdapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
             }
         }
     }
@@ -188,7 +181,7 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
     }
 
     @Override public void onChanged(String newField) {
-        deviceSwitchManagementAdapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
     }
 
     private void setupSelectionMenuIcons(Context context) {

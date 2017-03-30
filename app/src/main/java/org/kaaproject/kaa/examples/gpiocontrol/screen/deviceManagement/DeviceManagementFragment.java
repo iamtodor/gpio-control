@@ -46,9 +46,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class DeviceManagementFragment extends BaseListFragment implements
-        RecyclerViewExpandableItemManager.OnGroupExpandListener,
-        RecyclerViewExpandableItemManager.OnGroupCollapseListener {
+public class DeviceManagementFragment extends BaseListFragment {
 
     private static final String SAVED_STATE_EXPANDABLE_ITEM_MANAGER = "RecyclerViewExpandableItemManager";
 
@@ -65,7 +63,7 @@ public class DeviceManagementFragment extends BaseListFragment implements
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView.Adapter mWrappedAdapter;
     private RecyclerViewExpandableItemManager recyclerViewExpandableItemManager;
-    private ExpandableDeviceManagerAdapter myItemAdapter;
+    private ExpandableDeviceManagerAdapter adapter;
     private List<Header> deviceGroupHeaderList;
     private Unbinder unbinder;
 
@@ -82,14 +80,12 @@ public class DeviceManagementFragment extends BaseListFragment implements
 
         final Parcelable eimSavedState = (savedInstanceState != null) ? savedInstanceState.getParcelable(SAVED_STATE_EXPANDABLE_ITEM_MANAGER) : null;
         recyclerViewExpandableItemManager = new RecyclerViewExpandableItemManager(eimSavedState);
-        recyclerViewExpandableItemManager.setOnGroupExpandListener(this);
-        recyclerViewExpandableItemManager.setOnGroupCollapseListener(this);
 
         //adapter
         deviceGroupHeaderList = Utils.getMockedHeaderList();
-        myItemAdapter = new ExpandableDeviceManagerAdapter(context, deviceGroupHeaderList);
+        adapter = new ExpandableDeviceManagerAdapter(context, deviceGroupHeaderList);
 
-        myItemAdapter.setOnCheckedGroupItemListener(new OnCheckedGroupItemListener() {
+        adapter.setOnCheckedGroupItemListener(new OnCheckedGroupItemListener() {
             @Override public void onChange(boolean isChecked, Group currentGroup) {
                 for (Header deviceGroupHeader : deviceGroupHeaderList) {
                     if (deviceGroupHeader instanceof GroupHeaderPinManagement) {
@@ -105,7 +101,7 @@ public class DeviceManagementFragment extends BaseListFragment implements
             }
         });
 
-        myItemAdapter.setOnCheckedDeviceItemListener(new OnCheckedDeviceItemListener() {
+        adapter.setOnCheckedDeviceItemListener(new OnCheckedDeviceItemListener() {
             @Override public void onChecked(boolean isChecked, Device currentSelectedDevice) {
                 for (Header deviceGroupHeader : deviceGroupHeaderList) {
                     if (deviceGroupHeader instanceof DeviceHeaderPinManagement) {
@@ -122,7 +118,7 @@ public class DeviceManagementFragment extends BaseListFragment implements
         });
 
         // wrap for expanding
-        mWrappedAdapter = recyclerViewExpandableItemManager.createWrappedAdapter(myItemAdapter);
+        mWrappedAdapter = recyclerViewExpandableItemManager.createWrappedAdapter(adapter);
 
         final GeneralItemAnimator animator = new RefactoredDefaultItemAnimator();
 
@@ -263,7 +259,7 @@ public class DeviceManagementFragment extends BaseListFragment implements
                                 groupHeaderPinManagement.addGroup(index, group);
                             }
                         }
-                        myItemAdapter.notifyDataSetChanged();
+                        adapter.notifyDataSetChanged();
                     }
                 });
 
@@ -280,7 +276,7 @@ public class DeviceManagementFragment extends BaseListFragment implements
         for (Header header : deviceGroupHeaderList) {
             header.cancelSelection();
         }
-        myItemAdapter.updateAdapter(deviceGroupHeaderList);
+        adapter.updateAdapter(deviceGroupHeaderList);
     }
 
     private void showNoDevices() {
@@ -293,11 +289,4 @@ public class DeviceManagementFragment extends BaseListFragment implements
         noDeviceMessage.setVisibility(View.GONE);
     }
 
-    @Override public void onGroupExpand(int groupPosition, boolean fromUser, Object payload) {
-
-    }
-
-    @Override public void onGroupCollapse(int groupPosition, boolean fromUser, Object payload) {
-
-    }
 }

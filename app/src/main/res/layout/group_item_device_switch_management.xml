@@ -23,7 +23,7 @@
             android:orientation="horizontal">
 
             <CheckBox
-                android:id="@+id/checkbox"
+                android:id="@+id/selection"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"/>
@@ -34,6 +34,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="8dp"
                 android:alpha="0.54"
+                android:id="@+id/icon"
                 android:contentDescription="@string/folder"
                 app:srcCompat="@drawable/empty_group_icon"/>
 
@@ -82,7 +83,7 @@
                 android:theme="@style/SwitchStyle"/>
 
             <ImageView
-                android:id="@+id/group_swap_state"
+                android:id="@+id/swap_state"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginLeft="16dp"
@@ -92,7 +93,7 @@
                 app:srcCompat="@drawable/toggle_active"/>
 
             <ImageView
-                android:id="@+id/lock"
+                android:id="@+id/clock"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginLeft="16dp"

@@ -2,13 +2,8 @@ package org.kaaproject.kaa.examples.gpiocontrol.screen.deviceSwitchManagement;
 
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.support.graphics.drawable.VectorDrawableCompat;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -19,7 +14,6 @@ import android.widget.TextView;
 import com.h6ah4i.android.widget.advrecyclerview.expandable.ExpandableItemConstants;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
-import com.squareup.picasso.Picasso;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Device;
@@ -28,12 +22,7 @@ import org.kaaproject.kaa.examples.gpiocontrol.model.GroupHeaderPinManagement;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.deviceManagement.OnCheckedDeviceItemListener;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.deviceManagement.OnCheckedGroupItemListener;
-import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChangeFieldDialog;
-import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChooseImageDialog;
-import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChooseImageListener;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.main.MainActivity;
-import org.kaaproject.kaa.examples.gpiocontrol.utils.ChangeFieldListener;
-import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.Utils;
 
 import java.util.ArrayList;
@@ -139,11 +128,11 @@ class ExpandableSwitchManagementAdapter
     public BaseItemViewHolder onCreateChildViewHolder(ViewGroup parent, int viewType) {
         final LayoutInflater inflater = LayoutInflater.from(context);
         if (viewType == DEVICE_GROUP_ITEM_VIEW_TYPE) {
-            final View v = inflater.inflate(R.layout.group_item_device_management, parent, false);
-            return new DeviceGroupItemViewHolder(v);
+            final View v = inflater.inflate(R.layout.group_item_device_switch_management, parent, false);
+            return new GroupItemViewHolder(v);
         } else if (viewType == SINGLE_DEVICE_ITEM_VIEW_TYPE) {
-            final View v = inflater.inflate(R.layout.single_device_item_port_manager, parent, false);
-            return new SingleDeviceItemViewHolder(v);
+            final View v = inflater.inflate(R.layout.device_item_device_switch_mangement, parent, false);
+            return new DeviceItemViewHolder(v);
         }
         throw new RuntimeException("No match for onCreateChildViewHolder" + viewType + ".");
     }
@@ -186,79 +175,33 @@ class ExpandableSwitchManagementAdapter
     @Override
     public void onBindChildViewHolder(BaseItemViewHolder holder, int groupPosition, int childPosition, int viewType) {
         if (viewType == DEVICE_GROUP_ITEM_VIEW_TYPE) {
-            final DeviceGroupItemViewHolder deviceGroupViewHolder = (DeviceGroupItemViewHolder) holder;
+            final GroupItemViewHolder groupViewHolder = (GroupItemViewHolder) holder;
             final Group group = (Group) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
 
-            deviceGroupViewHolder.selection.setChecked(group.isSelected());
-            Utils.loadImage(group, deviceGroupViewHolder.icon);
-            deviceGroupViewHolder.name.setText(group.getName());
-            deviceGroupViewHolder.port.setText(group.getPortStatus());
+            groupViewHolder.selection.setChecked(group.isSelected());
+            Utils.loadImage(group, groupViewHolder.icon);
+            groupViewHolder.name.setText(group.getName());
+            groupViewHolder.status.setText(group.getPortStatus());
 
-            deviceGroupViewHolder.selection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            groupViewHolder.selection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     onCheckedGroupItemListener.onChange(isChecked, group);
                 }
             });
 
-            deviceGroupViewHolder.imageViewOptions.setOnClickListener(new View.OnClickListener() {
+            groupViewHolder.swapState.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
-                    final PopupMenu deviceGroupItemPopup = new PopupMenu(context, deviceGroupViewHolder.imageViewOptions);
-                    deviceGroupItemPopup.inflate(R.menu.group_item_popup_menu);
+                    // TODO: 3/30/17 swap logic
+                }
+            });
 
-                    deviceGroupItemPopup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem item) {
-                            switch (item.getItemId()) {
-                                case R.id.edit_image:
-                                    ChooseImageDialog chooseImageDialog = new ChooseImageDialog().setChooseImageListener(new ChooseImageListener() {
-                                        @Override public void onImageChosen(Uri path) {
-                                            Picasso.with(context)
-                                                    .load(path)
-                                                    .fit()
-                                                    .centerCrop()
-                                                    .into(deviceGroupViewHolder.icon);
-                                        }
-
-                                        @Override public void onImageChosen(int drawableId) {
-                                            Drawable drawable = VectorDrawableCompat.create(context.getResources(), drawableId, null);
-                                            deviceGroupViewHolder.icon.setImageDrawable(drawable);
-                                        }
-                                    });
-                                    chooseImageDialog.show(context.getSupportFragmentManager());
-                                    break;
-                                case R.id.edit_name:
-                                    ChangeFieldDialog dialog = DialogFactory.getChangeFieldDialog(context.getString(R.string.edit_name),
-                                            null, group.getName(), context.getString(R.string.group_name),
-                                            context.getString(R.string.edit_name), new ChangeFieldListener() {
-                                                @Override public void onChanged(String newField) {
-                                                    group.setName(newField);
-                                                    notifyDataSetChanged();
-                                                }
-                                            });
-                                    dialog.show(context.getSupportFragmentManager());
-                                    break;
-                                case R.id.add_to_group:
-                                    // TODO: 3/10/17 add add to group
-                                    break;
-                                case R.id.remove_from_group:
-                                    // TODO: 3/10/17 add remove from group
-                                    break;
-                                case R.id.duplicate:
-                                    // TODO: 3/10/17 add duplicated
-                                    break;
-                                case R.id.ungroup:
-                                    // TODO: 3/10/17 add ungroup
-                                    break;
-                            }
-                            return false;
-                        }
-                    });
-
-                    deviceGroupItemPopup.show();
+            groupViewHolder.clock.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    // TODO: 3/30/17 clock logic
                 }
             });
         } else if (viewType == SINGLE_DEVICE_ITEM_VIEW_TYPE) {
-            final SingleDeviceItemViewHolder singleDeviceViewHolder = (SingleDeviceItemViewHolder) holder;
+            final DeviceItemViewHolder singleDeviceViewHolder = (DeviceItemViewHolder) holder;
             final Device device = (Device) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
 
             singleDeviceViewHolder.selection.setChecked(device.isSelected());
@@ -273,51 +216,9 @@ class ExpandableSwitchManagementAdapter
                 }
             });
 
-            singleDeviceViewHolder.imageViewOptions.setOnClickListener(new View.OnClickListener() {
+            singleDeviceViewHolder.lock.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
-                    final PopupMenu singleDeviceItemPopup = new PopupMenu(context, singleDeviceViewHolder.imageViewOptions);
-                    singleDeviceItemPopup.inflate(R.menu.device_item_popup_menu);
-
-                    singleDeviceItemPopup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem item) {
-                            switch (item.getItemId()) {
-                                case R.id.edit_image:
-                                    ChooseImageDialog chooseImageDialog = new ChooseImageDialog().setChooseImageListener(new ChooseImageListener() {
-                                        @Override public void onImageChosen(Uri path) {
-                                            Picasso.with(context)
-                                                    .load(path)
-                                                    .fit()
-                                                    .centerCrop()
-                                                    .into(singleDeviceViewHolder.imagePort);
-                                        }
-
-                                        @Override public void onImageChosen(int drawableId) {
-                                            Drawable drawable = VectorDrawableCompat.create(context.getResources(), drawableId, null);
-                                            singleDeviceViewHolder.imagePort.setImageDrawable(drawable);
-                                        }
-                                    });
-                                    chooseImageDialog.show(context.getSupportFragmentManager());
-                                    break;
-                                case R.id.edit_name:
-                                    ChangeFieldDialog dialog = DialogFactory.getChangeFieldDialog(context.getString(R.string.edit_name),
-                                            null, device.getName(), context.getString(R.string.controller_id),
-                                            context.getString(R.string.edit_name), new ChangeFieldListener() {
-                                                @Override public void onChanged(String newField) {
-                                                    device.setName(newField);
-                                                    notifyDataSetChanged();
-                                                }
-                                            });
-                                    dialog.show(context.getSupportFragmentManager());
-                                    break;
-                                case R.id.add_to_group:
-                                    // TODO: 3/10/17 add add to group
-                                    break;
-                            }
-                            return false;
-                        }
-                    });
-                    singleDeviceItemPopup.show();
+                    // TODO: 3/30/17 lock logic
                 }
             });
         }
@@ -359,15 +260,17 @@ class ExpandableSwitchManagementAdapter
         }
     }
 
-    static class DeviceGroupItemViewHolder extends BaseItemViewHolder implements View.OnClickListener {
+    static class GroupItemViewHolder extends BaseItemViewHolder implements View.OnClickListener {
 
         @BindView(R.id.selection) CheckBox selection;
         @BindView(R.id.icon) ImageView icon;
         @BindView(R.id.name) TextView name;
-        @BindView(R.id.port_status) TextView port;
-        @BindView(R.id.menu) ImageView imageViewOptions;
+        @BindView(R.id.status) TextView status;
+        @BindView(R.id.switch_group) SwitchCompat switchCompat;
+        @BindView(R.id.swap_state) ImageView swapState;
+        @BindView(R.id.clock) ImageView clock;
 
-        DeviceGroupItemViewHolder(View itemView) {
+        GroupItemViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
@@ -378,26 +281,19 @@ class ExpandableSwitchManagementAdapter
         }
     }
 
-    static class SingleDeviceItemViewHolder extends BaseItemViewHolder implements View.OnClickListener {
+    static class DeviceItemViewHolder extends BaseItemViewHolder {
 
         @BindView(R.id.image) ImageView imagePort;
         @BindView(R.id.selection) CheckBox selection;
         @BindView(R.id.name) TextView name;
-        @BindView(R.id.port_status) TextView port;
+        @BindView(R.id.status) TextView port;
         @BindView(R.id.switch_active) SwitchCompat switchCompat;
-        @BindView(R.id.menu) ImageView imageViewOptions;
+        @BindView(R.id.lock) ImageView lock;
 
-        SingleDeviceItemViewHolder(View itemView) {
+        DeviceItemViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            itemView.setOnClickListener(this);
-            imageViewOptions.setOnClickListener(this);
         }
-
-        @Override public void onClick(View view) {
-            selection.setChecked(!selection.isChecked());
-        }
-
     }
 
     @Override
