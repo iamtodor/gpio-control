@@ -65,7 +65,7 @@ public class DeviceManagementFragment extends BaseListFragment implements
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView.Adapter mWrappedAdapter;
     private RecyclerViewExpandableItemManager recyclerViewExpandableItemManager;
-    private ExpandableExampleAdapter myItemAdapter;
+    private ExpandableDeviceManagerAdapter myItemAdapter;
     private List<Header> deviceGroupHeaderList;
     private Unbinder unbinder;
 
@@ -93,7 +93,7 @@ public class DeviceManagementFragment extends BaseListFragment implements
 
         //adapter
         deviceGroupHeaderList = Utils.getMockedHeaderList();
-        myItemAdapter = new ExpandableExampleAdapter(context, deviceGroupHeaderList);
+        myItemAdapter = new ExpandableDeviceManagerAdapter(context, deviceGroupHeaderList);
 
         myItemAdapter.setOnCheckedGroupItemListener(new OnCheckedGroupItemListener() {
             @Override public void onChange(boolean isChecked, Group currentGroup) {

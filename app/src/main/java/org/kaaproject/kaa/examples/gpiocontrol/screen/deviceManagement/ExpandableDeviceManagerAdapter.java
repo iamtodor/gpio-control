@@ -40,10 +40,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-class ExpandableExampleAdapter
-        extends AbstractExpandableItemAdapter<ExpandableExampleAdapter.BaseHeaderViewHolder, ExpandableExampleAdapter.BaseItemViewHolder> {
+class ExpandableDeviceManagerAdapter
+        extends AbstractExpandableItemAdapter<ExpandableDeviceManagerAdapter.BaseHeaderViewHolder, ExpandableDeviceManagerAdapter.BaseItemViewHolder> {
 
-    private static final String TAG = ExpandableExampleAdapter.class.getSimpleName();
+    private static final String TAG = ExpandableDeviceManagerAdapter.class.getSimpleName();
     private static final int DEVICE_GROUP_HEADER_VIEW_TYPE = 1;
     private static final int DEVICE_LIST_HEADER_VIEW_TYPE = 2;
 
@@ -56,7 +56,7 @@ class ExpandableExampleAdapter
     private OnCheckedGroupItemListener onCheckedGroupItemListener;
     private OnCheckedDeviceItemListener onCheckedDeviceItemListener;
 
-    ExpandableExampleAdapter(Context context, List<Header> deviceGroupHeaderList) {
+    ExpandableDeviceManagerAdapter(Context context, List<Header> deviceGroupHeaderList) {
         this.context = (MainActivity) context;
         // ExpandableItemAdapter requires stable ID, and also
         // have to implement the getGroupItemId()/getChildItemId() methods appropriately.
