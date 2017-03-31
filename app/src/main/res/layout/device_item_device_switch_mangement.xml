@@ -75,12 +75,21 @@
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/switch_active"
-                android:layout_width="wrap_content"
+                android:layout_width="24dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:alpha="0.87"
                 android:background="@null"
                 android:theme="@style/SwitchStyle"/>
+
+            <ImageView
+                android:id="@+id/alarm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:alpha="0.87"
+                android:contentDescription="@string/lock_for_device"
+                app:srcCompat="@drawable/alarm_notactivated"/>
 
             <ImageView
                 android:id="@+id/lock"

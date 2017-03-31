@@ -29,12 +29,12 @@
                 android:layout_gravity="center_vertical"/>
 
             <ImageView
+                android:id="@+id/icon"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="8dp"
                 android:alpha="0.54"
-                android:id="@+id/icon"
                 android:contentDescription="@string/folder"
                 app:srcCompat="@drawable/empty_group_icon"/>
 
@@ -70,12 +70,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_weight="1"
+            android:layout_weight="0.8"
             android:gravity="center">
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/switch_group"
-                android:layout_width="wrap_content"
+                android:layout_width="24dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:alpha="0.87"
@@ -83,24 +83,22 @@
                 android:theme="@style/SwitchStyle"/>
 
             <ImageView
-                android:id="@+id/swap_state"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginLeft="16dp"
-                android:layout_weight="1"
-                android:alpha="0.87"
-                android:contentDescription="@string/swap_group_state"
-                app:srcCompat="@drawable/toggle_active"/>
-
-            <ImageView
                 android:id="@+id/clock"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_marginLeft="16dp"
                 android:layout_weight="1"
                 android:alpha="0.87"
                 android:contentDescription="@string/lock_for_device"
                 app:srcCompat="@drawable/alarm_activated"/>
+
+            <ImageView
+                android:id="@+id/swap_state"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_weight="1"
+                android:alpha="0.87"
+                android:contentDescription="@string/swap_group_state"
+                app:srcCompat="@drawable/toggle_active"/>
 
         </LinearLayout>
 

@@ -66,7 +66,7 @@ public class DeviceManagementFragment extends BaseListFragment {
     private Unbinder unbinder;
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.device_list_fragment, container, false);
+        final View view = inflater.inflate(R.layout.device_management_fragment, container, false);
         final Context context = getContext();
 
         unbinder = ButterKnife.bind(this, view);
@@ -266,7 +266,7 @@ public class DeviceManagementFragment extends BaseListFragment {
 
     @OnClick(R.id.add_to_group)
     public void addToGroup() {
-
+        // TODO: 3/31/17 add to group logic
     }
 
     @OnClick(R.id.cancel_selection)

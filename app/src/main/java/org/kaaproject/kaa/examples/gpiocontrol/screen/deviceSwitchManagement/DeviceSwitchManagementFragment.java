@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
@@ -37,15 +36,11 @@ import org.kaaproject.kaa.examples.gpiocontrol.screen.deviceManagement.OnChecked
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.AddControllerOrGroupDialog;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChangeFieldDialog;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.ChangeFieldListener;
-import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.Utils;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
@@ -62,7 +57,12 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
     @BindView(R.id.fab) protected FloatingActionButton fab;
     @BindView(R.id.selection_menu) protected LinearLayout selectionMenu;
     @BindView(R.id.selected_count_value) protected TextView selectedCountedValue;
-    @BindViews({R.id.ic_create_group, R.id.ic_add_to_group}) protected ImageView[] imageViews;
+    @BindView(R.id.ic_power_on) protected ImageView icPowerOn;
+    @BindView(R.id.ic_power_off) protected ImageView icPowerOff;
+    @BindView(R.id.ic_toggle) protected ImageView icToggle;
+    @BindView(R.id.ic_lock) protected ImageView icLock;
+    @BindView(R.id.ic_unlock) protected ImageView icUnlock;
+    @BindView(R.id.ic_alarm) protected ImageView icAlarm;
 
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView.Adapter mWrappedAdapter;
@@ -74,7 +74,7 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.device_list_fragment, container, false);
+        final View view = inflater.inflate(R.layout.device_switch_management_fragment, container, false);
         final Context context = getContext();
         unbinder = ButterKnife.bind(this, view);
         getSupportActionBar().setTitle(getString(R.string.device_switch_management));
@@ -133,54 +133,6 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
         AddControllerOrGroupDialog dialog = new AddControllerOrGroupDialog()
                 .setOnDismissListener(this);
         dialog.show(getBaseActivity().getSupportFragmentManager());
-    }
-
-    @OnClick(R.id.create_group)
-    public void createGroup() {
-        ChangeFieldDialog dialogFactory = DialogFactory.getChangeFieldDialog(getString(R.string.create_group),
-                null, null, getString(R.string.group_name), getString(R.string.create_group), new ChangeFieldListener() {
-                    @Override public void onChanged(String newField) {
-                        for (Header header : deviceGroupHeaderList) {
-                            if (header instanceof GroupHeaderPinManagement) {
-                                List<Group> selectedDeviceGroupList = new ArrayList<>();
-                                int index = -1;
-                                for (int i = 0; i < header.getChildList().size(); i++) {
-                                    Group group = (Group) header.getChildList().get(i);
-                                    if (group.isSelected()) {
-                                        if (index == -1) {
-                                            index = i;
-                                        }
-                                        selectedDeviceGroupList.add(group);
-                                    }
-                                }
-                                List<Group> baseDeviceGroupList = ((GroupHeaderPinManagement) header).getDeviceGroupList();
-                                for (Iterator<Group> it = baseDeviceGroupList.iterator(); it.hasNext(); ) {
-                                    Group baseDeviceGroup = it.next();
-                                    for (Group selectedGroup : selectedDeviceGroupList) {
-                                        if (baseDeviceGroup == selectedGroup) {
-                                            it.remove();
-                                        }
-                                    }
-                                }
-                                GroupHeaderPinManagement groupHeaderPinManagement = (GroupHeaderPinManagement) header;
-                                Group group = new Group();
-                                group.setName(newField);
-                                group.setVectorId(R.drawable.empty_group_icon);
-                                group.setPortStatus("Port status");
-                                group.setPower("Power");
-                                groupHeaderPinManagement.addGroup(index, group);
-                            }
-                        }
-                        adapter.notifyDataSetChanged();
-                    }
-                });
-
-        dialogFactory.show(getBaseActivity().getSupportFragmentManager());
-    }
-
-    @OnClick(R.id.add_to_group)
-    public void addToGroup() {
-        // TODO: 3/31/17 add to group logic
     }
 
     @Override public void onDismiss(int dialog) {
@@ -276,13 +228,16 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
     }
 
     private void setupSelectionMenuIcons(Context context) {
-        final Drawable addGroupIcon = ContextCompat.getDrawable(context, R.drawable.add_group);
-        addGroupIcon.setColorFilter(ContextCompat.getColor(context, R.color.lightBlueActiveElement),
+        icPowerOn.setColorFilter(ContextCompat.getColor(context, R.color.customGreen),
                 PorterDuff.Mode.SRC_ATOP);
-
-        for (ImageView imageView : imageViews) {
-            imageView.setImageDrawable(addGroupIcon);
-        }
+        icPowerOff.setColorFilter(ContextCompat.getColor(context, R.color.customRed),
+                PorterDuff.Mode.SRC_ATOP);
+        icLock.setColorFilter(ContextCompat.getColor(context, R.color.lightBlueActiveElement),
+                PorterDuff.Mode.SRC_ATOP);
+        icUnlock.setColorFilter(ContextCompat.getColor(context, R.color.lightBlueActiveElement),
+                PorterDuff.Mode.SRC_ATOP);
+        icAlarm.setColorFilter(ContextCompat.getColor(context, R.color.lightBlueActiveElement),
+                PorterDuff.Mode.SRC_ATOP);
     }
 
     private void showOrHideSelectionMenu() {
