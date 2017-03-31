@@ -84,7 +84,7 @@ public class DeviceManagementFragment extends BaseListFragment {
         adapter = new ExpandableDeviceManagerAdapter(context, deviceGroupHeaderList);
 
         adapter.setOnCheckedGroupItemListener(new OnCheckedGroupItemListener() {
-            @Override public void onChange(boolean isChecked, Group currentGroup) {
+            @Override public void onGroupChecked(boolean isChecked, Group currentGroup) {
                 for (Header deviceGroupHeader : deviceGroupHeaderList) {
                     if (deviceGroupHeader instanceof GroupHeaderPinManagement) {
                         for (Object object : deviceGroupHeader.getChildList()) {
@@ -100,7 +100,7 @@ public class DeviceManagementFragment extends BaseListFragment {
         });
 
         adapter.setOnCheckedDeviceItemListener(new OnCheckedDeviceItemListener() {
-            @Override public void onChecked(boolean isChecked, Device currentSelectedDevice) {
+            @Override public void onDeviceChecked(boolean isChecked, Device currentSelectedDevice) {
                 for (Header deviceGroupHeader : deviceGroupHeaderList) {
                     if (deviceGroupHeader instanceof DeviceHeaderPinManagement) {
                         for (Object object : deviceGroupHeader.getChildList()) {

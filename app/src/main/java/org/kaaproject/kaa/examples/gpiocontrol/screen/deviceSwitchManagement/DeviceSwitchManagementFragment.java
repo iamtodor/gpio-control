@@ -135,6 +135,65 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
         dialog.show(getBaseActivity().getSupportFragmentManager());
     }
 
+    @OnClick(R.id.power_on)
+    public void powerOnClick() {
+        for (Header deviceGroupHeader : deviceGroupHeaderList) {
+            if (deviceGroupHeader instanceof GroupHeaderPinManagement) {
+                for (Object object : deviceGroupHeader.getChildList()) {
+                    Group group = (Group) object;
+                    if(group.isSelected()) {
+                        for(Device device : group.getDeviceList())
+                            device.setOn(true);
+                    }
+                }
+            }
+        }
+        for (Header deviceGroupHeader : deviceGroupHeaderList) {
+            if (deviceGroupHeader instanceof DeviceHeaderPinManagement) {
+                for (Object object : deviceGroupHeader.getChildList()) {
+                    Device device = (Device) object;
+                    if (device.isSelected()) {
+                        device.setOn(true);
+                    }
+                }
+            }
+        }
+        adapter.updateAdapter(deviceGroupHeaderList);
+    }
+
+    @OnClick(R.id.power_off)
+    public void powerOffClick() {
+        // TODO: 3/31/17 power off
+    }
+
+    @OnClick(R.id.toggle)
+    public void toggleClick() {
+        // TODO: 3/31/17 toggle
+    }
+
+    @OnClick(R.id.lock)
+    public void lockClick() {
+        // TODO: 3/31/17 lock
+    }
+
+    @OnClick(R.id.unlock)
+    public void unlockClick() {
+        // TODO: 3/31/17 unlock
+    }
+
+    @OnClick(R.id.alarm)
+    public void alarmClick() {
+        // TODO: 3/31/17 alarm
+    }
+
+    @OnClick(R.id.cancel_selection)
+    public void cancelSelection() {
+        for (Header header : deviceGroupHeaderList) {
+            header.cancelSelection();
+        }
+        adapter.updateAdapter(deviceGroupHeaderList);
+    }
+
     @Override public void onDismiss(int dialog) {
         if (dialog == ADD_GROUP_DIALOG) {
             ChangeFieldDialog changeFieldDialog = new ChangeFieldDialog()
@@ -153,7 +212,7 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
         adapter.notifyDataSetChanged();
     }
 
-    @Override public void onChange(boolean isChecked, Group currentGroup) {
+    @Override public void onGroupChecked(boolean isChecked, Group currentGroup) {
         for (Header deviceGroupHeader : deviceGroupHeaderList) {
             if (deviceGroupHeader instanceof GroupHeaderPinManagement) {
                 for (Object object : deviceGroupHeader.getChildList()) {
@@ -167,7 +226,7 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
         showOrHideSelectionMenu();
     }
 
-    @Override public void onChecked(boolean isChecked, Device currentSelectedDevice) {
+    @Override public void onDeviceChecked(boolean isChecked, Device currentSelectedDevice) {
         for (Header deviceGroupHeader : deviceGroupHeaderList) {
             if (deviceGroupHeader instanceof DeviceHeaderPinManagement) {
                 for (Object object : deviceGroupHeader.getChildList()) {

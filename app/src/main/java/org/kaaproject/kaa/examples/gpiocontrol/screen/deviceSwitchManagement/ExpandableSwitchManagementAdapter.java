@@ -55,7 +55,7 @@ class ExpandableSwitchManagementAdapter
         updateAdapter(deviceGroupHeaderList);
     }
 
-    private void updateAdapter(List<Header> items) {
+    void updateAdapter(List<Header> items) {
         deviceGroupHeaderList.clear();
         deviceGroupHeaderList.addAll(items);
         notifyDataSetChanged();
@@ -185,7 +185,7 @@ class ExpandableSwitchManagementAdapter
 
             groupViewHolder.selection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    onCheckedGroupItemListener.onChange(isChecked, group);
+                    onCheckedGroupItemListener.onGroupChecked(isChecked, group);
                 }
             });
 
@@ -212,7 +212,7 @@ class ExpandableSwitchManagementAdapter
 
             singleDeviceViewHolder.selection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    onCheckedDeviceItemListener.onChecked(isChecked, device);
+                    onCheckedDeviceItemListener.onDeviceChecked(isChecked, device);
                 }
             });
 
