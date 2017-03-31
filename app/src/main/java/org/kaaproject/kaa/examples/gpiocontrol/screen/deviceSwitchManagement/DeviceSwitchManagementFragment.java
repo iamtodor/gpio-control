@@ -137,33 +137,12 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
 
     @OnClick(R.id.power_on)
     public void powerOnClick() {
-        for (Header deviceGroupHeader : deviceGroupHeaderList) {
-            if (deviceGroupHeader instanceof GroupHeaderPinManagement) {
-                for (Object object : deviceGroupHeader.getChildList()) {
-                    Group group = (Group) object;
-                    if(group.isSelected()) {
-                        for(Device device : group.getDeviceList())
-                            device.setOn(true);
-                    }
-                }
-            }
-        }
-        for (Header deviceGroupHeader : deviceGroupHeaderList) {
-            if (deviceGroupHeader instanceof DeviceHeaderPinManagement) {
-                for (Object object : deviceGroupHeader.getChildList()) {
-                    Device device = (Device) object;
-                    if (device.isSelected()) {
-                        device.setOn(true);
-                    }
-                }
-            }
-        }
-        adapter.updateAdapter(deviceGroupHeaderList);
+        setIsOn(true);
     }
 
     @OnClick(R.id.power_off)
     public void powerOffClick() {
-        // TODO: 3/31/17 power off
+        setIsOn(false);
     }
 
     @OnClick(R.id.toggle)
@@ -332,5 +311,30 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
             selectionMenu.setVisibility(View.GONE);
             fab.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void setIsOn(boolean isOn) {
+        for (Header deviceGroupHeader : deviceGroupHeaderList) {
+            if (deviceGroupHeader instanceof GroupHeaderPinManagement) {
+                for (Object object : deviceGroupHeader.getChildList()) {
+                    Group group = (Group) object;
+                    if(group.isSelected()) {
+                        for(Device device : group.getDeviceList())
+                            device.setOn(isOn);
+                    }
+                }
+            }
+        }
+        for (Header deviceGroupHeader : deviceGroupHeaderList) {
+            if (deviceGroupHeader instanceof DeviceHeaderPinManagement) {
+                for (Object object : deviceGroupHeader.getChildList()) {
+                    Device device = (Device) object;
+                    if (device.isSelected()) {
+                        device.setOn(isOn);
+                    }
+                }
+            }
+        }
+        adapter.updateAdapter(deviceGroupHeaderList);
     }
 }
