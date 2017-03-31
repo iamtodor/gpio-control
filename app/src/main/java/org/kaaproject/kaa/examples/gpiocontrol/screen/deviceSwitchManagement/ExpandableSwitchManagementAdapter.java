@@ -55,7 +55,7 @@ class ExpandableSwitchManagementAdapter
         updateAdapter(deviceGroupHeaderList);
     }
 
-    void updateAdapter(List<Header> items) {
+    private void updateAdapter(List<Header> items) {
         deviceGroupHeaderList.clear();
         deviceGroupHeaderList.addAll(items);
         notifyDataSetChanged();
@@ -281,7 +281,7 @@ class ExpandableSwitchManagementAdapter
         }
     }
 
-    static class DeviceItemViewHolder extends BaseItemViewHolder {
+    static class DeviceItemViewHolder extends BaseItemViewHolder implements View.OnClickListener {
 
         @BindView(R.id.image) ImageView imagePort;
         @BindView(R.id.selection) CheckBox selection;
@@ -293,6 +293,11 @@ class ExpandableSwitchManagementAdapter
         DeviceItemViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override public void onClick(View view) {
+            selection.setChecked(!selection.isChecked());
         }
     }
 

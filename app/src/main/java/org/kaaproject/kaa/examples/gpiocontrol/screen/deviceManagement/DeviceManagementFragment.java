@@ -54,8 +54,6 @@ public class DeviceManagementFragment extends BaseListFragment {
     @BindView(R.id.no_device_message) protected TextView noDeviceMessage;
     @BindView(R.id.fab) protected FloatingActionButton fab;
     @BindView(R.id.selection_menu) protected LinearLayout selectionMenu;
-    @BindView(R.id.create_group) protected LinearLayout createGroup;
-    @BindView(R.id.add_to_group) protected LinearLayout addGroup;
     @BindView(R.id.selected_count_value) protected TextView selectedCountedValue;
 
     @BindViews({R.id.ic_create_group, R.id.ic_add_to_group}) protected ImageView[] imageViews;
