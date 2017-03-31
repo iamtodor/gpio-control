@@ -147,7 +147,28 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
 
     @OnClick(R.id.toggle)
     public void toggleClick() {
-        // TODO: 3/31/17 toggle
+        for (Header deviceGroupHeader : deviceGroupHeaderList) {
+            if (deviceGroupHeader instanceof GroupHeaderPinManagement) {
+                for (Object object : deviceGroupHeader.getChildList()) {
+                    Group group = (Group) object;
+                    if(group.isSelected()) {
+                        for(Device device : group.getDeviceList())
+                            device.setOn(!device.isOn());
+                    }
+                }
+            }
+        }
+        for (Header deviceGroupHeader : deviceGroupHeaderList) {
+            if (deviceGroupHeader instanceof DeviceHeaderPinManagement) {
+                for (Object object : deviceGroupHeader.getChildList()) {
+                    Device device = (Device) object;
+                    if (device.isSelected()) {
+                        device.setOn(!device.isOn());
+                    }
+                }
+            }
+        }
+        adapter.updateAdapter(deviceGroupHeaderList);
     }
 
     @OnClick(R.id.lock)
