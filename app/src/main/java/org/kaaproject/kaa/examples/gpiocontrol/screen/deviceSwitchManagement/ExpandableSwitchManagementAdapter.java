@@ -18,7 +18,7 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemVie
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Device;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Group;
-import org.kaaproject.kaa.examples.gpiocontrol.model.GroupHeaderPinManagement;
+import org.kaaproject.kaa.examples.gpiocontrol.model.GroupHeader;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.deviceManagement.OnCheckedDeviceItemListener;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.deviceManagement.OnCheckedGroupItemListener;
@@ -86,7 +86,7 @@ class ExpandableSwitchManagementAdapter
 
     @Override
     public long getChildId(int groupPosition, int childPosition) {
-        if (deviceGroupHeaderList.get(groupPosition) instanceof GroupHeaderPinManagement) {
+        if (deviceGroupHeaderList.get(groupPosition) instanceof GroupHeader) {
             final Group group = (Group) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
             return group.getId();
         } else {
@@ -97,7 +97,7 @@ class ExpandableSwitchManagementAdapter
 
     @Override
     public int getGroupItemViewType(int groupPosition) {
-        if (deviceGroupHeaderList.get(groupPosition) instanceof GroupHeaderPinManagement) {
+        if (deviceGroupHeaderList.get(groupPosition) instanceof GroupHeader) {
             return DEVICE_GROUP_HEADER_VIEW_TYPE;
         } else
             return DEVICE_LIST_HEADER_VIEW_TYPE;
@@ -105,7 +105,7 @@ class ExpandableSwitchManagementAdapter
 
     @Override
     public int getChildItemViewType(int groupPosition, int childPosition) {
-        if (deviceGroupHeaderList.get(groupPosition) instanceof GroupHeaderPinManagement) {
+        if (deviceGroupHeaderList.get(groupPosition) instanceof GroupHeader) {
             return DEVICE_GROUP_ITEM_VIEW_TYPE;
         } else
             return SINGLE_DEVICE_ITEM_VIEW_TYPE;
@@ -182,6 +182,7 @@ class ExpandableSwitchManagementAdapter
             Utils.loadImage(group, groupViewHolder.icon);
             groupViewHolder.name.setText(group.getName());
             groupViewHolder.status.setText(group.getPortStatus());
+            groupViewHolder.switchOn.setChecked(group.isOn());
 
             groupViewHolder.selection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -266,7 +267,7 @@ class ExpandableSwitchManagementAdapter
         @BindView(R.id.icon) ImageView icon;
         @BindView(R.id.name) TextView name;
         @BindView(R.id.status) TextView status;
-        @BindView(R.id.switch_group) SwitchCompat switchCompat;
+        @BindView(R.id.switch_on) SwitchCompat switchOn;
         @BindView(R.id.swap_state) ImageView swapState;
         @BindView(R.id.clock) ImageView clock;
 

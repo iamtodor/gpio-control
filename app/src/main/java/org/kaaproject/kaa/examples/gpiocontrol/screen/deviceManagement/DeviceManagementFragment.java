@@ -25,9 +25,9 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Device;
-import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceHeaderPinManagement;
+import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceHeader;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Group;
-import org.kaaproject.kaa.examples.gpiocontrol.model.GroupHeaderPinManagement;
+import org.kaaproject.kaa.examples.gpiocontrol.model.GroupHeader;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseListFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.AddControllerOrGroupDialog;
@@ -86,7 +86,7 @@ public class DeviceManagementFragment extends BaseListFragment {
         adapter.setOnCheckedGroupItemListener(new OnCheckedGroupItemListener() {
             @Override public void onGroupChecked(boolean isChecked, Group currentGroup) {
                 for (Header deviceGroupHeader : deviceGroupHeaderList) {
-                    if (deviceGroupHeader instanceof GroupHeaderPinManagement) {
+                    if (deviceGroupHeader instanceof GroupHeader) {
                         for (Object object : deviceGroupHeader.getChildList()) {
                             Group deviceGroup = (Group) object;
                             if (currentGroup == deviceGroup) {
@@ -102,7 +102,7 @@ public class DeviceManagementFragment extends BaseListFragment {
         adapter.setOnCheckedDeviceItemListener(new OnCheckedDeviceItemListener() {
             @Override public void onDeviceChecked(boolean isChecked, Device currentSelectedDevice) {
                 for (Header deviceGroupHeader : deviceGroupHeaderList) {
-                    if (deviceGroupHeader instanceof DeviceHeaderPinManagement) {
+                    if (deviceGroupHeader instanceof DeviceHeader) {
                         for (Object object : deviceGroupHeader.getChildList()) {
                             Device selectableDevice = (Device) object;
                             if (currentSelectedDevice == selectableDevice) {
@@ -151,7 +151,7 @@ public class DeviceManagementFragment extends BaseListFragment {
         int totalSize = 0;
         int selectedSize = 0;
         for (Header deviceGroupHeader : deviceGroupHeaderList) {
-            if (deviceGroupHeader instanceof GroupHeaderPinManagement) {
+            if (deviceGroupHeader instanceof GroupHeader) {
                 for (Object object : deviceGroupHeader.getChildList()) {
                     Group group = (Group) object;
                     if (group.isSelected()) {
@@ -160,7 +160,7 @@ public class DeviceManagementFragment extends BaseListFragment {
                         isSelected = true;
                     }
                 }
-            } else if (deviceGroupHeader instanceof DeviceHeaderPinManagement) {
+            } else if (deviceGroupHeader instanceof DeviceHeader) {
                 for (Object object : deviceGroupHeader.getChildList()) {
                     Device device = (Device) object;
                     if (device.isSelected()) {
@@ -227,7 +227,7 @@ public class DeviceManagementFragment extends BaseListFragment {
                 null, null, getString(R.string.group_name), getString(R.string.create_group), new ChangeFieldListener() {
                     @Override public void onChanged(String newField) {
                         for (Header header : deviceGroupHeaderList) {
-                            if (header instanceof GroupHeaderPinManagement) {
+                            if (header instanceof GroupHeader) {
                                 List<Group> selectedDeviceGroupList = new ArrayList<>();
                                 int index = -1;
                                 for (int i = 0; i < header.getChildList().size(); i++) {
@@ -239,7 +239,7 @@ public class DeviceManagementFragment extends BaseListFragment {
                                         selectedDeviceGroupList.add(group);
                                     }
                                 }
-                                List<Group> baseDeviceGroupList = ((GroupHeaderPinManagement) header).getDeviceGroupList();
+                                List<Group> baseDeviceGroupList = ((GroupHeader) header).getDeviceGroupList();
                                 for (Iterator<Group> it = baseDeviceGroupList.iterator(); it.hasNext(); ) {
                                     Group baseDeviceGroup = it.next();
                                     for (Group selectedGroup : selectedDeviceGroupList) {
@@ -248,13 +248,13 @@ public class DeviceManagementFragment extends BaseListFragment {
                                         }
                                     }
                                 }
-                                GroupHeaderPinManagement groupHeaderPinManagement = (GroupHeaderPinManagement) header;
+                                GroupHeader groupHeader = (GroupHeader) header;
                                 Group group = new Group();
                                 group.setName(newField);
                                 group.setVectorId(R.drawable.empty_group_icon);
                                 group.setPortStatus("Port status");
                                 group.setPower("Power");
-                                groupHeaderPinManagement.addGroup(index, group);
+                                groupHeader.addGroup(index, group);
                             }
                         }
                         adapter.notifyDataSetChanged();

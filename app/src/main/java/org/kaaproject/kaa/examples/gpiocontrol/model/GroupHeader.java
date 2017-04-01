@@ -3,7 +3,7 @@ package org.kaaproject.kaa.examples.gpiocontrol.model;
 
 import java.util.List;
 
-public class GroupHeaderPinManagement<T> extends Header {
+public class GroupHeader<T> extends Header {
 
     private String name;
     private int id;
@@ -52,7 +52,7 @@ public class GroupHeaderPinManagement<T> extends Header {
         this.id = id;
     }
 
-    public GroupHeaderPinManagement(String name, int id, List<T> deviceGroupList) {
+    public GroupHeader(String name, int id, List<T> deviceGroupList) {
         this.name = name;
         this.id = id;
         this.deviceGroupList = deviceGroupList;
@@ -63,7 +63,7 @@ public class GroupHeaderPinManagement<T> extends Header {
     }
 
     @Override public String toString() {
-        return "GroupHeaderPinManagement{" +
+        return "GroupHeader{" +
                 "name='" + name + '\'' +
                 ", id=" + id +
                 ", deviceGroupList=" + deviceGroupList +

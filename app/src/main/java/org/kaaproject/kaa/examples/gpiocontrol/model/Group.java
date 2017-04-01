@@ -21,6 +21,7 @@ public class Group extends RealmObject {
     @PrimaryKey
     private long id;
     private boolean isSelected;
+    private boolean isOn;
     private RealmList<Group> groupList;
     private RealmList<Device> deviceList;
 
@@ -94,6 +95,14 @@ public class Group extends RealmObject {
 
     public void setSelected(boolean selected) {
         isSelected = selected;
+    }
+
+    public boolean isOn() {
+        return isOn;
+    }
+
+    public void setOn(boolean on) {
+        isOn = on;
     }
 
     public List<Group> getGroupList() {

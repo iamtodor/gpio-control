@@ -3,13 +3,13 @@ package org.kaaproject.kaa.examples.gpiocontrol.model;
 
 import java.util.List;
 
-public class DeviceHeaderPinManagement<T> extends Header {
+public class DeviceHeader<T> extends Header {
 
     private String name;
     private List<T> controllerList;
     private int id;
 
-    public DeviceHeaderPinManagement(String name, int id, List<T> portList) {
+    public DeviceHeader(String name, int id, List<T> portList) {
         this.name = name;
         this.id = id;
         this.controllerList = portList;

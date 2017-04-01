@@ -14,9 +14,9 @@ import com.squareup.picasso.Picasso;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Alarm;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Device;
-import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceHeaderPinManagement;
+import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceHeader;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Group;
-import org.kaaproject.kaa.examples.gpiocontrol.model.GroupHeaderPinManagement;
+import org.kaaproject.kaa.examples.gpiocontrol.model.GroupHeader;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
 
 import java.io.File;
@@ -114,9 +114,9 @@ public class Utils {
         List<Device> deviceList = Utils.getMockedDeviceList();
         List<Group> baseDeviceGroupList = Utils.getMockedGroupList();
 
-        deviceGroupHeaderList.add(new GroupHeaderPinManagement<>("Device groups (" + baseDeviceGroupList.size() + ")",
+        deviceGroupHeaderList.add(new GroupHeader<>("Device groups (" + baseDeviceGroupList.size() + ")",
                 0, baseDeviceGroupList));
-        deviceGroupHeaderList.add(new DeviceHeaderPinManagement<>("Devices (" + deviceList.size() + ")",
+        deviceGroupHeaderList.add(new DeviceHeader<>("Devices (" + deviceList.size() + ")",
                 1, deviceList));
         return deviceGroupHeaderList;
     }

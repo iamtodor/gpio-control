@@ -25,11 +25,12 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Device;
-import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceHeaderPinManagement;
+import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceHeader;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Group;
-import org.kaaproject.kaa.examples.gpiocontrol.model.GroupHeaderPinManagement;
+import org.kaaproject.kaa.examples.gpiocontrol.model.GroupHeader;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.addController.AddControllerActivity;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.alarm.AlarmListActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.deviceManagement.OnCheckedDeviceItemListener;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.deviceManagement.OnCheckedGroupItemListener;
@@ -38,6 +39,7 @@ import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChangeFieldDialog;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.ChangeFieldListener;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -56,6 +58,8 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
     @BindView(R.id.no_device_message) protected TextView noDeviceMessage;
     @BindView(R.id.fab) protected FloatingActionButton fab;
     @BindView(R.id.selection_menu) protected LinearLayout selectionMenu;
+    @BindView(R.id.device_lock_container) protected LinearLayout deviceLockContainer;
+    @BindView(R.id.alarm) protected LinearLayout alarm;
     @BindView(R.id.selected_count_value) protected TextView selectedCountedValue;
     @BindView(R.id.ic_power_on) protected ImageView icPowerOn;
     @BindView(R.id.ic_power_off) protected ImageView icPowerOff;
@@ -128,72 +132,6 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
         }
     }
 
-    @OnClick(R.id.fab)
-    public void onFabClick() {
-        AddControllerOrGroupDialog dialog = new AddControllerOrGroupDialog()
-                .setOnDismissListener(this);
-        dialog.show(getBaseActivity().getSupportFragmentManager());
-    }
-
-    @OnClick(R.id.power_on)
-    public void powerOnClick() {
-        setIsOn(true);
-    }
-
-    @OnClick(R.id.power_off)
-    public void powerOffClick() {
-        setIsOn(false);
-    }
-
-    @OnClick(R.id.toggle)
-    public void toggleClick() {
-        for (Header deviceGroupHeader : deviceGroupHeaderList) {
-            if (deviceGroupHeader instanceof GroupHeaderPinManagement) {
-                for (Object object : deviceGroupHeader.getChildList()) {
-                    Group group = (Group) object;
-                    if(group.isSelected()) {
-                        for(Device device : group.getDeviceList())
-                            device.setOn(!device.isOn());
-                    }
-                }
-            }
-        }
-        for (Header deviceGroupHeader : deviceGroupHeaderList) {
-            if (deviceGroupHeader instanceof DeviceHeaderPinManagement) {
-                for (Object object : deviceGroupHeader.getChildList()) {
-                    Device device = (Device) object;
-                    if (device.isSelected()) {
-                        device.setOn(!device.isOn());
-                    }
-                }
-            }
-        }
-        adapter.updateAdapter(deviceGroupHeaderList);
-    }
-
-    @OnClick(R.id.lock)
-    public void lockClick() {
-        // TODO: 3/31/17 lock
-    }
-
-    @OnClick(R.id.unlock)
-    public void unlockClick() {
-        // TODO: 3/31/17 unlock
-    }
-
-    @OnClick(R.id.alarm)
-    public void alarmClick() {
-        // TODO: 3/31/17 alarm
-    }
-
-    @OnClick(R.id.cancel_selection)
-    public void cancelSelection() {
-        for (Header header : deviceGroupHeaderList) {
-            header.cancelSelection();
-        }
-        adapter.updateAdapter(deviceGroupHeaderList);
-    }
-
     @Override public void onDismiss(int dialog) {
         if (dialog == ADD_GROUP_DIALOG) {
             ChangeFieldDialog changeFieldDialog = new ChangeFieldDialog()
@@ -214,7 +152,7 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
 
     @Override public void onGroupChecked(boolean isChecked, Group currentGroup) {
         for (Header deviceGroupHeader : deviceGroupHeaderList) {
-            if (deviceGroupHeader instanceof GroupHeaderPinManagement) {
+            if (deviceGroupHeader instanceof GroupHeader) {
                 for (Object object : deviceGroupHeader.getChildList()) {
                     Group deviceGroup = (Group) object;
                     if (currentGroup == deviceGroup) {
@@ -223,12 +161,12 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
                 }
             }
         }
-        showOrHideSelectionMenu();
+        showOrHideGroupSelectionMenu();
     }
 
     @Override public void onDeviceChecked(boolean isChecked, Device currentSelectedDevice) {
         for (Header deviceGroupHeader : deviceGroupHeaderList) {
-            if (deviceGroupHeader instanceof DeviceHeaderPinManagement) {
+            if (deviceGroupHeader instanceof DeviceHeader) {
                 for (Object object : deviceGroupHeader.getChildList()) {
                     Device selectableDevice = (Device) object;
                     if (currentSelectedDevice == selectableDevice) {
@@ -237,7 +175,85 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
                 }
             }
         }
-        showOrHideSelectionMenu();
+        showOrHideDeviceSelectionMenu();
+    }
+
+    @OnClick(R.id.fab)
+    public void onFabClick() {
+        AddControllerOrGroupDialog dialog = new AddControllerOrGroupDialog()
+                .setOnDismissListener(this);
+        dialog.show(getBaseActivity().getSupportFragmentManager());
+    }
+
+    @OnClick(R.id.power_on)
+    public void powerOnClick() {
+        setIsOn(true);
+    }
+
+    @OnClick(R.id.power_off)
+    public void powerOffClick() {
+        setIsOn(false);
+    }
+
+    @OnClick(R.id.toggle)
+    public void toggleClick() {
+        for (Header deviceGroupHeader : deviceGroupHeaderList) {
+            if (deviceGroupHeader instanceof GroupHeader) {
+                for (Object object : deviceGroupHeader.getChildList()) {
+                    Group group = (Group) object;
+                    if (group.isSelected()) {
+                        group.setOn(!group.isOn());
+                        for (Device device : group.getDeviceList())
+                            device.setOn(!device.isOn());
+                    }
+                }
+            }
+            if (deviceGroupHeader instanceof DeviceHeader) {
+                for (Object object : deviceGroupHeader.getChildList()) {
+                    Device device = (Device) object;
+                    if (device.isSelected()) {
+                        device.setOn(!device.isOn());
+                    }
+                }
+            }
+        }
+        adapter.updateAdapter(deviceGroupHeaderList);
+    }
+
+    @OnClick(R.id.lock)
+    public void lockClick() {
+        setLock(true);
+    }
+
+    @OnClick(R.id.unlock)
+    public void unlockClick() {
+        setLock(false);
+    }
+
+    @OnClick(R.id.alarm)
+    public void alarmClick() {
+        for (Header deviceGroupHeader : deviceGroupHeaderList) {
+            if (deviceGroupHeader instanceof GroupHeader) {
+                ArrayList<String> idList = new ArrayList<>();
+                for (Object object : deviceGroupHeader.getChildList()) {
+                    Group group = (Group) object;
+                    if (group.isSelected()) {
+                        idList.add(String.valueOf(group.getId()));
+                    }
+                }
+                Intent intent = new Intent(getContext(), AlarmListActivity.class);
+                intent.putStringArrayListExtra("idList", idList);
+                startActivity(intent);
+            }
+        }
+    }
+
+    @OnClick(R.id.cancel_selection)
+    public void cancelSelection() {
+        for (Header header : deviceGroupHeaderList) {
+            header.cancelSelection();
+        }
+        adapter.updateAdapter(deviceGroupHeaderList);
     }
 
     private void setupRecyclerView(Context context, Bundle savedInstanceState) {
@@ -299,12 +315,15 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
                 PorterDuff.Mode.SRC_ATOP);
     }
 
-    private void showOrHideSelectionMenu() {
+    private void showOrHideGroupSelectionMenu() {
+        alarm.setVisibility(View.VISIBLE);
+        deviceLockContainer.setVisibility(View.GONE);
+
         boolean isSelected = false;
         int totalSize = 0;
         int selectedSize = 0;
         for (Header deviceGroupHeader : deviceGroupHeaderList) {
-            if (deviceGroupHeader instanceof GroupHeaderPinManagement) {
+            if (deviceGroupHeader instanceof GroupHeader) {
                 for (Object object : deviceGroupHeader.getChildList()) {
                     Group group = (Group) object;
                     if (group.isSelected()) {
@@ -313,7 +332,45 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
                         isSelected = true;
                     }
                 }
-            } else if (deviceGroupHeader instanceof DeviceHeaderPinManagement) {
+            } else if (deviceGroupHeader instanceof DeviceHeader) {
+                for (Object object : deviceGroupHeader.getChildList()) {
+                    Device device = (Device) object;
+                    if (device.isSelected()) {
+                        totalSize = deviceGroupHeader.getChildSize();
+                        selectedSize++;
+                        isSelected = true;
+                    }
+                }
+            }
+        }
+        if (isSelected) {
+            selectedCountedValue.setText("Selected " + selectedSize + "/" + totalSize);
+            selectionMenu.setVisibility(View.VISIBLE);
+            fab.setVisibility(View.GONE);
+        } else {
+            selectionMenu.setVisibility(View.GONE);
+            fab.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void showOrHideDeviceSelectionMenu() {
+        alarm.setVisibility(View.GONE);
+        deviceLockContainer.setVisibility(View.VISIBLE);
+
+        boolean isSelected = false;
+        int totalSize = 0;
+        int selectedSize = 0;
+        for (Header deviceGroupHeader : deviceGroupHeaderList) {
+            if (deviceGroupHeader instanceof GroupHeader) {
+                for (Object object : deviceGroupHeader.getChildList()) {
+                    Group group = (Group) object;
+                    if (group.isSelected()) {
+                        totalSize = deviceGroupHeader.getChildSize();
+                        selectedSize++;
+                        isSelected = true;
+                    }
+                }
+            } else if (deviceGroupHeader instanceof DeviceHeader) {
                 for (Object object : deviceGroupHeader.getChildList()) {
                     Device device = (Device) object;
                     if (device.isSelected()) {
@@ -336,22 +393,35 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
 
     private void setIsOn(boolean isOn) {
         for (Header deviceGroupHeader : deviceGroupHeaderList) {
-            if (deviceGroupHeader instanceof GroupHeaderPinManagement) {
+            if (deviceGroupHeader instanceof GroupHeader) {
                 for (Object object : deviceGroupHeader.getChildList()) {
                     Group group = (Group) object;
-                    if(group.isSelected()) {
-                        for(Device device : group.getDeviceList())
+                    if (group.isSelected()) {
+                        group.setOn(isOn);
+                        for (Device device : group.getDeviceList())
                             device.setOn(isOn);
                     }
                 }
             }
-        }
-        for (Header deviceGroupHeader : deviceGroupHeaderList) {
-            if (deviceGroupHeader instanceof DeviceHeaderPinManagement) {
+            if (deviceGroupHeader instanceof DeviceHeader) {
                 for (Object object : deviceGroupHeader.getChildList()) {
                     Device device = (Device) object;
                     if (device.isSelected()) {
                         device.setOn(isOn);
+                    }
+                }
+            }
+        }
+        adapter.updateAdapter(deviceGroupHeaderList);
+    }
+
+    private void setLock(boolean isLocked) {
+        for (Header deviceGroupHeader : deviceGroupHeaderList) {
+            if (deviceGroupHeader instanceof DeviceHeader) {
+                for (Object object : deviceGroupHeader.getChildList()) {
+                    Device device = (Device) object;
+                    if (device.isLocked()) {
+                        device.setLocked(isLocked);
                     }
                 }
             }

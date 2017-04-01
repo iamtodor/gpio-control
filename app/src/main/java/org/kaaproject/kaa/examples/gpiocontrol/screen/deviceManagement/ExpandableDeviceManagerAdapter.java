@@ -24,7 +24,7 @@ import com.squareup.picasso.Picasso;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Device;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Group;
-import org.kaaproject.kaa.examples.gpiocontrol.model.GroupHeaderPinManagement;
+import org.kaaproject.kaa.examples.gpiocontrol.model.GroupHeader;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChangeFieldDialog;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChooseImageDialog;
@@ -95,7 +95,7 @@ class ExpandableDeviceManagerAdapter
 
     @Override
     public long getChildId(int groupPosition, int childPosition) {
-        if (deviceGroupHeaderList.get(groupPosition) instanceof GroupHeaderPinManagement) {
+        if (deviceGroupHeaderList.get(groupPosition) instanceof GroupHeader) {
             final Group group = (Group) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
             return group.getId();
         } else {
@@ -106,7 +106,7 @@ class ExpandableDeviceManagerAdapter
 
     @Override
     public int getGroupItemViewType(int groupPosition) {
-        if (deviceGroupHeaderList.get(groupPosition) instanceof GroupHeaderPinManagement) {
+        if (deviceGroupHeaderList.get(groupPosition) instanceof GroupHeader) {
             return DEVICE_GROUP_HEADER_VIEW_TYPE;
         } else
             return DEVICE_LIST_HEADER_VIEW_TYPE;
@@ -114,7 +114,7 @@ class ExpandableDeviceManagerAdapter
 
     @Override
     public int getChildItemViewType(int groupPosition, int childPosition) {
-        if (deviceGroupHeaderList.get(groupPosition) instanceof GroupHeaderPinManagement) {
+        if (deviceGroupHeaderList.get(groupPosition) instanceof GroupHeader) {
             return DEVICE_GROUP_ITEM_VIEW_TYPE;
         } else
             return SINGLE_DEVICE_ITEM_VIEW_TYPE;
