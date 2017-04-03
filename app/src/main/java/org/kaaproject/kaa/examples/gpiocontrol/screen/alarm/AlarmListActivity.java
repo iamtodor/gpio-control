@@ -12,10 +12,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import org.kaaproject.kaa.examples.gpiocontrol.App;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Alarm;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseActivity;
-import org.kaaproject.kaa.examples.gpiocontrol.utils.Utils;
+import org.kaaproject.kaa.examples.gpiocontrol.storage.Repository;
 
 import java.util.List;
 
@@ -43,35 +44,8 @@ public class AlarmListActivity extends BaseActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
-        recyclerView.setItemAnimator(itemAnimator);
+        setupRecyclerView();
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (dy > 0 && fab.isShown()) {
-                    fab.hide();
-                } else if (dy < 0 && !fab.isShown()) {
-                    fab.show();
-                }
-                super.onScrolled(recyclerView, dx, dy);
-            }
-        });
-
-        List<Alarm> groupPinList = Utils.getMockedAlarmList();
-
-        AlarmAdapter pinManagementAdapter = new AlarmAdapter(groupPinList);
-        recyclerView.setAdapter(pinManagementAdapter);
-
-        if (groupPinList.isEmpty()) {
-            showNoDevices();
-        } else {
-            showDevices();
-        }
     }
 
     @Override
@@ -88,6 +62,41 @@ public class AlarmListActivity extends BaseActivity {
     @OnClick(R.id.fab)
     public void onFabClick() {
         startActivity(new Intent(AlarmListActivity.this, AddAlarmActivity.class));
+    }
+
+    private void setupRecyclerView() {
+        RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
+        recyclerView.setItemAnimator(itemAnimator);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        AlarmAdapter pinManagementAdapter = new AlarmAdapter();
+        recyclerView.setAdapter(pinManagementAdapter);
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0 && fab.isShown()) {
+                    fab.hide();
+                } else if (dy < 0 && !fab.isShown()) {
+                    fab.show();
+                }
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
+
+        Repository repository = ((App) (getApplication())).getRealmRepository();
+        List<Alarm> alarmList = repository.getAlarmList();
+
+        pinManagementAdapter.updateAdapter(alarmList);
+
+        if (alarmList.isEmpty()) {
+            showNoDevices();
+        } else {
+            showDevices();
+        }
     }
 
     private void showNoDevices() {

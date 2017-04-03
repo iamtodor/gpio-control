@@ -1,6 +1,7 @@
 package org.kaaproject.kaa.examples.gpiocontrol.storage;
 
 
+import org.kaaproject.kaa.examples.gpiocontrol.model.Alarm;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Group;
 
@@ -15,7 +16,7 @@ public class RealmRepository implements Repository {
     private Realm instance = Realm.getDefaultInstance();
 
     @Override
-    public <T extends RealmObject> void saveModelToDB(final T object) {
+    public <T extends RealmObject> void saveModel(final T object) {
         instance.executeTransaction(new Realm.Transaction() {
             @Override public void execute(Realm realm) {
                 realm.copyToRealmOrUpdate(object);
@@ -24,7 +25,7 @@ public class RealmRepository implements Repository {
     }
 
     @Override
-    public List<Controller> getControllersFromDB() {
+    public List<Controller> getControllerList() {
         final List<Controller> controllerList = new ArrayList<>();
         instance.executeTransaction(new Realm.Transaction() {
             @Override public void execute(Realm realm) {
@@ -35,7 +36,7 @@ public class RealmRepository implements Repository {
     }
 
     @Override
-    public <T extends RealmObject> void saveModelListToDB(final List<T> modelList) {
+    public <T extends RealmObject> void saveModelList(final List<T> modelList) {
         instance.executeTransaction(new Realm.Transaction() {
             @Override public void execute(Realm realm) {
                 realm.copyToRealmOrUpdate(modelList);
@@ -44,11 +45,21 @@ public class RealmRepository implements Repository {
     }
 
     @Override
-    public List<Group> getDeviceGroupListFromDB() {
+    public List<Group> getDeviceGroupList() {
         final List<Group> deviceGroupList = new ArrayList<>();
         instance.executeTransaction(new Realm.Transaction() {
             @Override public void execute(Realm realm) {
                 deviceGroupList.addAll(realm.where(Group.class).findAll());
+            }
+        });
+        return deviceGroupList;
+    }
+
+    @Override public List<Alarm> getAlarmList() {
+        final List<Alarm> deviceGroupList = new ArrayList<>();
+        instance.executeTransaction(new Realm.Transaction() {
+            @Override public void execute(Realm realm) {
+                deviceGroupList.addAll(realm.where(Alarm.class).findAll());
             }
         });
         return deviceGroupList;

@@ -101,8 +101,9 @@ public class AddControllerActivity extends BaseActivity implements ChooseImageLi
             controller.setVectorId(vectorId);
         }
         controller.setId(repository.getIdForModel(Controller.class));
-        repository.saveModelToDB(controller);
-        DialogFactory.getConfirmationDialog(this, getString(R.string.controller_was_added), getString(R.string.ok), null).show();
+        repository.saveModel(controller);
+        DialogFactory.getConfirmationDialog(this, getString(R.string.controller_was_added),
+                getString(R.string.ok), null).show();
     }
 
     private boolean isInfoValid() {

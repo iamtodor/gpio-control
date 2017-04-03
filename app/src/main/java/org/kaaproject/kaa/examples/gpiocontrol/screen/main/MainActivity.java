@@ -92,7 +92,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             showFragment(new ResetDevicesFragment());
         } else if (id == R.id.log_out) {
             showLogoutDialog();
-            Log.d(TAG, ((App) (getApplication())).getRealmRepository().getControllersFromDB().toString());
+            Log.d(TAG, ((App) (getApplication())).getRealmRepository().getControllerList().toString());
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -122,7 +122,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     private void showLogoutDialog() {
-        DialogFactory.getConfirmationDialog(this, getString(R.string.log_out_question), getString(R.string.log_out),
+        DialogFactory.getQuestionDialog(this, getString(R.string.log_out_question), getString(R.string.log_out),
                 new DialogInterface.OnClickListener() {
                     @Override public void onClick(DialogInterface dialog, int which) {
                         PreferencesImpl.getInstance().cleanUp();

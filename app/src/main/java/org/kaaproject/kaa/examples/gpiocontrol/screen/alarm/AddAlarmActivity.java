@@ -22,6 +22,7 @@ import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Alarm;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.storage.Repository;
+import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.Utils;
 
 import java.util.ArrayList;
@@ -34,6 +35,9 @@ import butterknife.OnClick;
 
 public class AddAlarmActivity extends BaseActivity {
 
+    private static final String TIME = "Time";
+
+    @BindView(R.id.repeat_options) protected LinearLayout repeatOptions;
     @BindView(R.id.toolbar) protected Toolbar toolbar;
     @BindView(R.id.time_picker) protected TextView timePicker;
     @BindView(R.id.action) protected RadioGroup actionRadioGroup;
@@ -43,7 +47,6 @@ public class AddAlarmActivity extends BaseActivity {
     @BindViews({R.id.sunday, R.id.monday, R.id.tuesday, R.id.wednesday,
             R.id.thursday, R.id.friday, R.id.saturday}) CheckBox[] weekDays;
 
-    @BindView(R.id.repeat_options) protected LinearLayout repeatOptions;
     private List<String> alarmDays = new ArrayList<>();
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -108,6 +111,7 @@ public class AddAlarmActivity extends BaseActivity {
             }
         }
 
+        Repository repository = ((App) (getApplication())).getRealmRepository();
         Alarm alarm = new Alarm();
         alarm.setName(alarmName.getText().toString());
 
@@ -120,8 +124,11 @@ public class AddAlarmActivity extends BaseActivity {
         alarm.setIteration(iteration);
 
         alarm.setActive(true);
+        alarm.setId(repository.getIdForModel(Alarm.class));
 
-        saveAlarm(alarm);
+        repository.saveModel(alarm);
+        DialogFactory.getConfirmationDialog(this, getString(R.string.alarm_was_added),
+                getString(R.string.ok), null).show();
     }
 
     @OnClick(R.id.cancel)
@@ -133,7 +140,7 @@ public class AddAlarmActivity extends BaseActivity {
         if (TextUtils.isEmpty(alarmName.getText().toString())) {
             alarmName.setError(getString(R.string.edit_text_cant_be_empty_error));
             return false;
-        } else if(timePicker.getText().toString().equals("Time")) {
+        } else if(timePicker.getText().toString().equals(TIME)) {
             timePicker.setError(getString(R.string.edit_text_cant_be_empty_error));
             return false;
         }
@@ -145,8 +152,4 @@ public class AddAlarmActivity extends BaseActivity {
         return selectedActionRadioButton.getTag().toString();
     }
 
-    private void saveAlarm(Alarm alarm) {
-        Repository repository = ((App) (getApplication())).getRealmRepository();
-        repository.saveModelToDB(alarm);
-    }
 }

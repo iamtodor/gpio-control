@@ -22,11 +22,7 @@ class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolderPinGroupI
     private LayoutInflater inflater;
     private List<Alarm> controllerList = new ArrayList<>();
 
-    AlarmAdapter(List<Alarm> controllerList) {
-        updateAdapter(controllerList);
-    }
-
-    private void updateAdapter(List<Alarm> colorItems) {
+    void updateAdapter(List<Alarm> colorItems) {
         controllerList.clear();
         controllerList.addAll(colorItems);
         notifyDataSetChanged();

@@ -59,9 +59,10 @@
     <string name="group_name">Group name</string>
     <string name="create_group">Create group</string>
     <string name="controller_was_added">Controller was added</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="lock">Lock</string>
     <string name="unlock">Unlock</string>
     <string name="alarm">Alarm</string>
+    <string name="alarm_was_added">Alarm was added</string>
 
 </resources>

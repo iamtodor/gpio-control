@@ -61,7 +61,7 @@ class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.GroupViewHo
             portStatus.setText(group.getPortStatus());
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
-                    DialogFactory.getConfirmationDialog(v.getContext(), "Would you like to add" + group.getName() + "to ",
+                    DialogFactory.getQuestionDialog(v.getContext(), "Would you like to add" + group.getName() + "to ",
                             "Add", new DialogInterface.OnClickListener() {
                                 @Override public void onClick(DialogInterface dialog, int which) {
 

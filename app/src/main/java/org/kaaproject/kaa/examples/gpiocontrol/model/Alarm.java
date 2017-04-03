@@ -2,9 +2,12 @@ package org.kaaproject.kaa.examples.gpiocontrol.model;
 
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 public class Alarm extends RealmObject {
 
+    @PrimaryKey
+    private long id;
     private String time;
     private String action;
     private String name;
@@ -56,6 +59,14 @@ public class Alarm extends RealmObject {
     public Alarm setActive(boolean active) {
         isActive = active;
         return this;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     @Override public String toString() {

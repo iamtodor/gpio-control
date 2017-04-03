@@ -68,6 +68,14 @@ public class DialogFactory {
                 .setPositiveButton(positiveButtonText, listener);
     }
 
+    public static AlertDialog.Builder getQuestionDialog(final Context context, final String message, final String positiveButtonText,
+                                                            final DialogInterface.OnClickListener listener) {
+        return new AlertDialog.Builder(context)
+                .setMessage(message)
+                .setPositiveButton(positiveButtonText, listener)
+                .setNegativeButton(R.string.cancel, null);
+    }
+
     public static ChangeFieldDialog getChangeFieldDialog(String title, String message, String editText,
                                                          String hint, String action, ChangeFieldListener changeFieldListener) {
         return new ChangeFieldDialog()
