@@ -17,9 +17,12 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import org.kaaproject.kaa.examples.gpiocontrol.App;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Alarm;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseActivity;
+import org.kaaproject.kaa.examples.gpiocontrol.storage.Repository;
+import org.kaaproject.kaa.examples.gpiocontrol.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,8 +96,9 @@ public class AddAlarmActivity extends BaseActivity {
 
     @OnClick(R.id.add)
     public void addAlarmOnClick() {
-        RadioButton selectedActionRadioButton = (RadioButton) actionRadioGroup.findViewById(actionRadioGroup.getCheckedRadioButtonId());
-        String action = selectedActionRadioButton.getTag().toString();
+        if(!isInfoValid()) {
+            return;
+        }
 
         if (repeat.isChecked()) {
             for (CheckBox day : weekDays) {
@@ -104,15 +108,45 @@ public class AddAlarmActivity extends BaseActivity {
             }
         }
 
-        if (TextUtils.isEmpty(alarmName.getText().toString())) {
-            alarmName.setError(getString(R.string.edit_text_cant_be_empty_error));
-        }
-
         Alarm alarm = new Alarm();
+        alarm.setName(alarmName.getText().toString());
+
+        String action = getAlarmAction();
+        alarm.setAction(action);
+
+        alarm.setTime(timePicker.getText().toString());
+
+        String iteration = Utils.getIterationStringFromList(alarmDays);
+        alarm.setIteration(iteration);
+
+        alarm.setActive(true);
+
+        saveAlarm(alarm);
     }
 
     @OnClick(R.id.cancel)
     public void cancelOnClick() {
         onBackPressed();
+    }
+
+    private boolean isInfoValid() {
+        if (TextUtils.isEmpty(alarmName.getText().toString())) {
+            alarmName.setError(getString(R.string.edit_text_cant_be_empty_error));
+            return false;
+        } else if(timePicker.getText().toString().equals("Time")) {
+            timePicker.setError(getString(R.string.edit_text_cant_be_empty_error));
+            return false;
+        }
+        return true;
+    }
+
+    private String getAlarmAction() {
+        RadioButton selectedActionRadioButton = (RadioButton) actionRadioGroup.findViewById(actionRadioGroup.getCheckedRadioButtonId());
+        return selectedActionRadioButton.getTag().toString();
+    }
+
+    private void saveAlarm(Alarm alarm) {
+        Repository repository = ((App) (getApplication())).getRealmRepository();
+        repository.saveModelToDB(alarm);
     }
 }

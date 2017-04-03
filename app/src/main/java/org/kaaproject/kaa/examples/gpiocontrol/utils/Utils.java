@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.util.LruCache;
+import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
@@ -29,7 +30,8 @@ import io.realm.RealmList;
 
 public class Utils {
 
-    private final static int IMAGE_MEM_CACHE_MAX_SIZE = 10;
+    private static final int IMAGE_MEM_CACHE_MAX_SIZE = 10;
+    private static final String DELIMITER = ";";
     private static LruCache<Integer, Drawable> vectorHashMap = new LruCache<>(IMAGE_MEM_CACHE_MAX_SIZE);
 
     private static RealmList<Device> getMockedDeviceList() {
@@ -99,13 +101,13 @@ public class Utils {
 
     public static List<Alarm> getMockedAlarmList() {
         List<Alarm> arrayList = new ArrayList<>();
-        for (int i = 1; i < 5; i++) {
-            if (i % 2 == 0) {
-                arrayList.add(new Alarm());
-            } else {
-                arrayList.add(new Alarm());
-            }
-        }
+//        for (int i = 1; i < 5; i++) {
+//            if (i % 2 == 0) {
+//                arrayList.add(new Alarm());
+//            } else {
+//                arrayList.add(new Alarm());
+//            }
+//        }
         return arrayList;
     }
 
@@ -151,6 +153,16 @@ public class Utils {
         } else {
             throw new RuntimeException("Group should has either vector or photo");
         }
+    }
+
+    /**
+     * according to the issue https://github.com/realm/realm-java/issues/575
+     * we worked with the one string where each word is divided by delimiter
+     * @param iterationList list of iteration (days)
+     * @return single string, that will be stored into alarm model
+     */
+    public static String getIterationStringFromList(List<String> iterationList) {
+        return TextUtils.join(DELIMITER, iterationList);
     }
 
 }
