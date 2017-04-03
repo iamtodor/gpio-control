@@ -20,11 +20,11 @@ import butterknife.ButterKnife;
 class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolderPinGroupItem> {
 
     private LayoutInflater inflater;
-    private List<Alarm> controllerList = new ArrayList<>();
+    private List<Alarm> alarmList = new ArrayList<>();
 
-    void updateAdapter(List<Alarm> colorItems) {
-        controllerList.clear();
-        controllerList.addAll(colorItems);
+    void updateAdapter(List<Alarm> alarmList) {
+        this.alarmList.clear();
+        this.alarmList.addAll(alarmList);
         notifyDataSetChanged();
     }
 
@@ -36,7 +36,7 @@ class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolderPinGroupI
     }
 
     @Override public void onBindViewHolder(final ViewHolderPinGroupItem holder, int position) {
-        Alarm alarm = controllerList.get(position);
+        Alarm alarm = alarmList.get(position);
 
         holder.time.setText(alarm.getTime());
         holder.action.setText(alarm.getAction());
@@ -46,7 +46,7 @@ class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolderPinGroupI
     }
 
     @Override public int getItemCount() {
-        return controllerList.size();
+        return alarmList.size();
     }
 
     static class ViewHolderPinGroupItem extends RecyclerView.ViewHolder implements View.OnClickListener {

@@ -23,6 +23,7 @@ import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDec
 import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager;
 import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 
+import org.kaaproject.kaa.examples.gpiocontrol.App;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Device;
 import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceHeader;
@@ -32,6 +33,7 @@ import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseListFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.AddControllerOrGroupDialog;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChangeFieldDialog;
+import org.kaaproject.kaa.examples.gpiocontrol.storage.Repository;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.ChangeFieldListener;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.Utils;
@@ -80,7 +82,8 @@ public class DeviceManagementFragment extends BaseListFragment {
         recyclerViewExpandableItemManager = new RecyclerViewExpandableItemManager(eimSavedState);
 
         //adapter
-        deviceGroupHeaderList = Utils.getMockedHeaderList();
+        Repository repository = ((App) (getBaseActivity().getApplication())).getRealmRepository();
+        deviceGroupHeaderList = Utils.getMockedHeaderList(repository);
         adapter = new ExpandableDeviceManagerAdapter(context, deviceGroupHeaderList);
 
         adapter.setOnCheckedGroupItemListener(new OnCheckedGroupItemListener() {

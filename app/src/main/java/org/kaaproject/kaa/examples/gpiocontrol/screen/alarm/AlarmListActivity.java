@@ -15,9 +15,11 @@ import android.widget.TextView;
 import org.kaaproject.kaa.examples.gpiocontrol.App;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Alarm;
+import org.kaaproject.kaa.examples.gpiocontrol.model.Group;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.storage.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -27,6 +29,8 @@ import butterknife.OnClick;
 public class AlarmListActivity extends BaseActivity {
 
     private static final int UPDATE_ADAPTER = 1111;
+    private static final String LIST_ID = "idList";
+    public static final String GROUP_ID = "id";
 
     @BindView(R.id.toolbar) protected Toolbar toolbar;
     @BindView(R.id.recycler_view) protected RecyclerView recyclerView;
@@ -35,6 +39,8 @@ public class AlarmListActivity extends BaseActivity {
 
     private Repository repository;
     private AlarmAdapter pinManagementAdapter;
+    private ArrayList<Long> listID;
+    private long id;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,12 +48,16 @@ public class AlarmListActivity extends BaseActivity {
 
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
+        repository = ((App) (getApplication())).getRealmRepository();
 
         if(getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Alarm settings");
             getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
+        listID = (ArrayList<Long>) getIntent().getExtras().get(LIST_ID);
+        id = (long) getIntent().getExtras().get(GROUP_ID);
 
         setupRecyclerView();
     }
@@ -57,6 +67,7 @@ public class AlarmListActivity extends BaseActivity {
         if(resultCode == RESULT_OK) {
             if(requestCode == UPDATE_ADAPTER) {
                 List<Alarm> alarmList = repository.getAlarmList();
+                hideShowRecyclerView(alarmList);
                 pinManagementAdapter.updateAdapter(alarmList);
             }
         }
@@ -75,7 +86,9 @@ public class AlarmListActivity extends BaseActivity {
 
     @OnClick(R.id.fab)
     public void onFabClick() {
-        startActivityForResult(new Intent(AlarmListActivity.this, AddAlarmActivity.class), UPDATE_ADAPTER);
+        Intent intent = new Intent(AlarmListActivity.this, AddAlarmActivity.class);
+        intent.putExtra(LIST_ID, listID);
+        startActivityForResult(intent, UPDATE_ADAPTER);
     }
 
     private void setupRecyclerView() {
@@ -101,16 +114,12 @@ public class AlarmListActivity extends BaseActivity {
             }
         });
 
-        repository = ((App) (getApplication())).getRealmRepository();
-        List<Alarm> alarmList = repository.getAlarmList();
+        Group group = repository.getGroupById(id);
+        List<Alarm> alarmList = group.getAlarmList();
 
         pinManagementAdapter.updateAdapter(alarmList);
 
-        if (alarmList.isEmpty()) {
-            showNoDevices();
-        } else {
-            showDevices();
-        }
+        hideShowRecyclerView(alarmList);
     }
 
     private void showNoDevices() {
@@ -121,6 +130,14 @@ public class AlarmListActivity extends BaseActivity {
     private void showDevices() {
         recyclerView.setVisibility(View.VISIBLE);
         noDeviceMessage.setVisibility(View.GONE);
+    }
+
+    private void hideShowRecyclerView(List<Alarm> alarmList) {
+        if (alarmList.isEmpty()) {
+            showNoDevices();
+        } else {
+            showDevices();
+        }
     }
 
 }

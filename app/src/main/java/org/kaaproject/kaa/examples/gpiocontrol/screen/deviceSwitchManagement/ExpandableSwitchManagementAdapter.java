@@ -2,6 +2,7 @@ package org.kaaproject.kaa.examples.gpiocontrol.screen.deviceSwitchManagement;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import org.kaaproject.kaa.examples.gpiocontrol.model.Device;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Group;
 import org.kaaproject.kaa.examples.gpiocontrol.model.GroupHeader;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.alarm.AlarmListActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.deviceManagement.OnCheckedDeviceItemListener;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.deviceManagement.OnCheckedGroupItemListener;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.main.MainActivity;
@@ -198,7 +200,9 @@ class ExpandableSwitchManagementAdapter
 
             groupViewHolder.clock.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
-                    // TODO: 3/30/17 clock logic
+                    Intent intent = new Intent(context, AlarmListActivity.class);
+                    intent.putExtra(AlarmListActivity.GROUP_ID, group.getId());
+                    context.startActivity(intent);
                 }
             });
         } else if (viewType == SINGLE_DEVICE_ITEM_VIEW_TYPE) {

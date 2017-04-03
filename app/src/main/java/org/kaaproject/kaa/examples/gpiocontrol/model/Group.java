@@ -24,6 +24,7 @@ public class Group extends RealmObject {
     private boolean isOn;
     private RealmList<Group> groupList;
     private RealmList<Device> deviceList;
+    private RealmList<Alarm> alarmList;
 
     public String getName() {
         return name;
@@ -119,6 +120,14 @@ public class Group extends RealmObject {
 
     public void setDeviceList(RealmList<Device> deviceList) {
         this.deviceList = deviceList;
+    }
+
+    public RealmList<Alarm> getAlarmList() {
+        return alarmList;
+    }
+
+    public void setAlarmList(RealmList<Alarm> alarmList) {
+        this.alarmList = alarmList;
     }
 
     @Override public String toString() {

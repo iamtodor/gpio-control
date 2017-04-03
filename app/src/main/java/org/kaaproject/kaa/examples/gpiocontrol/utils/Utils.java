@@ -13,12 +13,12 @@ import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
-import org.kaaproject.kaa.examples.gpiocontrol.model.Alarm;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Device;
 import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceHeader;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Group;
 import org.kaaproject.kaa.examples.gpiocontrol.model.GroupHeader;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
+import org.kaaproject.kaa.examples.gpiocontrol.storage.Repository;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -99,22 +99,10 @@ public class Utils {
         return file;
     }
 
-    public static List<Alarm> getMockedAlarmList() {
-        List<Alarm> arrayList = new ArrayList<>();
-//        for (int i = 1; i < 5; i++) {
-//            if (i % 2 == 0) {
-//                arrayList.add(new Alarm());
-//            } else {
-//                arrayList.add(new Alarm());
-//            }
-//        }
-        return arrayList;
-    }
-
-    public static List<Header> getMockedHeaderList() {
+    public static List<Header> getMockedHeaderList(Repository repository) {
         List<Header> deviceGroupHeaderList = new ArrayList<>();
         List<Device> deviceList = Utils.getMockedDeviceList();
-        List<Group> baseDeviceGroupList = Utils.getMockedGroupList();
+        List<Group> baseDeviceGroupList = repository.getGroupList();
 
         deviceGroupHeaderList.add(new GroupHeader<>("Device groups (" + baseDeviceGroupList.size() + ")",
                 0, baseDeviceGroupList));

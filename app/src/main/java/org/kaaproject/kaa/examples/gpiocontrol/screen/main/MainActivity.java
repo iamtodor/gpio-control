@@ -15,15 +15,20 @@ import android.view.MenuItem;
 
 import org.kaaproject.kaa.examples.gpiocontrol.App;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
+import org.kaaproject.kaa.examples.gpiocontrol.model.Group;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.deviceManagement.DeviceManagementFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.deviceSwitchManagement.DeviceSwitchManagementFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChangeFieldDialog;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.resetDevices.ResetDevicesFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.signIn.SingInActivity;
+import org.kaaproject.kaa.examples.gpiocontrol.storage.Repository;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.ChangeFieldListener;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.PreferencesImpl;
+import org.kaaproject.kaa.examples.gpiocontrol.utils.Utils;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,6 +62,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             navigationView.getMenu().getItem(0).setChecked(true);
             showFragment(new DeviceSwitchManagementFragment());
         } else {
+            Repository repository = ((App) (getApplication())).getRealmRepository();
+            List<Group> mockedGroupList = Utils.getMockedGroupList();
+            repository.saveModelList(mockedGroupList);
             showSignInActivity();
         }
     }

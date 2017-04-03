@@ -23,6 +23,7 @@ import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDec
 import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager;
 import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 
+import org.kaaproject.kaa.examples.gpiocontrol.App;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Device;
 import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceHeader;
@@ -30,12 +31,13 @@ import org.kaaproject.kaa.examples.gpiocontrol.model.Group;
 import org.kaaproject.kaa.examples.gpiocontrol.model.GroupHeader;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.addController.AddControllerActivity;
-import org.kaaproject.kaa.examples.gpiocontrol.screen.alarm.AlarmListActivity;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.alarm.AddAlarmActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.deviceManagement.OnCheckedDeviceItemListener;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.deviceManagement.OnCheckedGroupItemListener;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.AddControllerOrGroupDialog;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChangeFieldDialog;
+import org.kaaproject.kaa.examples.gpiocontrol.storage.Repository;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.ChangeFieldListener;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.Utils;
 
@@ -53,6 +55,7 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
     private static final int ADD_CONTROLLER_CODE = 1111;
     public static final int ADD_GROUP_DIALOG = 777;
     public static final int ADD_CONTROLLER_DIALOG = 666;
+    public static final String LIST_ID = "idList";
 
     @BindView(R.id.recycler_view) protected RecyclerView recyclerView;
     @BindView(R.id.no_device_message) protected TextView noDeviceMessage;
@@ -234,15 +237,15 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
     public void alarmClick() {
         for (Header deviceGroupHeader : deviceGroupHeaderList) {
             if (deviceGroupHeader instanceof GroupHeader) {
-                ArrayList<String> idList = new ArrayList<>();
+                ArrayList<Long> idList = new ArrayList<>();
                 for (Object object : deviceGroupHeader.getChildList()) {
                     Group group = (Group) object;
                     if (group.isSelected()) {
-                        idList.add(String.valueOf(group.getId()));
+                        idList.add(group.getId());
                     }
                 }
-                Intent intent = new Intent(getContext(), AlarmListActivity.class);
-                intent.putStringArrayListExtra("idList", idList);
+                Intent intent = new Intent(getContext(), AddAlarmActivity.class);
+                intent.putExtra(LIST_ID, idList);
                 startActivity(intent);
             }
         }
@@ -262,7 +265,8 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
         final Parcelable eimSavedState = (savedInstanceState != null) ? savedInstanceState.getParcelable(SAVED_STATE_EXPANDABLE_ITEM_MANAGER) : null;
         recyclerViewExpandableItemManager = new RecyclerViewExpandableItemManager(eimSavedState);
 
-        deviceGroupHeaderList = Utils.getMockedHeaderList();
+        Repository repository = ((App) (getBaseActivity().getApplication())).getRealmRepository();
+        deviceGroupHeaderList = Utils.getMockedHeaderList(repository);
         adapter = new ExpandableSwitchManagementAdapter(context, deviceGroupHeaderList);
         adapter.setOnCheckedDeviceItemListener(this);
         adapter.setOnCheckedGroupItemListener(this);
@@ -332,18 +336,9 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
                         isSelected = true;
                     }
                 }
-            } else if (deviceGroupHeader instanceof DeviceHeader) {
-                for (Object object : deviceGroupHeader.getChildList()) {
-                    Device device = (Device) object;
-                    if (device.isSelected()) {
-                        totalSize = deviceGroupHeader.getChildSize();
-                        selectedSize++;
-                        isSelected = true;
-                    }
-                }
             }
         }
-        if (isSelected) {
+        if (isSelected && selectedSize > 1) {
             selectedCountedValue.setText("Selected " + selectedSize + "/" + totalSize);
             selectionMenu.setVisibility(View.VISIBLE);
             fab.setVisibility(View.GONE);
@@ -361,16 +356,7 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
         int totalSize = 0;
         int selectedSize = 0;
         for (Header deviceGroupHeader : deviceGroupHeaderList) {
-            if (deviceGroupHeader instanceof GroupHeader) {
-                for (Object object : deviceGroupHeader.getChildList()) {
-                    Group group = (Group) object;
-                    if (group.isSelected()) {
-                        totalSize = deviceGroupHeader.getChildSize();
-                        selectedSize++;
-                        isSelected = true;
-                    }
-                }
-            } else if (deviceGroupHeader instanceof DeviceHeader) {
+            if (deviceGroupHeader instanceof DeviceHeader) {
                 for (Object object : deviceGroupHeader.getChildList()) {
                     Device device = (Device) object;
                     if (device.isSelected()) {
@@ -381,7 +367,7 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
                 }
             }
         }
-        if (isSelected) {
+        if (isSelected && selectedSize > 1) {
             selectedCountedValue.setText("Selected " + selectedSize + "/" + totalSize);
             selectionMenu.setVisibility(View.VISIBLE);
             fab.setVisibility(View.GONE);

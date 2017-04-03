@@ -45,14 +45,31 @@ public class RealmRepository implements Repository {
     }
 
     @Override
-    public List<Group> getDeviceGroupList() {
-        final List<Group> deviceGroupList = new ArrayList<>();
+    public List<Group> getGroupList() {
+        final List<Group> groupList = new ArrayList<>();
         instance.executeTransaction(new Realm.Transaction() {
             @Override public void execute(Realm realm) {
-                deviceGroupList.addAll(realm.where(Group.class).findAll());
+                groupList.addAll(realm.where(Group.class).findAll());
             }
         });
-        return deviceGroupList;
+        return groupList;
+    }
+
+    @Override public List<Group> getGroupListById(final ArrayList<Long> idList) {
+        final List<Group> groupList = new ArrayList<>();
+        instance.executeTransaction(new Realm.Transaction() {
+            @Override public void execute(Realm realm) {
+                for (long id : idList) {
+                    groupList.addAll(realm.where(Group.class).equalTo("id", id).findAll());
+                }
+            }
+        });
+        return groupList;
+    }
+
+    @Override public Group getGroupById(final long id) {
+        Group group = instance.where(Group.class).equalTo("id", id).findFirst();
+        return instance.copyFromRealm(group);
     }
 
     @Override public List<Alarm> getAlarmList() {

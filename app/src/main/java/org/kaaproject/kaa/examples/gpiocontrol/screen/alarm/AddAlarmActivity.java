@@ -21,6 +21,7 @@ import android.widget.TimePicker;
 import org.kaaproject.kaa.examples.gpiocontrol.App;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Alarm;
+import org.kaaproject.kaa.examples.gpiocontrol.model.Group;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.storage.Repository;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
@@ -37,6 +38,7 @@ import butterknife.OnClick;
 public class AddAlarmActivity extends BaseActivity {
 
     private static final String TIME = "Time";
+    private static final String LIST_ID = "idList";
 
     @BindView(R.id.repeat_options) protected LinearLayout repeatOptions;
     @BindView(R.id.toolbar) protected Toolbar toolbar;
@@ -49,6 +51,7 @@ public class AddAlarmActivity extends BaseActivity {
             R.id.thursday, R.id.friday, R.id.saturday}) CheckBox[] weekDays;
 
     private List<String> alarmDays = new ArrayList<>();
+    private ArrayList<Long> listID;
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +65,9 @@ public class AddAlarmActivity extends BaseActivity {
             getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
+        // TODO: 4/3/17 remove this shit
+        listID = (ArrayList<Long>) getIntent().getExtras().get(LIST_ID);
 
         repeat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -100,7 +106,7 @@ public class AddAlarmActivity extends BaseActivity {
 
     @OnClick(R.id.add)
     public void addAlarmOnClick() {
-        if(!isInfoValid()) {
+        if (!isInfoValid()) {
             return;
         }
 
@@ -128,6 +134,12 @@ public class AddAlarmActivity extends BaseActivity {
         alarm.setId(repository.getIdForModel(Alarm.class));
 
         repository.saveModel(alarm);
+
+        List<Group> groupList = repository.getGroupListById(listID);
+        for (Group group : groupList) {
+            group.setAlarm(alarm);
+        }
+
         DialogFactory.getConfirmationDialog(this, getString(R.string.alarm_was_added),
                 getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override public void onClick(DialogInterface dialog, int which) {
@@ -146,7 +158,7 @@ public class AddAlarmActivity extends BaseActivity {
         if (TextUtils.isEmpty(alarmName.getText().toString())) {
             alarmName.setError(getString(R.string.edit_text_cant_be_empty_error));
             return false;
-        } else if(timePicker.getText().toString().equals(TIME)) {
+        } else if (timePicker.getText().toString().equals(TIME)) {
             timePicker.setError(getString(R.string.edit_text_cant_be_empty_error));
             return false;
         }
