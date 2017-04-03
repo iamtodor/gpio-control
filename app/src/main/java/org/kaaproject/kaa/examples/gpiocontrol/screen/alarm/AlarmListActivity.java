@@ -26,10 +26,15 @@ import butterknife.OnClick;
 
 public class AlarmListActivity extends BaseActivity {
 
+    private static final int UPDATE_ADAPTER = 1111;
+
     @BindView(R.id.toolbar) protected Toolbar toolbar;
     @BindView(R.id.recycler_view) protected RecyclerView recyclerView;
     @BindView(R.id.no_device_message) protected TextView noDeviceMessage;
     @BindView(R.id.fab) protected FloatingActionButton fab;
+
+    private Repository repository;
+    private AlarmAdapter pinManagementAdapter;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +50,16 @@ public class AlarmListActivity extends BaseActivity {
         }
 
         setupRecyclerView();
+    }
 
+    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK) {
+            if(requestCode == UPDATE_ADAPTER) {
+                List<Alarm> alarmList = repository.getAlarmList();
+                pinManagementAdapter.updateAdapter(alarmList);
+            }
+        }
     }
 
     @Override
@@ -61,7 +75,7 @@ public class AlarmListActivity extends BaseActivity {
 
     @OnClick(R.id.fab)
     public void onFabClick() {
-        startActivity(new Intent(AlarmListActivity.this, AddAlarmActivity.class));
+        startActivityForResult(new Intent(AlarmListActivity.this, AddAlarmActivity.class), UPDATE_ADAPTER);
     }
 
     private void setupRecyclerView() {
@@ -71,7 +85,7 @@ public class AlarmListActivity extends BaseActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        AlarmAdapter pinManagementAdapter = new AlarmAdapter();
+        pinManagementAdapter = new AlarmAdapter();
         recyclerView.setAdapter(pinManagementAdapter);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -87,7 +101,7 @@ public class AlarmListActivity extends BaseActivity {
             }
         });
 
-        Repository repository = ((App) (getApplication())).getRealmRepository();
+        repository = ((App) (getApplication())).getRealmRepository();
         List<Alarm> alarmList = repository.getAlarmList();
 
         pinManagementAdapter.updateAdapter(alarmList);

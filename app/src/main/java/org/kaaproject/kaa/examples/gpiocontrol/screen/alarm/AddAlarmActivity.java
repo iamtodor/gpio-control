@@ -2,6 +2,7 @@ package org.kaaproject.kaa.examples.gpiocontrol.screen.alarm;
 
 
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
@@ -128,7 +129,12 @@ public class AddAlarmActivity extends BaseActivity {
 
         repository.saveModel(alarm);
         DialogFactory.getConfirmationDialog(this, getString(R.string.alarm_was_added),
-                getString(R.string.ok), null).show();
+                getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    @Override public void onClick(DialogInterface dialog, int which) {
+                        setResult(RESULT_OK);
+                        finish();
+                    }
+                }).show();
     }
 
     @OnClick(R.id.cancel)
