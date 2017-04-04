@@ -6,13 +6,13 @@ import java.util.List;
 public class DeviceHeader<T> extends Header {
 
     private String name;
-    private List<T> controllerList;
+    private List<T> deviceList;
     private int id;
 
-    public DeviceHeader(String name, int id, List<T> portList) {
+    public DeviceHeader(String name, int id, List<T> deviceList) {
         this.name = name;
         this.id = id;
-        this.controllerList = portList;
+        this.deviceList = deviceList;
     }
 
     @Override public String getName() {
@@ -20,15 +20,15 @@ public class DeviceHeader<T> extends Header {
     }
 
     @Override public int childrenCount() {
-        return controllerList.size();
+        return deviceList.size();
     }
 
     @Override public T childAt(int childPosition) {
-        return controllerList.get(childPosition);
+        return deviceList.get(childPosition);
     }
 
     @Override public List<T> getChildList() {
-        return controllerList;
+        return deviceList;
     }
 
     @Override public int getId() {
@@ -36,20 +36,20 @@ public class DeviceHeader<T> extends Header {
     }
 
     @Override public int getChildSize() {
-        return controllerList.size();
+        return deviceList.size();
     }
 
     @Override public void cancelSelection() {
-        for (T controllerToCastObject : controllerList) {
-            Device device = (Device) controllerToCastObject;
-            device.setSelected(false);
+        for (T controllerToCastObject : deviceList) {
+            ViewDevice viewDevice = (ViewDevice) controllerToCastObject;
+            viewDevice.setSelected(false);
         }
     }
 
     @Override public String toString() {
         return "GroupPort{" +
                 "name='" + name + '\'' +
-                ", controllerList=" + controllerList +
+                ", deviceList=" + deviceList +
                 '}';
     }
 }

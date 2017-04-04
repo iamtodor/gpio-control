@@ -4,7 +4,7 @@ package org.kaaproject.kaa.examples.gpiocontrol.model;
 public class ViewDevice {
 
     private Device device;
-    private boolean isChecked;
+    private boolean isSelected;
 
     public Device getDevice() {
         return device;
@@ -14,11 +14,11 @@ public class ViewDevice {
         this.device = device;
     }
 
-    public boolean isChecked() {
-        return isChecked;
+    public boolean isSelected() {
+        return isSelected;
     }
 
-    public void setChecked(boolean checked) {
-        isChecked = checked;
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 }

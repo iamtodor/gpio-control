@@ -25,11 +25,11 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 
 import org.kaaproject.kaa.examples.gpiocontrol.App;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
-import org.kaaproject.kaa.examples.gpiocontrol.model.Device;
 import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceHeader;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Group;
 import org.kaaproject.kaa.examples.gpiocontrol.model.GroupHeader;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
+import org.kaaproject.kaa.examples.gpiocontrol.model.ViewDevice;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseListFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.AddControllerOrGroupDialog;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChangeFieldDialog;
@@ -103,11 +103,11 @@ public class DeviceManagementFragment extends BaseListFragment {
         });
 
         adapter.setOnCheckedDeviceItemListener(new OnCheckedDeviceItemListener() {
-            @Override public void onDeviceChecked(boolean isChecked, Device currentSelectedDevice) {
+            @Override public void onDeviceChecked(boolean isChecked, ViewDevice currentSelectedDevice) {
                 for (Header deviceGroupHeader : deviceGroupHeaderList) {
                     if (deviceGroupHeader instanceof DeviceHeader) {
                         for (Object object : deviceGroupHeader.getChildList()) {
-                            Device selectableDevice = (Device) object;
+                            ViewDevice selectableDevice = (ViewDevice) object;
                             if (currentSelectedDevice == selectableDevice) {
                                 selectableDevice.setSelected(isChecked);
                             }
@@ -165,7 +165,7 @@ public class DeviceManagementFragment extends BaseListFragment {
                 }
             } else if (deviceGroupHeader instanceof DeviceHeader) {
                 for (Object object : deviceGroupHeader.getChildList()) {
-                    Device device = (Device) object;
+                    ViewDevice device = (ViewDevice) object;
                     if (device.isSelected()) {
                         totalSize = deviceGroupHeader.getChildSize();
                         selectedSize++;

@@ -21,6 +21,7 @@ import org.kaaproject.kaa.examples.gpiocontrol.model.Device;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Group;
 import org.kaaproject.kaa.examples.gpiocontrol.model.GroupHeader;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
+import org.kaaproject.kaa.examples.gpiocontrol.model.ViewDevice;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.alarm.AlarmListActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.deviceManagement.OnCheckedDeviceItemListener;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.deviceManagement.OnCheckedGroupItemListener;
@@ -92,8 +93,8 @@ class ExpandableSwitchManagementAdapter
             final Group group = (Group) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
             return group.getId();
         } else {
-            final Device device = (Device) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
-            return device.getId();
+            final ViewDevice viewDevice = (ViewDevice) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
+            return viewDevice.getDevice().getId();
         }
     }
 
@@ -207,9 +208,10 @@ class ExpandableSwitchManagementAdapter
             });
         } else if (viewType == SINGLE_DEVICE_ITEM_VIEW_TYPE) {
             final DeviceItemViewHolder singleDeviceViewHolder = (DeviceItemViewHolder) holder;
-            final Device device = (Device) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
+            final ViewDevice viewDevice = (ViewDevice) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
+            final Device device = viewDevice.getDevice();
 
-            singleDeviceViewHolder.selection.setChecked(device.isSelected());
+            singleDeviceViewHolder.selection.setChecked(viewDevice.isSelected());
             Utils.loadImage(device, singleDeviceViewHolder.imagePort);
             singleDeviceViewHolder.name.setText(device.getName());
             singleDeviceViewHolder.port.setText(device.getPortId());
@@ -217,7 +219,7 @@ class ExpandableSwitchManagementAdapter
 
             singleDeviceViewHolder.selection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    onCheckedDeviceItemListener.onDeviceChecked(isChecked, device);
+                    onCheckedDeviceItemListener.onDeviceChecked(isChecked, viewDevice);
                 }
             });
 

@@ -18,6 +18,7 @@ import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceHeader;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Group;
 import org.kaaproject.kaa.examples.gpiocontrol.model.GroupHeader;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
+import org.kaaproject.kaa.examples.gpiocontrol.model.ViewDevice;
 import org.kaaproject.kaa.examples.gpiocontrol.storage.Repository;
 
 import java.io.File;
@@ -102,13 +103,24 @@ public class Utils {
     public static List<Header> getMockedHeaderList(Repository repository) {
         List<Header> deviceGroupHeaderList = new ArrayList<>();
         List<Device> deviceList = Utils.getMockedDeviceList();
+        List<ViewDevice> viewDeviceList = getViewDevices(deviceList);
         List<Group> baseDeviceGroupList = repository.getGroupList();
 
-        deviceGroupHeaderList.add(new GroupHeader<>("Device groups (" + baseDeviceGroupList.size() + ")",
+        deviceGroupHeaderList.add(new GroupHeader<>("Groups (" + baseDeviceGroupList.size() + ")",
                 0, baseDeviceGroupList));
-        deviceGroupHeaderList.add(new DeviceHeader<>("Devices (" + deviceList.size() + ")",
-                1, deviceList));
+        deviceGroupHeaderList.add(new DeviceHeader<>("Devices (" + viewDeviceList.size() + ")",
+                1, viewDeviceList));
         return deviceGroupHeaderList;
+    }
+
+    private static List<ViewDevice> getViewDevices(List<Device> deviceList) {
+        List<ViewDevice> viewDeviceList = new ArrayList<>();
+        for (Device device : deviceList) {
+            ViewDevice viewDevice = new ViewDevice();
+            viewDevice.setDevice(device);
+            viewDeviceList.add(viewDevice);
+        }
+        return viewDeviceList;
     }
 
     public static void loadImage(Group group, ImageView imageView) {
@@ -146,6 +158,7 @@ public class Utils {
     /**
      * according to the issue https://github.com/realm/realm-java/issues/575
      * we worked with the one string where each word is divided by delimiter
+     *
      * @param iterationList list of iteration (days)
      * @return single string, that will be stored into alarm model
      */
