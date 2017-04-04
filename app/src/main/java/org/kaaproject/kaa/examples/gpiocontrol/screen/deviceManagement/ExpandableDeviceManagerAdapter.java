@@ -98,11 +98,11 @@ class ExpandableDeviceManagerAdapter
     @Override
     public long getChildId(int groupPosition, int childPosition) {
         if (deviceGroupHeaderList.get(groupPosition) instanceof GroupHeader) {
-            final Group group = (Group) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
-            return group.getId();
+            final ViewDeviceGroup group = (ViewDeviceGroup) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
+            return group.getGroup().getId();
         } else {
-            final Device device = (Device) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
-            return device.getId();
+            final ViewDevice device = (ViewDevice) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
+            return device.getDevice().getId();
         }
     }
 
@@ -190,7 +190,7 @@ class ExpandableDeviceManagerAdapter
             final ViewDeviceGroup viewDeviceGroup = (ViewDeviceGroup) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
             final Group group = viewDeviceGroup.getGroup();
 
-            deviceGroupViewHolder.selection.setChecked(group.isSelected());
+            deviceGroupViewHolder.selection.setChecked(viewDeviceGroup.isSelected());
             Utils.loadImage(group, deviceGroupViewHolder.icon);
             deviceGroupViewHolder.name.setText(group.getName());
             deviceGroupViewHolder.port.setText(group.getPortStatus());

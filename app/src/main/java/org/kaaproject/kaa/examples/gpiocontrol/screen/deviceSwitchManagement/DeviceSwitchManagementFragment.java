@@ -248,7 +248,7 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
                 for (Object object : deviceGroupHeader.getChildList()) {
                     ViewDeviceGroup viewDeviceGroup = (ViewDeviceGroup) object;
                     Group group = viewDeviceGroup.getGroup();
-                    if (group.isSelected()) {
+                    if (viewDeviceGroup.isSelected()) {
                         idList.add(group.getId());
                     }
                 }

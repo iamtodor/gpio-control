@@ -12,7 +12,8 @@ import io.realm.annotations.PrimaryKey;
 public class Group extends RealmObject {
 
     private String name;
-    private @Nullable String imagePath;
+    @Nullable
+    private String imagePath;
     private int vectorId = -1;
     private String portStatus;
     private String power;
@@ -20,7 +21,6 @@ public class Group extends RealmObject {
     private Alarm alarm;
     @PrimaryKey
     private long id;
-    private boolean isSelected;
     private boolean isOn;
     private RealmList<Group> groupList;
     private RealmList<Device> deviceList;
@@ -88,14 +88,6 @@ public class Group extends RealmObject {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public boolean isSelected() {
-        return isSelected;
-    }
-
-    public void setSelected(boolean selected) {
-        isSelected = selected;
     }
 
     public boolean isOn() {

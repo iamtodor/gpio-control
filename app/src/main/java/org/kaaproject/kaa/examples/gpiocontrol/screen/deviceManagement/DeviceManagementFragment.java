@@ -157,8 +157,8 @@ public class DeviceManagementFragment extends BaseListFragment {
         for (Header deviceGroupHeader : deviceGroupHeaderList) {
             if (deviceGroupHeader instanceof GroupHeader) {
                 for (Object object : deviceGroupHeader.getChildList()) {
-                    Group group = (Group) object;
-                    if (group.isSelected()) {
+                    ViewDeviceGroup viewDeviceGroup = (ViewDeviceGroup) object;
+                    if (viewDeviceGroup.isSelected()) {
                         totalSize = deviceGroupHeader.getChildSize();
                         selectedSize++;
                         isSelected = true;
@@ -166,8 +166,8 @@ public class DeviceManagementFragment extends BaseListFragment {
                 }
             } else if (deviceGroupHeader instanceof DeviceHeader) {
                 for (Object object : deviceGroupHeader.getChildList()) {
-                    ViewDevice device = (ViewDevice) object;
-                    if (device.isSelected()) {
+                    ViewDevice viewDevice = (ViewDevice) object;
+                    if (viewDevice.isSelected()) {
                         totalSize = deviceGroupHeader.getChildSize();
                         selectedSize++;
                         isSelected = true;
@@ -235,8 +235,9 @@ public class DeviceManagementFragment extends BaseListFragment {
                                 List<Group> selectedDeviceGroupList = new ArrayList<>();
                                 int index = -1;
                                 for (int i = 0; i < header.getChildList().size(); i++) {
-                                    Group group = (Group) header.getChildList().get(i);
-                                    if (group.isSelected()) {
+                                    ViewDeviceGroup viewDeviceGroup = (ViewDeviceGroup) header.getChildList().get(i);
+                                    Group group = viewDeviceGroup.getGroup();
+                                    if (viewDeviceGroup.isSelected()) {
                                         if (index == -1) {
                                             index = i;
                                         }

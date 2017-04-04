@@ -91,8 +91,8 @@ class ExpandableSwitchManagementAdapter
     @Override
     public long getChildId(int groupPosition, int childPosition) {
         if (deviceGroupHeaderList.get(groupPosition) instanceof GroupHeader) {
-            final ViewDeviceGroup viewDeviceGroup = (ViewDeviceGroup) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
-            return viewDeviceGroup.getGroup().getId();
+            final ViewDeviceGroup group = (ViewDeviceGroup) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
+            return group.getGroup().getId();
         } else {
             final ViewDevice viewDevice = (ViewDevice) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
             return viewDevice.getDevice().getId();
@@ -183,7 +183,7 @@ class ExpandableSwitchManagementAdapter
             final ViewDeviceGroup viewDeviceGroup = (ViewDeviceGroup) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
             final Group group = viewDeviceGroup.getGroup();
 
-            groupViewHolder.selection.setChecked(group.isSelected());
+            groupViewHolder.selection.setChecked(viewDeviceGroup.isSelected());
             Utils.loadImage(group, groupViewHolder.icon);
             groupViewHolder.name.setText(group.getName());
             groupViewHolder.status.setText(group.getPortStatus());
