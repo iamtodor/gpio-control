@@ -66,7 +66,6 @@ public class AddAlarmActivity extends BaseActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        // TODO: 4/3/17 remove this shit
         listID = (ArrayList<Long>) getIntent().getExtras().get(LIST_ID);
 
         repeat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

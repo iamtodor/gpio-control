@@ -49,7 +49,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class DeviceSwitchManagementFragment extends BaseFragment implements OnDismissDialogListener, ChangeFieldListener, OnCheckedDeviceItemListener, OnCheckedGroupItemListener {
+public class DeviceSwitchManagementFragment extends BaseFragment implements OnDismissDialogListener,
+        ChangeFieldListener, OnCheckedDeviceItemListener, OnCheckedGroupItemListener {
 
     private static final String SAVED_STATE_EXPANDABLE_ITEM_MANAGER = "RecyclerViewExpandableItemManager";
     private static final int ADD_CONTROLLER_CODE = 1111;
@@ -77,6 +78,7 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
     private ExpandableSwitchManagementAdapter adapter;
     private Unbinder unbinder;
     private List<Header> deviceGroupHeaderList;
+    private Repository repository;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -85,9 +87,11 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
         final Context context = getContext();
         unbinder = ButterKnife.bind(this, view);
         getSupportActionBar().setTitle(getString(R.string.device_switch_management));
+        repository = ((App) (getBaseActivity().getApplication())).getRealmRepository();
 
         setupSelectionMenuIcons(context);
         setupRecyclerView(context, savedInstanceState);
+
 
         return view;
     }
@@ -265,7 +269,6 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
         final Parcelable eimSavedState = (savedInstanceState != null) ? savedInstanceState.getParcelable(SAVED_STATE_EXPANDABLE_ITEM_MANAGER) : null;
         recyclerViewExpandableItemManager = new RecyclerViewExpandableItemManager(eimSavedState);
 
-        Repository repository = ((App) (getBaseActivity().getApplication())).getRealmRepository();
         deviceGroupHeaderList = Utils.getMockedHeaderList(repository);
         adapter = new ExpandableSwitchManagementAdapter(context, deviceGroupHeaderList);
         adapter.setOnCheckedDeviceItemListener(this);
