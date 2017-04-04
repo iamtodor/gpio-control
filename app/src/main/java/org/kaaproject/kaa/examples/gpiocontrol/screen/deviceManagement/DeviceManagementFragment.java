@@ -30,6 +30,7 @@ import org.kaaproject.kaa.examples.gpiocontrol.model.Group;
 import org.kaaproject.kaa.examples.gpiocontrol.model.GroupHeader;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
 import org.kaaproject.kaa.examples.gpiocontrol.model.ViewDevice;
+import org.kaaproject.kaa.examples.gpiocontrol.model.ViewDeviceGroup;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseListFragment;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.AddControllerOrGroupDialog;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChangeFieldDialog;
@@ -87,13 +88,13 @@ public class DeviceManagementFragment extends BaseListFragment {
         adapter = new ExpandableDeviceManagerAdapter(context, deviceGroupHeaderList);
 
         adapter.setOnCheckedGroupItemListener(new OnCheckedGroupItemListener() {
-            @Override public void onGroupChecked(boolean isChecked, Group currentGroup) {
+            @Override public void onGroupChecked(boolean isChecked, ViewDeviceGroup currentGroup) {
                 for (Header deviceGroupHeader : deviceGroupHeaderList) {
                     if (deviceGroupHeader instanceof GroupHeader) {
                         for (Object object : deviceGroupHeader.getChildList()) {
-                            Group deviceGroup = (Group) object;
-                            if (currentGroup == deviceGroup) {
-                                deviceGroup.setSelected(isChecked);
+                            ViewDeviceGroup viewDeviceGroup = (ViewDeviceGroup) object;
+                            if (currentGroup == viewDeviceGroup) {
+                                viewDeviceGroup.setSelected(isChecked);
                             }
                         }
                     }

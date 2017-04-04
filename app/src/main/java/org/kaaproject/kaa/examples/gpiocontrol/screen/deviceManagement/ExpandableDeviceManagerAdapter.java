@@ -26,6 +26,8 @@ import org.kaaproject.kaa.examples.gpiocontrol.model.Device;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Group;
 import org.kaaproject.kaa.examples.gpiocontrol.model.GroupHeader;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
+import org.kaaproject.kaa.examples.gpiocontrol.model.ViewDevice;
+import org.kaaproject.kaa.examples.gpiocontrol.model.ViewDeviceGroup;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChangeFieldDialog;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChooseImageDialog;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChooseImageListener;
@@ -185,7 +187,8 @@ class ExpandableDeviceManagerAdapter
     public void onBindChildViewHolder(BaseItemViewHolder holder, int groupPosition, int childPosition, int viewType) {
         if (viewType == DEVICE_GROUP_ITEM_VIEW_TYPE) {
             final DeviceGroupItemViewHolder deviceGroupViewHolder = (DeviceGroupItemViewHolder) holder;
-            final Group group = (Group) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
+            final ViewDeviceGroup viewDeviceGroup = (ViewDeviceGroup) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
+            final Group group = viewDeviceGroup.getGroup();
 
             deviceGroupViewHolder.selection.setChecked(group.isSelected());
             Utils.loadImage(group, deviceGroupViewHolder.icon);
@@ -194,7 +197,7 @@ class ExpandableDeviceManagerAdapter
 
             deviceGroupViewHolder.selection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    onCheckedGroupItemListener.onGroupChecked(isChecked, group);
+                    onCheckedGroupItemListener.onGroupChecked(isChecked, viewDeviceGroup);
                 }
             });
 
@@ -257,9 +260,10 @@ class ExpandableDeviceManagerAdapter
             });
         } else if (viewType == SINGLE_DEVICE_ITEM_VIEW_TYPE) {
             final SingleDeviceItemViewHolder singleDeviceViewHolder = (SingleDeviceItemViewHolder) holder;
-            final Device device = (Device) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
+            final ViewDevice viewDevice = (ViewDevice) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
+            final Device device = viewDevice.getDevice();
 
-            singleDeviceViewHolder.selection.setChecked(device.isSelected());
+            singleDeviceViewHolder.selection.setChecked(viewDevice.isSelected());
             Utils.loadImage(device, singleDeviceViewHolder.imagePort);
             singleDeviceViewHolder.name.setText(device.getName());
             singleDeviceViewHolder.port.setText(device.getPortId());
@@ -267,7 +271,7 @@ class ExpandableDeviceManagerAdapter
 
             singleDeviceViewHolder.selection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                    onCheckedDeviceItemListener.onDeviceChecked(isChecked, device);
+//                    onCheckedDeviceItemListener.onDeviceChecked(isSelected, device);
                 }
             });
 

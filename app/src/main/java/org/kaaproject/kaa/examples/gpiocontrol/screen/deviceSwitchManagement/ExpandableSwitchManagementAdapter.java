@@ -22,6 +22,7 @@ import org.kaaproject.kaa.examples.gpiocontrol.model.Group;
 import org.kaaproject.kaa.examples.gpiocontrol.model.GroupHeader;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
 import org.kaaproject.kaa.examples.gpiocontrol.model.ViewDevice;
+import org.kaaproject.kaa.examples.gpiocontrol.model.ViewDeviceGroup;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.alarm.AlarmListActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.deviceManagement.OnCheckedDeviceItemListener;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.deviceManagement.OnCheckedGroupItemListener;
@@ -90,8 +91,8 @@ class ExpandableSwitchManagementAdapter
     @Override
     public long getChildId(int groupPosition, int childPosition) {
         if (deviceGroupHeaderList.get(groupPosition) instanceof GroupHeader) {
-            final Group group = (Group) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
-            return group.getId();
+            final ViewDeviceGroup viewDeviceGroup = (ViewDeviceGroup) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
+            return viewDeviceGroup.getGroup().getId();
         } else {
             final ViewDevice viewDevice = (ViewDevice) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
             return viewDevice.getDevice().getId();
@@ -179,7 +180,8 @@ class ExpandableSwitchManagementAdapter
     public void onBindChildViewHolder(BaseItemViewHolder holder, int groupPosition, int childPosition, int viewType) {
         if (viewType == DEVICE_GROUP_ITEM_VIEW_TYPE) {
             final GroupItemViewHolder groupViewHolder = (GroupItemViewHolder) holder;
-            final Group group = (Group) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
+            final ViewDeviceGroup viewDeviceGroup = (ViewDeviceGroup) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
+            final Group group = viewDeviceGroup.getGroup();
 
             groupViewHolder.selection.setChecked(group.isSelected());
             Utils.loadImage(group, groupViewHolder.icon);
@@ -189,7 +191,7 @@ class ExpandableSwitchManagementAdapter
 
             groupViewHolder.selection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    onCheckedGroupItemListener.onGroupChecked(isChecked, group);
+                    onCheckedGroupItemListener.onGroupChecked(isChecked, viewDeviceGroup);
                 }
             });
 

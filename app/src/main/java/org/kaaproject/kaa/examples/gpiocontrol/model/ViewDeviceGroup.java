@@ -1,10 +1,10 @@
 package org.kaaproject.kaa.examples.gpiocontrol.model;
 
 
-public class ViewGroup {
+public class ViewDeviceGroup {
 
     private Group group;
-    private boolean isChecked;
+    private boolean isSelected;
 
     public Group getGroup() {
         return group;
@@ -14,12 +14,12 @@ public class ViewGroup {
         this.group = group;
     }
 
-    public boolean isChecked() {
-        return isChecked;
+    public boolean isSelected() {
+        return isSelected;
     }
 
-    public void setChecked(boolean checked) {
-        isChecked = checked;
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 
 }

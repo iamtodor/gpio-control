@@ -27,7 +27,7 @@ public class GroupHeader<T> extends Header {
 
     @Override public void cancelSelection() {
         for (T deviceGroupToCastObject : deviceGroupList) {
-            Group group = (Group) deviceGroupToCastObject;
+            ViewDeviceGroup group = (ViewDeviceGroup) deviceGroupToCastObject;
             group.setSelected(false);
         }
     }

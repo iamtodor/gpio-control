@@ -31,6 +31,7 @@ import org.kaaproject.kaa.examples.gpiocontrol.model.Group;
 import org.kaaproject.kaa.examples.gpiocontrol.model.GroupHeader;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
 import org.kaaproject.kaa.examples.gpiocontrol.model.ViewDevice;
+import org.kaaproject.kaa.examples.gpiocontrol.model.ViewDeviceGroup;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.addController.AddControllerActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.alarm.AddAlarmActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseFragment;
@@ -157,13 +158,13 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
         adapter.notifyDataSetChanged();
     }
 
-    @Override public void onGroupChecked(boolean isChecked, Group currentGroup) {
+    @Override public void onGroupChecked(boolean isChecked, ViewDeviceGroup currentGroup) {
         for (Header deviceGroupHeader : deviceGroupHeaderList) {
             if (deviceGroupHeader instanceof GroupHeader) {
                 for (Object object : deviceGroupHeader.getChildList()) {
-                    Group deviceGroup = (Group) object;
-                    if (currentGroup == deviceGroup) {
-                        deviceGroup.setSelected(isChecked);
+                    ViewDeviceGroup selectableViewGroup = (ViewDeviceGroup) object;
+                    if (currentGroup == selectableViewGroup) {
+                        selectableViewGroup.setSelected(isChecked);
                     }
                 }
             }
@@ -175,9 +176,9 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
         for (Header deviceGroupHeader : deviceGroupHeaderList) {
             if (deviceGroupHeader instanceof DeviceHeader) {
                 for (Object object : deviceGroupHeader.getChildList()) {
-                    ViewDevice selectableDevice = (ViewDevice) object;
-                    if (currentSelectedDevice == selectableDevice) {
-                        selectableDevice.setSelected(isChecked);
+                    ViewDevice selectableViewDevice = (ViewDevice) object;
+                    if (currentSelectedDevice == selectableViewDevice) {
+                        selectableViewDevice.setSelected(isChecked);
                     }
                 }
             }
@@ -207,8 +208,9 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
         for (Header deviceGroupHeader : deviceGroupHeaderList) {
             if (deviceGroupHeader instanceof GroupHeader) {
                 for (Object object : deviceGroupHeader.getChildList()) {
-                    Group group = (Group) object;
-                    if (group.isSelected()) {
+                    ViewDeviceGroup viewDeviceGroup = (ViewDeviceGroup) object;
+                    Group group = viewDeviceGroup.getGroup();
+                    if (viewDeviceGroup.isSelected()) {
                         group.setOn(!group.isOn());
                         for (Device device : group.getDeviceList())
                             device.setOn(!device.isOn());
@@ -217,8 +219,9 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
             }
             if (deviceGroupHeader instanceof DeviceHeader) {
                 for (Object object : deviceGroupHeader.getChildList()) {
-                    Device device = (Device) object;
-                    if (device.isSelected()) {
+                    ViewDevice viewDevice = (ViewDevice) object;
+                    Device device = viewDevice.getDevice();
+                    if (viewDevice.isSelected()) {
                         device.setOn(!device.isOn());
                     }
                 }
@@ -243,7 +246,8 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
             if (deviceGroupHeader instanceof GroupHeader) {
                 ArrayList<Long> idList = new ArrayList<>();
                 for (Object object : deviceGroupHeader.getChildList()) {
-                    Group group = (Group) object;
+                    ViewDeviceGroup viewDeviceGroup = (ViewDeviceGroup) object;
+                    Group group = viewDeviceGroup.getGroup();
                     if (group.isSelected()) {
                         idList.add(group.getId());
                     }
@@ -332,8 +336,8 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
         for (Header deviceGroupHeader : deviceGroupHeaderList) {
             if (deviceGroupHeader instanceof GroupHeader) {
                 for (Object object : deviceGroupHeader.getChildList()) {
-                    Group group = (Group) object;
-                    if (group.isSelected()) {
+                    ViewDeviceGroup viewGroup = (ViewDeviceGroup) object;
+                    if (viewGroup.isSelected()) {
                         totalSize = deviceGroupHeader.getChildSize();
                         selectedSize++;
                         isSelected = true;
@@ -384,8 +388,9 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
         for (Header deviceGroupHeader : deviceGroupHeaderList) {
             if (deviceGroupHeader instanceof GroupHeader) {
                 for (Object object : deviceGroupHeader.getChildList()) {
-                    Group group = (Group) object;
-                    if (group.isSelected()) {
+                    ViewDeviceGroup viewGroup = (ViewDeviceGroup) object;
+                    Group group = viewGroup.getGroup();
+                    if (viewGroup.isSelected()) {
                         group.setOn(isOn);
                         for (Device device : group.getDeviceList())
                             device.setOn(isOn);
@@ -396,7 +401,7 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
                 for (Object object : deviceGroupHeader.getChildList()) {
                     ViewDevice viewDevice = (ViewDevice) object;
                     Device device = viewDevice.getDevice();
-                    if (device.isSelected()) {
+                    if (viewDevice.isSelected()) {
                         device.setOn(isOn);
                     }
                 }
@@ -409,7 +414,8 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
         for (Header deviceGroupHeader : deviceGroupHeaderList) {
             if (deviceGroupHeader instanceof DeviceHeader) {
                 for (Object object : deviceGroupHeader.getChildList()) {
-                    Device device = (Device) object;
+                    ViewDevice viewDevice = (ViewDevice) object;
+                    Device device = viewDevice.getDevice();
                     if (device.isLocked()) {
                         device.setLocked(isLocked);
                     }

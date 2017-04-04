@@ -19,6 +19,7 @@ import org.kaaproject.kaa.examples.gpiocontrol.model.Group;
 import org.kaaproject.kaa.examples.gpiocontrol.model.GroupHeader;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
 import org.kaaproject.kaa.examples.gpiocontrol.model.ViewDevice;
+import org.kaaproject.kaa.examples.gpiocontrol.model.ViewDeviceGroup;
 import org.kaaproject.kaa.examples.gpiocontrol.storage.Repository;
 
 import java.io.File;
@@ -102,18 +103,31 @@ public class Utils {
 
     public static List<Header> getMockedHeaderList(Repository repository) {
         List<Header> deviceGroupHeaderList = new ArrayList<>();
-        List<Device> deviceList = Utils.getMockedDeviceList();
-        List<ViewDevice> viewDeviceList = getViewDevices(deviceList);
-        List<Group> baseDeviceGroupList = repository.getGroupList();
 
-        deviceGroupHeaderList.add(new GroupHeader<>("Groups (" + baseDeviceGroupList.size() + ")",
-                0, baseDeviceGroupList));
+        List<Group> groupList = repository.getGroupList();
+        List<ViewDeviceGroup> viewDeviceGroupList = getViewGroupList(groupList);
+
+        List<Device> deviceList = getMockedDeviceList();
+        List<ViewDevice> viewDeviceList = getViewDeviceList(deviceList);
+
+        deviceGroupHeaderList.add(new GroupHeader<>("Groups (" + viewDeviceGroupList.size() + ")",
+                0, viewDeviceGroupList));
         deviceGroupHeaderList.add(new DeviceHeader<>("Devices (" + viewDeviceList.size() + ")",
                 1, viewDeviceList));
         return deviceGroupHeaderList;
     }
 
-    private static List<ViewDevice> getViewDevices(List<Device> deviceList) {
+    private static List<ViewDeviceGroup> getViewGroupList(List<Group> groupList) {
+        List<ViewDeviceGroup> viewDeviceGroupList = new ArrayList<>();
+        for(Group group : groupList) {
+            ViewDeviceGroup viewDeviceGroup = new ViewDeviceGroup();
+            viewDeviceGroup.setGroup(group);
+            viewDeviceGroupList.add(viewDeviceGroup);
+        }
+        return viewDeviceGroupList;
+    }
+
+    private static List<ViewDevice> getViewDeviceList(List<Device> deviceList) {
         List<ViewDevice> viewDeviceList = new ArrayList<>();
         for (Device device : deviceList) {
             ViewDevice viewDevice = new ViewDevice();

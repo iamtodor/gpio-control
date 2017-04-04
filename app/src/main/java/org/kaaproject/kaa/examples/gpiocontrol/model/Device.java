@@ -17,7 +17,6 @@ public class Device extends RealmObject {
     private boolean isLocked;
     @PrimaryKey
     private int id = -1;
-    private boolean isSelected;
 
     public String getName() {
         return name;
@@ -81,14 +80,6 @@ public class Device extends RealmObject {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public boolean isSelected() {
-        return isSelected;
-    }
-
-    public void setSelected(boolean selected) {
-        isSelected = selected;
     }
 
     @Override public String toString() {
