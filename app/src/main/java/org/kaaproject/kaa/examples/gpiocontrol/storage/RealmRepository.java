@@ -86,7 +86,7 @@ public class RealmRepository implements Repository {
                 RealmList<Alarm> alarmList = group.getAlarmList();
                 alarmList.add(alarm);
                 group.setAlarmList(alarmList);
-                realm.copyToRealmOrUpdate(group);
+                realm.insertOrUpdate(group);
             }
         });
     }
