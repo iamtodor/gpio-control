@@ -52,8 +52,8 @@ public class AddAlarmActivity extends BaseActivity {
             R.id.thursday, R.id.friday, R.id.saturday}) CheckBox[] weekDays;
 
     private List<String> alarmDays = new ArrayList<>();
-    private ArrayList<Long> listID;
-    private long groupId;
+    private ArrayList<Long> groupIdList = null;
+    private long groupId = -1;
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,8 +68,13 @@ public class AddAlarmActivity extends BaseActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-//        listID = (ArrayList<Long>) getIntent().getExtras().get(LIST_ID);
-        groupId = (long) getIntent().getExtras().get(GROUP_ID);
+        if(getIntent().getExtras() != null) {
+            if( getIntent().getExtras().get(LIST_ID) != null) {
+                groupIdList = (ArrayList<Long>) getIntent().getExtras().get(LIST_ID);
+            } else if(getIntent().getExtras().get(GROUP_ID) != null) {
+                groupId = (long) getIntent().getExtras().get(GROUP_ID);
+            }
+        }
 
         repeat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -135,7 +140,12 @@ public class AddAlarmActivity extends BaseActivity {
         alarm.setActive(true);
         alarm.setId(repository.getIdForModel(Alarm.class));
 
-        repository.addAlarmToGroup(groupId, alarm);
+        if(groupIdList != null) {
+            repository.addAlarmToGroupList(groupIdList, alarm);
+        }
+        else if(groupId != -1) {
+            repository.addAlarmToGroup(groupId, alarm);
+        }
 
         DialogFactory.getConfirmationDialog(this, getString(R.string.alarm_was_added),
                 getString(R.string.ok), new DialogInterface.OnClickListener() {

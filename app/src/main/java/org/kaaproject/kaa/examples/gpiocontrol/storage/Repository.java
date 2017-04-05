@@ -5,7 +5,6 @@ import org.kaaproject.kaa.examples.gpiocontrol.model.Alarm;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Group;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.RealmList;
@@ -18,9 +17,9 @@ public interface Repository {
 
     List<Controller> getControllerList();
     List<Group> getGroupList();
-    List<Group> getGroupListById(ArrayList<Long> idList);
     Group getGroupById(long id);
     void addAlarmToGroup(final long groupId, final Alarm alarm);
+    void addAlarmToGroupList(List<Long> groupIdList, final Alarm alarm);
 
     RealmList<Alarm> getAlarmList(final long groupId);
 
