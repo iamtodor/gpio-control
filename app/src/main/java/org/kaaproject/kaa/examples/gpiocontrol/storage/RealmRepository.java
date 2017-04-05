@@ -9,10 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmList;
 import io.realm.RealmObject;
 
 public class RealmRepository implements Repository {
 
+    private static final String TAG = RealmRepository.class.getSimpleName();
     private Realm instance = Realm.getDefaultInstance();
 
     @Override
@@ -72,14 +74,21 @@ public class RealmRepository implements Repository {
         return instance.copyFromRealm(group);
     }
 
-    @Override public List<Alarm> getAlarmList() {
-        final List<Alarm> deviceGroupList = new ArrayList<>();
+    @Override public RealmList<Alarm> getAlarmList(final long groupId) {
+        Group group = getGroupById(groupId);
+        return group.getAlarmList();
+    }
+
+    @Override public void addAlarmToGroup(final long groupId, final Alarm alarm) {
         instance.executeTransaction(new Realm.Transaction() {
             @Override public void execute(Realm realm) {
-                deviceGroupList.addAll(realm.where(Alarm.class).findAll());
+                Group group = getGroupById(groupId);
+                RealmList<Alarm> alarmList = group.getAlarmList();
+                alarmList.add(alarm);
+                group.setAlarmList(alarmList);
+                realm.copyToRealmOrUpdate(group);
             }
         });
-        return deviceGroupList;
     }
 
     /**

@@ -15,11 +15,9 @@ import android.widget.TextView;
 import org.kaaproject.kaa.examples.gpiocontrol.App;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Alarm;
-import org.kaaproject.kaa.examples.gpiocontrol.model.Group;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.storage.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -30,7 +28,7 @@ public class AlarmListActivity extends BaseActivity {
 
     private static final int UPDATE_ADAPTER = 1111;
     private static final String LIST_ID = "idList";
-    public static final String GROUP_ID = "id";
+    public static final String GROUP_ID = "groupId";
 
     @BindView(R.id.toolbar) protected Toolbar toolbar;
     @BindView(R.id.recycler_view) protected RecyclerView recyclerView;
@@ -39,8 +37,7 @@ public class AlarmListActivity extends BaseActivity {
 
     private Repository repository;
     private AlarmAdapter pinManagementAdapter;
-    private ArrayList<Long> listID;
-    private long id;
+    private long groupId;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,23 +47,22 @@ public class AlarmListActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         repository = ((App) (getApplication())).getRealmRepository();
 
-        if(getSupportActionBar() != null) {
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Alarm settings");
             getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        listID = (ArrayList<Long>) getIntent().getExtras().get(LIST_ID);
-        id = (long) getIntent().getExtras().get(GROUP_ID);
+        groupId = (long) getIntent().getExtras().get(GROUP_ID);
 
         setupRecyclerView();
     }
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK) {
-            if(requestCode == UPDATE_ADAPTER) {
-                List<Alarm> alarmList = repository.getAlarmList();
+        if (resultCode == RESULT_OK) {
+            if (requestCode == UPDATE_ADAPTER) {
+                List<Alarm> alarmList = repository.getAlarmList(groupId);
                 hideShowRecyclerView(alarmList);
                 pinManagementAdapter.updateAdapter(alarmList);
             }
@@ -87,7 +83,7 @@ public class AlarmListActivity extends BaseActivity {
     @OnClick(R.id.fab)
     public void onFabClick() {
         Intent intent = new Intent(AlarmListActivity.this, AddAlarmActivity.class);
-        intent.putExtra(LIST_ID, listID);
+        intent.putExtra(GROUP_ID, groupId);
         startActivityForResult(intent, UPDATE_ADAPTER);
     }
 
@@ -114,9 +110,7 @@ public class AlarmListActivity extends BaseActivity {
             }
         });
 
-        Group group = repository.getGroupById(id);
-        List<Alarm> alarmList = group.getAlarmList();
-
+        List<Alarm> alarmList = repository.getAlarmList(groupId);
         pinManagementAdapter.updateAdapter(alarmList);
 
         hideShowRecyclerView(alarmList);

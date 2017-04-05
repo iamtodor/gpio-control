@@ -8,6 +8,7 @@ import org.kaaproject.kaa.examples.gpiocontrol.model.Group;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 
 public interface Repository {
@@ -19,8 +20,9 @@ public interface Repository {
     List<Group> getGroupList();
     List<Group> getGroupListById(ArrayList<Long> idList);
     Group getGroupById(long id);
+    void addAlarmToGroup(final long groupId, final Alarm alarm);
 
-    List<Alarm> getAlarmList();
+    RealmList<Alarm> getAlarmList(final long groupId);
 
     long getIdForModel(Class<? extends RealmObject> clazz);
 

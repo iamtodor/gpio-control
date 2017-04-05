@@ -21,7 +21,6 @@ import android.widget.TimePicker;
 import org.kaaproject.kaa.examples.gpiocontrol.App;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Alarm;
-import org.kaaproject.kaa.examples.gpiocontrol.model.Group;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.storage.Repository;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
@@ -34,6 +33,8 @@ import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static org.kaaproject.kaa.examples.gpiocontrol.screen.alarm.AlarmListActivity.GROUP_ID;
 
 public class AddAlarmActivity extends BaseActivity {
 
@@ -52,6 +53,7 @@ public class AddAlarmActivity extends BaseActivity {
 
     private List<String> alarmDays = new ArrayList<>();
     private ArrayList<Long> listID;
+    private long groupId;
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +68,8 @@ public class AddAlarmActivity extends BaseActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        listID = (ArrayList<Long>) getIntent().getExtras().get(LIST_ID);
+//        listID = (ArrayList<Long>) getIntent().getExtras().get(LIST_ID);
+        groupId = (long) getIntent().getExtras().get(GROUP_ID);
 
         repeat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -132,12 +135,7 @@ public class AddAlarmActivity extends BaseActivity {
         alarm.setActive(true);
         alarm.setId(repository.getIdForModel(Alarm.class));
 
-        repository.saveModel(alarm);
-
-        List<Group> groupList = repository.getGroupListById(listID);
-        for (Group group : groupList) {
-            group.setAlarm(alarm);
-        }
+        repository.addAlarmToGroup(groupId, alarm);
 
         DialogFactory.getConfirmationDialog(this, getString(R.string.alarm_was_added),
                 getString(R.string.ok), new DialogInterface.OnClickListener() {

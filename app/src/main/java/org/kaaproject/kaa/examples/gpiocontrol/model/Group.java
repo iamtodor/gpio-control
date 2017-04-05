@@ -17,8 +17,6 @@ public class Group extends RealmObject {
     private int vectorId = -1;
     private String portStatus;
     private String power;
-    private boolean toggle;
-    private Alarm alarm;
     @PrimaryKey
     private long id;
     private boolean isOn;
@@ -66,22 +64,6 @@ public class Group extends RealmObject {
         this.power = power;
     }
 
-    public boolean isToggle() {
-        return toggle;
-    }
-
-    public void setToggle(boolean toggle) {
-        this.toggle = toggle;
-    }
-
-    public Alarm getAlarm() {
-        return alarm;
-    }
-
-    public void setAlarm(Alarm alarm) {
-        this.alarm = alarm;
-    }
-
     public long getId() {
         return id;
     }
@@ -125,14 +107,15 @@ public class Group extends RealmObject {
     @Override public String toString() {
         return "Group{" +
                 "name='" + name + '\'' +
+                ", imagePath='" + imagePath + '\'' +
+                ", vectorId=" + vectorId +
                 ", portStatus='" + portStatus + '\'' +
                 ", power='" + power + '\'' +
-                ", toggle=" + toggle +
-                ", alarm=" + alarm +
                 ", id=" + id +
+                ", isOn=" + isOn +
                 ", groupList=" + groupList +
                 ", deviceList=" + deviceList +
+                ", alarmList=" + alarmList +
                 '}';
     }
-
 }
