@@ -62,7 +62,7 @@ public class AlarmListActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == UPDATE_ADAPTER) {
-                List<Alarm> alarmList = repository.getAlarmList(groupId);
+                List<Alarm> alarmList = repository.getAlarmListFromGroup(groupId);
                 hideShowRecyclerView(alarmList);
                 pinManagementAdapter.updateAdapter(alarmList);
             }
@@ -110,7 +110,7 @@ public class AlarmListActivity extends BaseActivity {
             }
         });
 
-        List<Alarm> alarmList = repository.getAlarmList(groupId);
+        List<Alarm> alarmList = repository.getAlarmListFromGroup(groupId);
         pinManagementAdapter.updateAdapter(alarmList);
 
         hideShowRecyclerView(alarmList);

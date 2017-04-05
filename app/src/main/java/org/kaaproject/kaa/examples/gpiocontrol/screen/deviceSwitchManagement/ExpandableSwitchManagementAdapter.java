@@ -27,6 +27,7 @@ import org.kaaproject.kaa.examples.gpiocontrol.screen.alarm.AlarmListActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.deviceManagement.OnCheckedDeviceItemListener;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.deviceManagement.OnCheckedGroupItemListener;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.main.MainActivity;
+import org.kaaproject.kaa.examples.gpiocontrol.storage.Repository;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.Utils;
 
 import java.util.ArrayList;
@@ -50,9 +51,11 @@ class ExpandableSwitchManagementAdapter
 
     private OnCheckedGroupItemListener onCheckedGroupItemListener;
     private OnCheckedDeviceItemListener onCheckedDeviceItemListener;
+    private Repository repository;
 
-    ExpandableSwitchManagementAdapter(Context context, List<Header> deviceGroupHeaderList) {
+    ExpandableSwitchManagementAdapter(Context context, Repository repository) {
         this.context = (MainActivity) context;
+        this.repository = repository;
         // ExpandableItemAdapter requires stable ID, and also
         // have to implement the getGroupItemId()/getChildItemId() methods appropriately.
         setHasStableIds(true);
@@ -187,11 +190,18 @@ class ExpandableSwitchManagementAdapter
             Utils.loadImage(group, groupViewHolder.icon);
             groupViewHolder.name.setText(group.getName());
             groupViewHolder.status.setText(group.getPortStatus());
-            groupViewHolder.switchOn.setChecked(group.isOn());
+            groupViewHolder.switchOn.setChecked(group.isTurnOn());
 
             groupViewHolder.selection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     onCheckedGroupItemListener.onGroupChecked(isChecked, viewDeviceGroup);
+                }
+            });
+
+            groupViewHolder.switchOn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    // TODO: 4/5/17 turn on/off all devicesª
+                    repository.turnOnGroup(group.getId(), isChecked);
                 }
             });
 
@@ -217,7 +227,7 @@ class ExpandableSwitchManagementAdapter
             Utils.loadImage(device, singleDeviceViewHolder.imagePort);
             singleDeviceViewHolder.name.setText(device.getName());
             singleDeviceViewHolder.port.setText(device.getPortId());
-            singleDeviceViewHolder.switchCompat.setChecked(device.isOn());
+            singleDeviceViewHolder.switchCompat.setChecked(device.isTurnOn());
 
             singleDeviceViewHolder.selection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

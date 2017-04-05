@@ -13,7 +13,7 @@ public class Device extends RealmObject {
     private int vectorId;
     private String portTitle;
     private String portId;
-    private boolean isOn;
+    private boolean isTurnOn;
     private boolean isLocked;
     @PrimaryKey
     private int id = -1;
@@ -58,12 +58,12 @@ public class Device extends RealmObject {
         this.portId = portId;
     }
 
-    public boolean isOn() {
-        return isOn;
+    public boolean isTurnOn() {
+        return isTurnOn;
     }
 
-    public void setOn(boolean on) {
-        isOn = on;
+    public void setTurnOn(boolean turnOn) {
+        isTurnOn = turnOn;
     }
 
     public boolean isLocked() {
@@ -87,7 +87,7 @@ public class Device extends RealmObject {
                 "name='" + name + '\'' +
                 ", portTitle='" + portTitle + '\'' +
                 ", portId='" + portId + '\'' +
-                ", isOn=" + isOn +
+                ", isTurnOn=" + isTurnOn +
                 ", isLocked=" + isLocked +
                 '}';
     }

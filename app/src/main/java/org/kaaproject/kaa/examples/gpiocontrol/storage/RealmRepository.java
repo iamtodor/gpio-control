@@ -3,6 +3,7 @@ package org.kaaproject.kaa.examples.gpiocontrol.storage;
 
 import org.kaaproject.kaa.examples.gpiocontrol.model.Alarm;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
+import org.kaaproject.kaa.examples.gpiocontrol.model.Device;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Group;
 
 import java.util.ArrayList;
@@ -62,7 +63,7 @@ public class RealmRepository implements Repository {
         return instance.copyFromRealm(group);
     }
 
-    @Override public RealmList<Alarm> getAlarmList(final long groupId) {
+    @Override public RealmList<Alarm> getAlarmListFromGroup(final long groupId) {
         Group group = getGroupById(groupId);
         return group.getAlarmList();
     }
@@ -83,6 +84,29 @@ public class RealmRepository implements Repository {
         for (Long groupId : groupIdList) {
             addAlarmToGroup(groupId, alarm);
         }
+    }
+
+    @Override public void turnOnGroup(final long groupId, final boolean turnOn) {
+        final Group group = getGroupById(groupId);
+        instance.executeTransaction(new Realm.Transaction() {
+            @Override public void execute(Realm realm) {
+                group.setTurnOn(turnOn);
+                List<Device> deviceList = getDeviceListFromGroup(groupId);
+                for(Device device : deviceList) {
+                    device.setTurnOn(turnOn);
+                }
+            }
+        });
+    }
+
+    @Override public List<Device> getDeviceListFromGroup(long groupId) {
+        final List<Device> deviceList = new ArrayList<>();
+        instance.executeTransaction(new Realm.Transaction() {
+            @Override public void execute(Realm realm) {
+                deviceList.addAll(realm.where(Device.class).findAll());
+            }
+        });
+        return deviceList;
     }
 
     /**

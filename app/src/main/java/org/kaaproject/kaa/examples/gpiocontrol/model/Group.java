@@ -19,7 +19,7 @@ public class Group extends RealmObject {
     private String power;
     @PrimaryKey
     private long id;
-    private boolean isOn;
+    private boolean isTurnOn;
     private RealmList<Group> groupList;
     private RealmList<Device> deviceList;
     private RealmList<Alarm> alarmList;
@@ -72,12 +72,12 @@ public class Group extends RealmObject {
         this.id = id;
     }
 
-    public boolean isOn() {
-        return isOn;
+    public boolean isTurnOn() {
+        return isTurnOn;
     }
 
-    public void setOn(boolean on) {
-        isOn = on;
+    public void setTurnOn(boolean turnOn) {
+        isTurnOn = turnOn;
     }
 
     public List<Group> getGroupList() {
@@ -112,7 +112,7 @@ public class Group extends RealmObject {
                 ", portStatus='" + portStatus + '\'' +
                 ", power='" + power + '\'' +
                 ", id=" + id +
-                ", isOn=" + isOn +
+                ", isTurnOn=" + isTurnOn +
                 ", groupList=" + groupList +
                 ", deviceList=" + deviceList +
                 ", alarmList=" + alarmList +

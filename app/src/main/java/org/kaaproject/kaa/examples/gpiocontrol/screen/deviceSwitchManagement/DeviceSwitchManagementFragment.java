@@ -211,9 +211,9 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
                     ViewDeviceGroup viewDeviceGroup = (ViewDeviceGroup) object;
                     Group group = viewDeviceGroup.getGroup();
                     if (viewDeviceGroup.isSelected()) {
-                        group.setOn(!group.isOn());
+                        group.setTurnOn(!group.isTurnOn());
                         for (Device device : group.getDeviceList())
-                            device.setOn(!device.isOn());
+                            device.setTurnOn(!device.isTurnOn());
                     }
                 }
             }
@@ -222,7 +222,7 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
                     ViewDevice viewDevice = (ViewDevice) object;
                     Device device = viewDevice.getDevice();
                     if (viewDevice.isSelected()) {
-                        device.setOn(!device.isOn());
+                        device.setTurnOn(!device.isTurnOn());
                     }
                 }
             }
@@ -273,8 +273,10 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
         final Parcelable eimSavedState = (savedInstanceState != null) ? savedInstanceState.getParcelable(SAVED_STATE_EXPANDABLE_ITEM_MANAGER) : null;
         recyclerViewExpandableItemManager = new RecyclerViewExpandableItemManager(eimSavedState);
 
+        adapter = new ExpandableSwitchManagementAdapter(context, repository);
         deviceGroupHeaderList = Utils.getMockedHeaderList(repository);
-        adapter = new ExpandableSwitchManagementAdapter(context, deviceGroupHeaderList);
+
+        adapter.updateAdapter(deviceGroupHeaderList);
         adapter.setOnCheckedDeviceItemListener(this);
         adapter.setOnCheckedGroupItemListener(this);
 
@@ -391,9 +393,9 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
                     ViewDeviceGroup viewGroup = (ViewDeviceGroup) object;
                     Group group = viewGroup.getGroup();
                     if (viewGroup.isSelected()) {
-                        group.setOn(isOn);
+                        group.setTurnOn(isOn);
                         for (Device device : group.getDeviceList())
-                            device.setOn(isOn);
+                            device.setTurnOn(isOn);
                     }
                 }
             }
@@ -402,7 +404,7 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
                     ViewDevice viewDevice = (ViewDevice) object;
                     Device device = viewDevice.getDevice();
                     if (viewDevice.isSelected()) {
-                        device.setOn(isOn);
+                        device.setTurnOn(isOn);
                     }
                 }
             }

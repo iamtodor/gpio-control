@@ -45,14 +45,14 @@ public class Utils {
                 device.setPortTitle("Port title " + i + 5);
                 device.setPortId("Port id " + i + 1);
                 device.setVectorId(R.drawable.kitchen);
-                device.setOn(false);
+                device.setTurnOn(false);
                 device.setId(i);
             } else {
                 device.setName("Device " + i);
                 device.setPortTitle("Port title " + i + 5);
                 device.setPortId("Port id " + i + 1);
                 device.setVectorId(R.drawable.fan);
-                device.setOn(true);
+                device.setTurnOn(true);
                 device.setId(i);
             }
             deviceList.add(device);
