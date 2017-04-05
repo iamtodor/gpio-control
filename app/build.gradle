@@ -27,7 +27,7 @@ ext {
     picassoVersion = '2.5.2'
 }
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -48,5 +48,6 @@ dependencies {
     compile('com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.10.4@aar') {
         transitive = true
     }
+    compile files('libs/kaa-android-ep-sdk.jar')
 }
 apply plugin: 'com.google.gms.google-services'
