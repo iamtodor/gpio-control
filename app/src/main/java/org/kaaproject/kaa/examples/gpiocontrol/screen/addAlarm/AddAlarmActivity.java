@@ -1,4 +1,4 @@
-package org.kaaproject.kaa.examples.gpiocontrol.screen.alarm;
+package org.kaaproject.kaa.examples.gpiocontrol.screen.addAlarm;
 
 
 import android.app.TimePickerDialog;
@@ -34,7 +34,7 @@ import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static org.kaaproject.kaa.examples.gpiocontrol.screen.alarm.AlarmListActivity.GROUP_ID;
+import static org.kaaproject.kaa.examples.gpiocontrol.screen.alarmList.AlarmListActivity.GROUP_ID;
 
 public class AddAlarmActivity extends BaseActivity {
 

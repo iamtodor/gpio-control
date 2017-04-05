@@ -25,10 +25,10 @@
             android:name=".screen.signIn.SingInActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".screen.alarm.AlarmListActivity"
+            android:name=".screen.alarmList.AlarmListActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".screen.alarm.AddAlarmActivity"
+            android:name=".screen.addAlarm.AddAlarmActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".screen.addController.AddControllerActivity"

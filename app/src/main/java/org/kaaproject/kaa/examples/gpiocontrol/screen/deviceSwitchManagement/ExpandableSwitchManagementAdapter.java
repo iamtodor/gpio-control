@@ -23,7 +23,7 @@ import org.kaaproject.kaa.examples.gpiocontrol.model.GroupHeader;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
 import org.kaaproject.kaa.examples.gpiocontrol.model.ViewDevice;
 import org.kaaproject.kaa.examples.gpiocontrol.model.ViewDeviceGroup;
-import org.kaaproject.kaa.examples.gpiocontrol.screen.alarm.AlarmListActivity;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.alarmList.AlarmListActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.deviceManagement.OnCheckedDeviceItemListener;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.deviceManagement.OnCheckedGroupItemListener;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.main.MainActivity;

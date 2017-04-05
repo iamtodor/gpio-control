@@ -1,4 +1,4 @@
-package org.kaaproject.kaa.examples.gpiocontrol.screen.alarm;
+package org.kaaproject.kaa.examples.gpiocontrol.screen.alarmList;
 
 
 import android.content.Intent;
@@ -15,6 +15,7 @@ import android.widget.TextView;
 import org.kaaproject.kaa.examples.gpiocontrol.App;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Alarm;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.addAlarm.AddAlarmActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.storage.Repository;
 

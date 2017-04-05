@@ -1,4 +1,4 @@
-package org.kaaproject.kaa.examples.gpiocontrol.screen.alarm;
+package org.kaaproject.kaa.examples.gpiocontrol.screen.alarmList;
 
 
 import android.support.v7.widget.RecyclerView;
