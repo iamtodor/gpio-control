@@ -16,51 +16,69 @@ import io.realm.RealmObject;
 public class RealmRepository implements Repository {
 
     private static final String TAG = RealmRepository.class.getSimpleName();
-    private Realm instance = Realm.getDefaultInstance();
 
     @Override
     public <T extends RealmObject> void saveModel(final T object) {
+        final Realm instance = Realm.getDefaultInstance();
         instance.executeTransaction(new Realm.Transaction() {
             @Override public void execute(Realm realm) {
                 realm.copyToRealmOrUpdate(object);
             }
         });
+        instance.close();
     }
 
     @Override
     public List<Controller> getControllerList() {
+        final Realm instance = Realm.getDefaultInstance();
         final List<Controller> controllerList = new ArrayList<>();
         instance.executeTransaction(new Realm.Transaction() {
             @Override public void execute(Realm realm) {
                 controllerList.addAll(realm.where(Controller.class).findAll());
             }
         });
+        instance.close();
         return controllerList;
     }
 
     @Override
     public <T extends RealmObject> void saveModelList(final List<T> modelList) {
+        final Realm instance = Realm.getDefaultInstance();
         instance.executeTransaction(new Realm.Transaction() {
             @Override public void execute(Realm realm) {
                 realm.copyToRealmOrUpdate(modelList);
             }
         });
+        instance.close();
     }
 
     @Override
     public List<Group> getGroupList() {
+        final Realm instance = Realm.getDefaultInstance();
         final List<Group> groupList = new ArrayList<>();
         instance.executeTransaction(new Realm.Transaction() {
             @Override public void execute(Realm realm) {
                 groupList.addAll(realm.where(Group.class).findAll());
             }
         });
+        instance.close();
         return groupList;
     }
 
     @Override public Group getGroupById(final long id) {
+        final Realm instance = Realm.getDefaultInstance();
         Group group = instance.where(Group.class).equalTo("id", id).findFirst();
-        return instance.copyFromRealm(group);
+        instance.close();
+        return group;
+    }
+
+    @Override public long getGroupId(Group group) {
+        final Realm instance = Realm.getDefaultInstance();
+        instance.beginTransaction();
+        final long id = group.getId();
+        instance.commitTransaction();
+        instance.close();
+        return id;
     }
 
     @Override public RealmList<Alarm> getAlarmListFromGroup(final long groupId) {
@@ -69,15 +87,16 @@ public class RealmRepository implements Repository {
     }
 
     @Override public void addAlarmToGroup(final long groupId, final Alarm alarm) {
+        final Realm instance = Realm.getDefaultInstance();
         instance.executeTransaction(new Realm.Transaction() {
             @Override public void execute(Realm realm) {
                 Group group = getGroupById(groupId);
                 RealmList<Alarm> alarmList = group.getAlarmList();
                 alarmList.add(alarm);
                 group.setAlarmList(alarmList);
-                realm.insertOrUpdate(group);
             }
         });
+        instance.close();
     }
 
     @Override public void addAlarmToGroupList(List<Long> groupIdList, Alarm alarm) {
@@ -87,25 +106,42 @@ public class RealmRepository implements Repository {
     }
 
     @Override public void turnOnGroup(final long groupId, final boolean turnOn) {
+        final Realm instance = Realm.getDefaultInstance();
         final Group group = getGroupById(groupId);
+        final List<Device> deviceList = getDeviceListFromGroup(groupId);
         instance.executeTransaction(new Realm.Transaction() {
             @Override public void execute(Realm realm) {
                 group.setTurnOn(turnOn);
-                List<Device> deviceList = getDeviceListFromGroup(groupId);
-                for(Device device : deviceList) {
+                for (Device device : deviceList) {
                     device.setTurnOn(turnOn);
                 }
             }
         });
+        instance.close();
+    }
+
+    @Override public void toggleGroup(long groupId) {
+        final Realm instance = Realm.getDefaultInstance();
+        final List<Device> deviceList = getDeviceListFromGroup(groupId);
+        instance.executeTransaction(new Realm.Transaction() {
+            @Override public void execute(Realm realm) {
+                for (Device device : deviceList) {
+                    device.setTurnOn(device.isTurnOn());
+                }
+            }
+        });
+        instance.close();
     }
 
     @Override public List<Device> getDeviceListFromGroup(long groupId) {
+        final Realm instance = Realm.getDefaultInstance();
         final List<Device> deviceList = new ArrayList<>();
         instance.executeTransaction(new Realm.Transaction() {
             @Override public void execute(Realm realm) {
                 deviceList.addAll(realm.where(Device.class).findAll());
             }
         });
+        instance.close();
         return deviceList;
     }
 
@@ -118,12 +154,47 @@ public class RealmRepository implements Repository {
      */
     @Override
     public long getIdForModel(Class<? extends RealmObject> clazz) {
+        final Realm instance = Realm.getDefaultInstance();
         Number currentMax = instance.where(clazz).max("id");
         long nextId = 0;
         if (currentMax != null) {
             nextId = currentMax.longValue() + 1;
         }
+        instance.close();
         return nextId;
     }
+
+    @Override public void turnOnDevice(long deviceId, final boolean turnOn) {
+        final Realm instance = Realm.getDefaultInstance();
+        final Device device = getDeviceById(deviceId);
+        instance.executeTransaction(new Realm.Transaction() {
+            @Override public void execute(Realm realm) {
+                device.setTurnOn(turnOn);
+            }
+        });
+        instance.close();
+    }
+
+    @Override public boolean lockDevice(long deviceId) {
+        final Realm instance = Realm.getDefaultInstance();
+        final Device device = getDeviceById(deviceId);
+        instance.executeTransaction(new Realm.Transaction() {
+            @Override public void execute(Realm realm) {
+                device.setLocked(!device.isLocked());
+            }
+        });
+        boolean isDeviceLocked = device.isLocked();
+        instance.close();
+        return isDeviceLocked;
+    }
+
+    @Override public Device getDeviceById(long id) {
+        final Realm instance = Realm.getDefaultInstance();
+        Device device = instance.where(Device.class).equalTo("id", id).findFirst();
+        instance.close();
+        return device;
+    }
+
+
 
 }

@@ -20,15 +20,20 @@ public interface Repository {
 
     List<Group> getGroupList();
     Group getGroupById(long id);
+    long getGroupId(Group group);
 
     void addAlarmToGroup(final long groupId, final Alarm alarm);
     void addAlarmToGroupList(List<Long> groupIdList, final Alarm alarm);
 
     void turnOnGroup(long groupId, boolean turnOn);
+    void toggleGroup(long groupId);
 
     List<Device> getDeviceListFromGroup(final long groupId);
     RealmList<Alarm> getAlarmListFromGroup(final long groupId);
 
     long getIdForModel(Class<? extends RealmObject> clazz);
 
+    Device getDeviceById(long id);
+    void turnOnDevice(long deviceId, boolean turnOn);
+    boolean lockDevice(long deviceId);
 }

@@ -3,6 +3,9 @@ package org.kaaproject.kaa.examples.gpiocontrol.screen.deviceSwitchManagement;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.support.design.widget.Snackbar;
+import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -180,7 +183,7 @@ class ExpandableSwitchManagementAdapter
     }
 
     @Override
-    public void onBindChildViewHolder(BaseItemViewHolder holder, int groupPosition, int childPosition, int viewType) {
+    public void onBindChildViewHolder(final BaseItemViewHolder holder, int groupPosition, int childPosition, int viewType) {
         if (viewType == DEVICE_GROUP_ITEM_VIEW_TYPE) {
             final GroupItemViewHolder groupViewHolder = (GroupItemViewHolder) holder;
             final ViewDeviceGroup viewDeviceGroup = (ViewDeviceGroup) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
@@ -200,7 +203,7 @@ class ExpandableSwitchManagementAdapter
 
             groupViewHolder.switchOn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    // TODO: 4/5/17 turn on/off all devicesª
+                    // TODO: 4/5/17 turn on/off all devices
                     repository.turnOnGroup(group.getId(), isChecked);
                 }
             });
@@ -208,6 +211,8 @@ class ExpandableSwitchManagementAdapter
             groupViewHolder.swapState.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
                     // TODO: 3/30/17 swap logic
+                    Snackbar.make(groupViewHolder.itemView, "Group was toggled", Snackbar.LENGTH_SHORT).show();
+                    repository.toggleGroup(group.getId());
                 }
             });
 
@@ -228,6 +233,8 @@ class ExpandableSwitchManagementAdapter
             singleDeviceViewHolder.name.setText(device.getName());
             singleDeviceViewHolder.port.setText(device.getPortId());
             singleDeviceViewHolder.switchCompat.setChecked(device.isTurnOn());
+            singleDeviceViewHolder.alarm.setImageDrawable(getAlarmIcon(device));
+            singleDeviceViewHolder.lock.setImageDrawable(getLockIcon(device.isLocked()));
 
             singleDeviceViewHolder.selection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -235,12 +242,41 @@ class ExpandableSwitchManagementAdapter
                 }
             });
 
+            singleDeviceViewHolder.switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    // TODO: 4/6/17 turn on/off device
+                    repository.turnOnDevice(device.getId(), isChecked);
+                }
+            });
+
             singleDeviceViewHolder.lock.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
                     // TODO: 3/30/17 lock logic
+                    boolean isLocked = repository.lockDevice(device.getId());
+                    singleDeviceViewHolder.lock.setImageDrawable(getLockIcon(isLocked));
                 }
             });
         }
+    }
+
+    private Drawable getAlarmIcon(Device device) {
+        Drawable drawable;
+        if (device.hasAlarm()) {
+            drawable = VectorDrawableCompat.create(context.getResources(), R.drawable.alarm_activated, null);
+        } else {
+            drawable = VectorDrawableCompat.create(context.getResources(), R.drawable.alarm_notactivated, null);
+        }
+        return drawable;
+    }
+
+    private Drawable getLockIcon(boolean isLocked) {
+        Drawable drawable;
+        if (isLocked) {
+            drawable = VectorDrawableCompat.create(context.getResources(), R.drawable.lock_activated, null);
+        } else {
+            drawable = VectorDrawableCompat.create(context.getResources(), R.drawable.lock_notactivated, null);
+        }
+        return drawable;
     }
 
     static class BaseHeaderViewHolder extends AbstractExpandableItemViewHolder {
@@ -307,6 +343,7 @@ class ExpandableSwitchManagementAdapter
         @BindView(R.id.name) TextView name;
         @BindView(R.id.status) TextView port;
         @BindView(R.id.switch_active) SwitchCompat switchCompat;
+        @BindView(R.id.alarm) ImageView alarm;
         @BindView(R.id.lock) ImageView lock;
 
         DeviceItemViewHolder(View itemView) {

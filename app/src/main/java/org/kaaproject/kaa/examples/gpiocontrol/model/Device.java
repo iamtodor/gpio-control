@@ -14,6 +14,7 @@ public class Device extends RealmObject {
     private String portTitle;
     private String portId;
     private boolean isTurnOn;
+    private boolean hasAlarm;
     private boolean isLocked;
     @PrimaryKey
     private int id = -1;
@@ -80,6 +81,14 @@ public class Device extends RealmObject {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public boolean hasAlarm() {
+        return hasAlarm;
+    }
+
+    public void setHasAlarm(boolean hasAlarm) {
+        this.hasAlarm = hasAlarm;
     }
 
     @Override public String toString() {
