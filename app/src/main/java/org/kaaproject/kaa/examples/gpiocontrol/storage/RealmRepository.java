@@ -55,19 +55,14 @@ public class RealmRepository implements Repository {
     @Override
     public List<Group> getGroupList() {
         final Realm instance = Realm.getDefaultInstance();
-        final List<Group> groupList = new ArrayList<>();
-        instance.executeTransaction(new Realm.Transaction() {
-            @Override public void execute(Realm realm) {
-                groupList.addAll(realm.where(Group.class).findAll());
-            }
-        });
+        List<Group> groupList= instance.copyFromRealm(instance.where(Group.class).findAll());
         instance.close();
         return groupList;
     }
 
     @Override public Group getGroupById(final long id) {
         final Realm instance = Realm.getDefaultInstance();
-        Group group = instance.where(Group.class).equalTo("id", id).findFirst();
+        Group group = instance.copyFromRealm(instance.where(Group.class).equalTo("id", id).findFirst());
         instance.close();
         return group;
     }
@@ -194,7 +189,6 @@ public class RealmRepository implements Repository {
         instance.close();
         return device;
     }
-
 
 
 }
