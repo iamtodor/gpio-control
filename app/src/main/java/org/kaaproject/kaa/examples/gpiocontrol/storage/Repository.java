@@ -20,7 +20,6 @@ public interface Repository {
 
     List<Group> getGroupList();
     Group getGroupById(long id);
-    long getGroupId(Group group);
 
     void addAlarmToGroup(final long groupId, final Alarm alarm);
     void addAlarmToGroupList(List<Long> groupIdList, final Alarm alarm);

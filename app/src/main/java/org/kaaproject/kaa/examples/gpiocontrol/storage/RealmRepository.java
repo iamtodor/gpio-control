@@ -67,15 +67,6 @@ public class RealmRepository implements Repository {
         return group;
     }
 
-    @Override public long getGroupId(Group group) {
-        final Realm instance = Realm.getDefaultInstance();
-        instance.beginTransaction();
-        final long id = group.getId();
-        instance.commitTransaction();
-        instance.close();
-        return id;
-    }
-
     @Override public RealmList<Alarm> getAlarmListFromGroup(final long groupId) {
         Group group = getGroupById(groupId);
         return group.getAlarmList();
