@@ -93,7 +93,6 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
         setupSelectionMenuIcons(context);
         setupRecyclerView(context, savedInstanceState);
 
-
         return view;
     }
 
@@ -135,7 +134,8 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == ADD_CONTROLLER_CODE) {
-                adapter.notifyDataSetChanged();
+                deviceGroupHeaderList = Utils.getMockedHeaderList(repository);
+                adapter.updateAdapter(deviceGroupHeaderList);
             }
         }
     }

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.design.widget.Snackbar;
 import android.support.graphics.drawable.VectorDrawableCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -233,8 +234,8 @@ class ExpandableSwitchManagementAdapter
             singleDeviceViewHolder.name.setText(device.getName());
             singleDeviceViewHolder.port.setText(device.getPortId());
             singleDeviceViewHolder.switchCompat.setChecked(device.isTurnOn());
-            singleDeviceViewHolder.alarm.setImageDrawable(getAlarmIcon(device));
-            singleDeviceViewHolder.lock.setImageDrawable(getLockIcon(device.isLocked()));
+            setAlarmIcon(singleDeviceViewHolder.alarm, device.hasAlarm());
+            setLockIcon(singleDeviceViewHolder.lock, device.isLocked());
 
             singleDeviceViewHolder.selection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -253,28 +254,36 @@ class ExpandableSwitchManagementAdapter
                 @Override public void onClick(View v) {
                     // TODO: 3/30/17 lock logic
                     boolean isLocked = repository.lockDevice(device.getId());
-                    singleDeviceViewHolder.lock.setImageDrawable(getLockIcon(isLocked));
+                    setLockIcon(singleDeviceViewHolder.lock, isLocked);
                 }
             });
         }
     }
 
-    private Drawable getAlarmIcon(Device device) {
+    private Drawable setAlarmIcon(ImageView alarmImageView, boolean deviceHasAlarm) {
         Drawable drawable;
-        if (device.hasAlarm()) {
+        if (deviceHasAlarm) {
             drawable = VectorDrawableCompat.create(context.getResources(), R.drawable.alarm_activated, null);
+            alarmImageView.setImageDrawable(drawable);
+            alarmImageView.setColorFilter(ContextCompat.getColor(context, R.color.customGreen));
         } else {
             drawable = VectorDrawableCompat.create(context.getResources(), R.drawable.alarm_notactivated, null);
+            alarmImageView.setImageDrawable(drawable);
+            alarmImageView.setColorFilter(ContextCompat.getColor(context, R.color.customRed));
         }
         return drawable;
     }
 
-    private Drawable getLockIcon(boolean isLocked) {
+    private Drawable setLockIcon(ImageView lockImageView, boolean isLocked) {
         Drawable drawable;
         if (isLocked) {
             drawable = VectorDrawableCompat.create(context.getResources(), R.drawable.lock_activated, null);
+            lockImageView.setImageDrawable(drawable);
+            lockImageView.setColorFilter(ContextCompat.getColor(context, R.color.customRed));
         } else {
             drawable = VectorDrawableCompat.create(context.getResources(), R.drawable.lock_notactivated, null);
+            lockImageView.setImageDrawable(drawable);
+            lockImageView.setColorFilter(ContextCompat.getColor(context, android.R.color.black));
         }
         return drawable;
     }

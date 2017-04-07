@@ -89,13 +89,14 @@ public class RealmRepository implements Repository {
 
     @Override public void addAlarmToGroup(final long groupId, final Alarm alarm) {
         final Realm instance = Realm.getDefaultInstance();
+        final Group group = getGroupById(groupId);
         instance.executeTransaction(new Realm.Transaction() {
             @Override public void execute(Realm realm) {
-                Group group = getGroupById(groupId);
                 RealmList<Alarm> alarmList = group.getAlarmList();
                 alarmList.add(alarm);
                 group.setAlarmList(alarmList);
-                for (Device device : group.getDeviceList()) {
+                RealmList<Device> deviceList = group.getDeviceList();
+                for (Device device : deviceList) {
                     device.setHasAlarm(true);
                 }
                 realm.insertOrUpdate(group);

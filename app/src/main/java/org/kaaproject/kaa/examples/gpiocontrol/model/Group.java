@@ -88,7 +88,7 @@ public class Group extends RealmObject {
         this.groupList = groupList;
     }
 
-    public List<Device> getDeviceList() {
+    public RealmList<Device> getDeviceList() {
         return deviceList;
     }
 
