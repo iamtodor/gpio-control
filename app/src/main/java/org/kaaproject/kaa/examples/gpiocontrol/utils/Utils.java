@@ -36,34 +36,10 @@ public class Utils {
     private static final String DELIMITER = ";";
     private static LruCache<Integer, Drawable> vectorHashMap = new LruCache<>(IMAGE_MEM_CACHE_MAX_SIZE);
 
-    private static RealmList<Device> getMockedDeviceList() {
-        RealmList<Device> deviceList = new RealmList<>();
-        for (int i = 0; i < 100; i++) {
-            Device device = new Device();
-            if (i % 2 == 0) {
-                device.setName("Device " + i);
-                device.setPortTitle("Port title " + i + 5);
-                device.setPortId("Port id " + i + 1);
-                device.setVectorId(R.drawable.kitchen);
-                device.setTurnOn(false);
-                device.setId(i);
-            } else {
-                device.setName("Device " + i);
-                device.setPortTitle("Port title " + i + 5);
-                device.setPortId("Port id " + i + 1);
-                device.setVectorId(R.drawable.fan);
-                device.setTurnOn(true);
-                device.setId(i);
-            }
-            deviceList.add(device);
-        }
-        return deviceList;
-    }
-
     public static List<Group> getMockedGroupList() {
         RealmList<Device> deviceList = getMockedDeviceList();
         List<Group> groupList = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 1; i++) {
             Group group = new Group();
             if (i % 2 == 0) {
                 group.setName("Group" + i);
@@ -83,6 +59,30 @@ public class Utils {
             groupList.add(group);
         }
         return groupList;
+    }
+
+    private static RealmList<Device> getMockedDeviceList() {
+        RealmList<Device> deviceList = new RealmList<>();
+        for (int i = 0; i < 20; i++) {
+            Device device = new Device();
+            if (i % 2 == 0) {
+                device.setName("Device " + i);
+                device.setPortTitle("Port title " + i + 5);
+                device.setPortId("Port id " + i + 1);
+                device.setVectorId(R.drawable.kitchen);
+                device.setTurnOn(false);
+                device.setId(i);
+            } else {
+                device.setName("Device " + i);
+                device.setPortTitle("Port title " + i + 5);
+                device.setPortId("Port id " + i + 1);
+                device.setVectorId(R.drawable.fan);
+                device.setTurnOn(true);
+                device.setId(i);
+            }
+            deviceList.add(device);
+        }
+        return deviceList;
     }
 
     @NonNull
@@ -107,7 +107,12 @@ public class Utils {
         List<Group> groupList = repository.getGroupList();
         List<ViewDeviceGroup> viewDeviceGroupList = getViewGroupList(groupList);
 
-        List<Device> deviceList = getMockedDeviceList();
+        List<Device> deviceList = new ArrayList<>();
+        for(Group group : groupList) {
+            for (int i = 0; i < group.getDeviceList().size(); i++) {
+                deviceList.add(group.getDeviceList().get(i));
+            }
+        }
         List<ViewDevice> viewDeviceList = getViewDeviceList(deviceList);
 
         deviceGroupHeaderList.add(new GroupHeader<>("Groups (" + viewDeviceGroupList.size() + ")",
