@@ -417,8 +417,8 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
             if (deviceGroupHeader instanceof DeviceHeader) {
                 for (Object object : deviceGroupHeader.getChildList()) {
                     ViewDevice viewDevice = (ViewDevice) object;
-                    Device device = viewDevice.getDevice();
-                    if (device.isLocked()) {
+                    if(viewDevice.isSelected()) {
+                        Device device = viewDevice.getDevice();
                         device.setLocked(isLocked);
                     }
                 }
