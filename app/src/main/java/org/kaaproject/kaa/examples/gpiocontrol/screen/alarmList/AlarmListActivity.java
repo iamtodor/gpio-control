@@ -28,7 +28,6 @@ import butterknife.OnClick;
 public class AlarmListActivity extends BaseActivity {
 
     private static final int UPDATE_ADAPTER = 1111;
-    private static final String LIST_ID = "idList";
     public static final String GROUP_ID = "groupId";
 
     @BindView(R.id.toolbar) protected Toolbar toolbar;

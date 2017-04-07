@@ -55,10 +55,11 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
         ChangeFieldListener, OnCheckedDeviceItemListener, OnCheckedGroupItemListener {
 
     private static final String SAVED_STATE_EXPANDABLE_ITEM_MANAGER = "RecyclerViewExpandableItemManager";
-    private static final int ADD_CONTROLLER_CODE = 1111;
+    private static final int UPDATE_ADAPTER_CODE = 1111;
     public static final int ADD_GROUP_DIALOG = 777;
     public static final int ADD_CONTROLLER_DIALOG = 666;
     public static final String LIST_ID = "idList";
+    public static final int ADD_ALARM_CODE = 1234;
 
     @BindView(R.id.recycler_view) protected RecyclerView recyclerView;
     @BindView(R.id.no_device_message) protected TextView noDeviceMessage;
@@ -133,7 +134,7 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == ADD_CONTROLLER_CODE) {
+            if (requestCode == UPDATE_ADAPTER_CODE) {
                 deviceGroupHeaderList = Utils.getMockedHeaderList(repository);
                 adapter.updateAdapter(deviceGroupHeaderList);
             }
@@ -150,7 +151,7 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
 
             changeFieldDialog.show(getActivity().getSupportFragmentManager());
         } else if (dialog == ADD_CONTROLLER_DIALOG) {
-            startActivityForResult(new Intent(getActivity(), AddControllerActivity.class), ADD_CONTROLLER_CODE);
+            startActivityForResult(new Intent(getActivity(), AddControllerActivity.class), UPDATE_ADAPTER_CODE);
         }
     }
 
@@ -254,7 +255,7 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
                 }
                 Intent intent = new Intent(getContext(), AddAlarmActivity.class);
                 intent.putExtra(LIST_ID, idList);
-                startActivity(intent);
+                startActivityForResult(intent, ADD_ALARM_CODE);
             }
         }
     }
