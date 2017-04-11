@@ -73,6 +73,14 @@ public class RealmRepository implements Repository {
         return group;
     }
 
+    @Override public void removeGroup(long groupId) {
+        // TODO: 4/11/17 implement remove group
+    }
+
+    @Override public void removeGroupList(List<Long> groupIdList) {
+        // TODO: 4/11/17 implement remove group list
+    }
+
     @Override public void addAlarmToGroupList(List<Long> groupIdList, Alarm alarm) {
         for (Long groupId : groupIdList) {
             addAlarmToGroup(groupId, alarm);

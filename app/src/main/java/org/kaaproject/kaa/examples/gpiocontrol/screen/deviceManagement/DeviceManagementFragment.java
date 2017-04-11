@@ -39,7 +39,6 @@ import org.kaaproject.kaa.examples.gpiocontrol.utils.ChangeFieldListener;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.Utils;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -48,6 +47,7 @@ import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import io.realm.RealmList;
 
 public class DeviceManagementFragment extends BaseListFragment implements OnCheckedGroupItemListener,
         OnCheckedDeviceItemListener {
@@ -159,7 +159,7 @@ public class DeviceManagementFragment extends BaseListFragment implements OnChec
                     @Override public void onChanged(String newField) {
                         for (Header header : deviceGroupHeaderList) {
                             if (header instanceof GroupHeader) {
-                                List<Group> selectedDeviceGroupList = new ArrayList<>();
+                                RealmList<Group> selectedDeviceGroupList = new RealmList<>();
                                 int index = -1;
                                 for (int i = 0; i < header.getChildList().size(); i++) {
                                     ViewDeviceGroup viewDeviceGroup = (ViewDeviceGroup) header.getChildList().get(i);
@@ -171,22 +171,26 @@ public class DeviceManagementFragment extends BaseListFragment implements OnChec
                                         selectedDeviceGroupList.add(group);
                                     }
                                 }
-                                List<ViewDeviceGroup> viewDeviceGroupList = ((GroupHeader) header).getDeviceGroupList();
-                                for (Iterator<ViewDeviceGroup> it = viewDeviceGroupList.iterator(); it.hasNext(); ) {
-                                    ViewDeviceGroup viewGroup = it.next();
-                                    Group group = viewGroup.getGroup();
-                                    for (Group selectedGroup : selectedDeviceGroupList) {
-                                        if (group == selectedGroup) {
-                                            it.remove();
-                                        }
-                                    }
-                                }
+
                                 Group group = new Group();
                                 group.setName(newField);
                                 group.setVectorId(R.drawable.empty_group_icon);
                                 group.setPortStatus("Port status");
                                 group.setPower("Power");
                                 group.setId(repository.getIdForModel(Group.class));
+                                group.setGroupList(selectedDeviceGroupList);
+
+                                List<ViewDeviceGroup> viewDeviceGroupList = ((GroupHeader) header).getDeviceGroupList();
+                                for (Iterator<ViewDeviceGroup> it = viewDeviceGroupList.iterator(); it.hasNext(); ) {
+                                    ViewDeviceGroup viewGroup = it.next();
+                                    Group iterableGroup = viewGroup.getGroup();
+                                    for (Group selectedGroup : selectedDeviceGroupList) {
+                                        if (iterableGroup == selectedGroup) {
+                                            it.remove();
+                                        }
+                                    }
+                                }
+
                                 repository.saveModel(group);
 
                                 ViewDeviceGroup viewDeviceGroup = new ViewDeviceGroup();
