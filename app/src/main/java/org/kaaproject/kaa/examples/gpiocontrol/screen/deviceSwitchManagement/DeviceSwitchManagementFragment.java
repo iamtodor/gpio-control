@@ -59,7 +59,6 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
     public static final int ADD_GROUP_DIALOG = 777;
     public static final int ADD_CONTROLLER_DIALOG = 666;
     public static final String LIST_ID = "idList";
-    public static final int ADD_ALARM_CODE = 1234;
 
     @BindView(R.id.recycler_view) protected RecyclerView recyclerView;
     @BindView(R.id.no_device_message) protected TextView noDeviceMessage;
@@ -255,7 +254,7 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
                 }
                 Intent intent = new Intent(getContext(), AddAlarmActivity.class);
                 intent.putExtra(LIST_ID, idList);
-                startActivityForResult(intent, ADD_ALARM_CODE);
+                startActivity(intent);
             }
         }
     }

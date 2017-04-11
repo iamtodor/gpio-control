@@ -68,6 +68,7 @@ public class DeviceManagementFragment extends BaseListFragment implements OnChec
     private ExpandableDeviceManagerAdapter adapter;
     private List<Header> deviceGroupHeaderList;
     private Unbinder unbinder;
+    private Repository repository;
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.device_management_fragment, container, false);
@@ -75,39 +76,10 @@ public class DeviceManagementFragment extends BaseListFragment implements OnChec
 
         unbinder = ButterKnife.bind(this, view);
         getSupportActionBar().setTitle(getString(R.string.device_management));
+        repository = ((App) (getBaseActivity().getApplication())).getRealmRepository();
 
         setupSelectionMenuIcons(context);
-
-        mLayoutManager = new LinearLayoutManager(context);
-
-        final Parcelable eimSavedState = (savedInstanceState != null) ? savedInstanceState.getParcelable(SAVED_STATE_EXPANDABLE_ITEM_MANAGER) : null;
-        recyclerViewExpandableItemManager = new RecyclerViewExpandableItemManager(eimSavedState);
-
-        //adapter
-        Repository repository = ((App) (getBaseActivity().getApplication())).getRealmRepository();
-        deviceGroupHeaderList = Utils.getMockedHeaderList(repository);
-        adapter = new ExpandableDeviceManagerAdapter(context, deviceGroupHeaderList);
-
-        adapter.setOnCheckedGroupItemListener(this);
-        adapter.setOnCheckedDeviceItemListener(this);
-
-        // wrap for expanding
-        mWrappedAdapter = recyclerViewExpandableItemManager.createWrappedAdapter(adapter);
-
-        final GeneralItemAnimator animator = new RefactoredDefaultItemAnimator();
-
-        // Change animations are enabled by default since support-v7-recyclerview v22.
-        // Need to disable them when using animation indicator.
-        animator.setSupportsChangeAnimations(false);
-
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setAdapter(mWrappedAdapter);  // requires *wrapped* adapter
-        recyclerView.setItemAnimator(animator);
-        recyclerView.setHasFixedSize(false);
-
-        recyclerView.addItemDecoration(new SimpleListDividerDecorator(ContextCompat.getDrawable(context, R.drawable.list_divider_h), true));
-
-        recyclerViewExpandableItemManager.attachRecyclerView(recyclerView);
+        setupRecyclerView(savedInstanceState, context);
 
         return view;
     }
@@ -209,18 +181,23 @@ public class DeviceManagementFragment extends BaseListFragment implements OnChec
                                         }
                                     }
                                 }
-                                GroupHeader groupHeader = (GroupHeader) header;
                                 Group group = new Group();
                                 group.setName(newField);
                                 group.setVectorId(R.drawable.empty_group_icon);
                                 group.setPortStatus("Port status");
                                 group.setPower("Power");
+                                group.setId(repository.getIdForModel(Group.class));
+                                repository.saveModel(group);
+
                                 ViewDeviceGroup viewDeviceGroup = new ViewDeviceGroup();
                                 viewDeviceGroup.setGroup(group);
+
+                                GroupHeader groupHeader = (GroupHeader) header;
                                 groupHeader.addGroup(index, viewDeviceGroup);
                             }
+                            cancelSelection();
+                            showOrHideGroupSelectionMenu();
                         }
-                        adapter.notifyDataSetChanged();
                     }
                 });
 
@@ -248,6 +225,55 @@ public class DeviceManagementFragment extends BaseListFragment implements OnChec
         for (ImageView imageView : imageViews) {
             imageView.setImageDrawable(addGroupIcon);
         }
+    }
+
+    private void setupRecyclerView(Bundle savedInstanceState, Context context) {
+        mLayoutManager = new LinearLayoutManager(context);
+
+        final Parcelable eimSavedState = (savedInstanceState != null) ? savedInstanceState.getParcelable(SAVED_STATE_EXPANDABLE_ITEM_MANAGER) : null;
+        recyclerViewExpandableItemManager = new RecyclerViewExpandableItemManager(eimSavedState);
+
+        //adapter
+        Repository repository = ((App) (getBaseActivity().getApplication())).getRealmRepository();
+        deviceGroupHeaderList = Utils.getMockedHeaderList(repository);
+        adapter = new ExpandableDeviceManagerAdapter(context, deviceGroupHeaderList);
+
+        adapter.setOnCheckedGroupItemListener(this);
+        adapter.setOnCheckedDeviceItemListener(this);
+
+        // wrap for expanding
+        mWrappedAdapter = recyclerViewExpandableItemManager.createWrappedAdapter(adapter);
+
+        final GeneralItemAnimator animator = new RefactoredDefaultItemAnimator();
+
+        // Change animations are enabled by default since support-v7-recyclerview v22.
+        // Need to disable them when using animation indicator.
+        animator.setSupportsChangeAnimations(false);
+
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setAdapter(mWrappedAdapter);  // requires *wrapped* adapter
+        recyclerView.setItemAnimator(animator);
+        recyclerView.setHasFixedSize(false);
+
+        recyclerView.addItemDecoration(new SimpleListDividerDecorator(ContextCompat.getDrawable(context, R.drawable.list_divider_h), true));
+
+        recyclerViewExpandableItemManager.attachRecyclerView(recyclerView);
+
+        if (deviceGroupHeaderList.isEmpty()) {
+            showNoDevices();
+        } else {
+            showDevices();
+        }
+    }
+
+    private void showNoDevices() {
+        recyclerView.setVisibility(View.GONE);
+        noDeviceMessage.setVisibility(View.VISIBLE);
+    }
+
+    private void showDevices() {
+        recyclerView.setVisibility(View.VISIBLE);
+        noDeviceMessage.setVisibility(View.GONE);
     }
 
     private void showOrHideGroupSelectionMenu() {
@@ -285,13 +311,4 @@ public class DeviceManagementFragment extends BaseListFragment implements OnChec
         }
     }
 
-    private void showNoDevices() {
-        recyclerView.setVisibility(View.GONE);
-        noDeviceMessage.setVisibility(View.VISIBLE);
-    }
-
-    private void showDevices() {
-        recyclerView.setVisibility(View.VISIBLE);
-        noDeviceMessage.setVisibility(View.GONE);
-    }
 }

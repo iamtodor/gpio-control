@@ -22,7 +22,7 @@ public class RealmRepository implements Repository {
         final Realm instance = Realm.getDefaultInstance();
         instance.executeTransaction(new Realm.Transaction() {
             @Override public void execute(Realm realm) {
-                realm.copyToRealmOrUpdate(object);
+                realm.insertOrUpdate(object);
             }
         });
         instance.close();

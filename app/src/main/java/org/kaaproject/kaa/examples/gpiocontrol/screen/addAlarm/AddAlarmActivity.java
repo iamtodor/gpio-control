@@ -35,11 +35,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static org.kaaproject.kaa.examples.gpiocontrol.screen.alarmList.AlarmListActivity.GROUP_ID;
+import static org.kaaproject.kaa.examples.gpiocontrol.screen.deviceSwitchManagement.DeviceSwitchManagementFragment.LIST_ID;
 
 public class AddAlarmActivity extends BaseActivity {
 
     private static final String TIME = "Time";
-    private static final String LIST_ID = "idList";
 
     @BindView(R.id.repeat_options) protected LinearLayout repeatOptions;
     @BindView(R.id.toolbar) protected Toolbar toolbar;
