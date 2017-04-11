@@ -271,7 +271,7 @@ class ExpandableDeviceManagerAdapter
 
             singleDeviceViewHolder.selection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                    onCheckedDeviceItemListener.onDeviceChecked(isSelected, device);
+                    onCheckedDeviceItemListener.onDeviceChecked(isChecked, viewDevice);
                 }
             });
 

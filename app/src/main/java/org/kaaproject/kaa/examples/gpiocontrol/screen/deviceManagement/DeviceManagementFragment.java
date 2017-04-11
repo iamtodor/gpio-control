@@ -49,7 +49,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class DeviceManagementFragment extends BaseListFragment {
+public class DeviceManagementFragment extends BaseListFragment implements OnCheckedGroupItemListener,
+        OnCheckedDeviceItemListener {
 
     private static final String SAVED_STATE_EXPANDABLE_ITEM_MANAGER = "RecyclerViewExpandableItemManager";
 
@@ -87,37 +88,8 @@ public class DeviceManagementFragment extends BaseListFragment {
         deviceGroupHeaderList = Utils.getMockedHeaderList(repository);
         adapter = new ExpandableDeviceManagerAdapter(context, deviceGroupHeaderList);
 
-        adapter.setOnCheckedGroupItemListener(new OnCheckedGroupItemListener() {
-            @Override public void onGroupChecked(boolean isChecked, ViewDeviceGroup currentGroup) {
-                for (Header deviceGroupHeader : deviceGroupHeaderList) {
-                    if (deviceGroupHeader instanceof GroupHeader) {
-                        for (Object object : deviceGroupHeader.getChildList()) {
-                            ViewDeviceGroup viewDeviceGroup = (ViewDeviceGroup) object;
-                            if (currentGroup == viewDeviceGroup) {
-                                viewDeviceGroup.setSelected(isChecked);
-                            }
-                        }
-                    }
-                }
-                showOrHideSelectionMenu();
-            }
-        });
-
-        adapter.setOnCheckedDeviceItemListener(new OnCheckedDeviceItemListener() {
-            @Override public void onDeviceChecked(boolean isChecked, ViewDevice currentSelectedDevice) {
-                for (Header deviceGroupHeader : deviceGroupHeaderList) {
-                    if (deviceGroupHeader instanceof DeviceHeader) {
-                        for (Object object : deviceGroupHeader.getChildList()) {
-                            ViewDevice selectableDevice = (ViewDevice) object;
-                            if (currentSelectedDevice == selectableDevice) {
-                                selectableDevice.setSelected(isChecked);
-                            }
-                        }
-                    }
-                }
-                showOrHideSelectionMenu();
-            }
-        });
+        adapter.setOnCheckedGroupItemListener(this);
+        adapter.setOnCheckedDeviceItemListener(this);
 
         // wrap for expanding
         mWrappedAdapter = recyclerViewExpandableItemManager.createWrappedAdapter(adapter);
@@ -138,51 +110,6 @@ public class DeviceManagementFragment extends BaseListFragment {
         recyclerViewExpandableItemManager.attachRecyclerView(recyclerView);
 
         return view;
-    }
-
-    private void setupSelectionMenuIcons(Context context) {
-        final Drawable addGroupIcon = ContextCompat.getDrawable(context, R.drawable.add_group);
-        addGroupIcon.setColorFilter(ContextCompat.getColor(context, R.color.lightBlueActiveElement),
-                PorterDuff.Mode.SRC_ATOP);
-
-        for (ImageView imageView : imageViews) {
-            imageView.setImageDrawable(addGroupIcon);
-        }
-    }
-
-    private void showOrHideSelectionMenu() {
-        boolean isSelected = false;
-        int totalSize = 0;
-        int selectedSize = 0;
-        for (Header deviceGroupHeader : deviceGroupHeaderList) {
-            if (deviceGroupHeader instanceof GroupHeader) {
-                for (Object object : deviceGroupHeader.getChildList()) {
-                    ViewDeviceGroup viewDeviceGroup = (ViewDeviceGroup) object;
-                    if (viewDeviceGroup.isSelected()) {
-                        totalSize = deviceGroupHeader.getChildSize();
-                        selectedSize++;
-                        isSelected = true;
-                    }
-                }
-            } else if (deviceGroupHeader instanceof DeviceHeader) {
-                for (Object object : deviceGroupHeader.getChildList()) {
-                    ViewDevice viewDevice = (ViewDevice) object;
-                    if (viewDevice.isSelected()) {
-                        totalSize = deviceGroupHeader.getChildSize();
-                        selectedSize++;
-                        isSelected = true;
-                    }
-                }
-            }
-        }
-        if (isSelected) {
-            selectedCountedValue.setText("Selected " + selectedSize + "/" + totalSize);
-            selectionMenu.setVisibility(View.VISIBLE);
-            fab.setVisibility(View.GONE);
-        } else {
-            selectionMenu.setVisibility(View.GONE);
-            fab.setVisibility(View.VISIBLE);
-        }
     }
 
     @Override
@@ -217,6 +144,34 @@ public class DeviceManagementFragment extends BaseListFragment {
         mLayoutManager = null;
         unbinder.unbind();
         super.onDestroyView();
+    }
+
+    @Override public void onGroupChecked(boolean isChecked, ViewDeviceGroup currentGroup) {
+        for (Header deviceGroupHeader : deviceGroupHeaderList) {
+            if (deviceGroupHeader instanceof GroupHeader) {
+                for (Object object : deviceGroupHeader.getChildList()) {
+                    ViewDeviceGroup viewDeviceGroup = (ViewDeviceGroup) object;
+                    if (currentGroup == viewDeviceGroup) {
+                        viewDeviceGroup.setSelected(isChecked);
+                    }
+                }
+            }
+        }
+        showOrHideGroupSelectionMenu();
+    }
+
+    @Override public void onDeviceChecked(boolean isChecked, ViewDevice currentDevice) {
+        for (Header deviceGroupHeader : deviceGroupHeaderList) {
+            if (deviceGroupHeader instanceof DeviceHeader) {
+                for (Object object : deviceGroupHeader.getChildList()) {
+                    ViewDevice selectableDevice = (ViewDevice) object;
+                    if (currentDevice == selectableDevice) {
+                        selectableDevice.setSelected(isChecked);
+                    }
+                }
+            }
+        }
+        showOrHideGroupSelectionMenu();
     }
 
     @OnClick(R.id.fab)
@@ -285,6 +240,51 @@ public class DeviceManagementFragment extends BaseListFragment {
         adapter.updateAdapter(deviceGroupHeaderList);
     }
 
+    private void setupSelectionMenuIcons(Context context) {
+        final Drawable addGroupIcon = ContextCompat.getDrawable(context, R.drawable.add_group);
+        addGroupIcon.setColorFilter(ContextCompat.getColor(context, R.color.lightBlueActiveElement),
+                PorterDuff.Mode.SRC_ATOP);
+
+        for (ImageView imageView : imageViews) {
+            imageView.setImageDrawable(addGroupIcon);
+        }
+    }
+
+    private void showOrHideGroupSelectionMenu() {
+        boolean isSelected = false;
+        int totalSize = 0;
+        int selectedSize = 0;
+        for (Header deviceGroupHeader : deviceGroupHeaderList) {
+            if (deviceGroupHeader instanceof GroupHeader) {
+                for (Object object : deviceGroupHeader.getChildList()) {
+                    ViewDeviceGroup viewGroup = (ViewDeviceGroup) object;
+                    if (viewGroup.isSelected()) {
+                        totalSize = deviceGroupHeader.getChildSize();
+                        selectedSize++;
+                        isSelected = true;
+                    }
+                }
+            } else if (deviceGroupHeader instanceof DeviceHeader) {
+                for (Object object : deviceGroupHeader.getChildList()) {
+                    ViewDevice viewDevice = (ViewDevice) object;
+                    if (viewDevice.isSelected()) {
+                        totalSize = deviceGroupHeader.getChildSize();
+                        selectedSize++;
+                        isSelected = true;
+                    }
+                }
+            }
+        }
+        if (isSelected && selectedSize > 1) {
+            selectedCountedValue.setText("Selected " + selectedSize + "/" + totalSize);
+            selectionMenu.setVisibility(View.VISIBLE);
+            fab.setVisibility(View.GONE);
+        } else {
+            selectionMenu.setVisibility(View.GONE);
+            fab.setVisibility(View.VISIBLE);
+        }
+    }
+
     private void showNoDevices() {
         recyclerView.setVisibility(View.GONE);
         noDeviceMessage.setVisibility(View.VISIBLE);
@@ -294,5 +294,4 @@ public class DeviceManagementFragment extends BaseListFragment {
         recyclerView.setVisibility(View.VISIBLE);
         noDeviceMessage.setVisibility(View.GONE);
     }
-
 }
