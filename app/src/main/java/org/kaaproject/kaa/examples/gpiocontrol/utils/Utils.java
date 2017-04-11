@@ -39,7 +39,7 @@ public class Utils {
     public static List<Group> getMockedGroupList() {
         RealmList<Device> deviceList = getMockedDeviceList();
         List<Group> groupList = new ArrayList<>();
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 3; i++) {
             Group group = new Group();
             if (i % 2 == 0) {
                 group.setName("Group" + i);
@@ -105,7 +105,7 @@ public class Utils {
         List<Header> deviceGroupHeaderList = new ArrayList<>();
 
         List<Group> groupList = repository.getGroupList();
-        List<ViewDeviceGroup> viewDeviceGroupList = getViewGroupList(groupList);
+        List<ViewDeviceGroup> viewDeviceGroupList = getViewDeviceListFromGroup(groupList);
 
         List<Device> deviceList = new ArrayList<>();
         for(Group group : groupList) {
@@ -122,7 +122,7 @@ public class Utils {
         return deviceGroupHeaderList;
     }
 
-    private static List<ViewDeviceGroup> getViewGroupList(List<Group> groupList) {
+    private static List<ViewDeviceGroup> getViewDeviceListFromGroup(List<Group> groupList) {
         List<ViewDeviceGroup> viewDeviceGroupList = new ArrayList<>();
         for(Group group : groupList) {
             ViewDeviceGroup viewDeviceGroup = new ViewDeviceGroup();

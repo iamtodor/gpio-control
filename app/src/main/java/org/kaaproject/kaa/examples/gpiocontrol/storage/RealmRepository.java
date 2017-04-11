@@ -55,9 +55,15 @@ public class RealmRepository implements Repository {
     @Override
     public List<Group> getGroupList() {
         final Realm instance = Realm.getDefaultInstance();
-        List<Group> groupList = instance.copyFromRealm(instance.where(Group.class).findAll());
+//        List<Group> groupList = instance.copyFromRealm(instance.where(Group.class).findAll());
+        List<Group> groupList = instance.where(Group.class).findAll();
         instance.close();
         return groupList;
+    }
+
+    @Override public RealmList<Alarm> getAlarmListFromGroup(final long groupId) {
+        Group group = getGroupById(groupId);
+        return group.getAlarmList();
     }
 
     @Override public Group getGroupById(final long groupId) {
@@ -65,11 +71,6 @@ public class RealmRepository implements Repository {
         Group group = instance.copyFromRealm(instance.where(Group.class).equalTo("id", groupId).findFirst());
         instance.close();
         return group;
-    }
-
-    @Override public RealmList<Alarm> getAlarmListFromGroup(final long groupId) {
-        Group group = getGroupById(groupId);
-        return group.getAlarmList();
     }
 
     @Override public void addAlarmToGroupList(List<Long> groupIdList, Alarm alarm) {
