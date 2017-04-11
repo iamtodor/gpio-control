@@ -244,11 +244,12 @@ public class DeviceManagementFragment extends BaseListFragment {
                                         selectedDeviceGroupList.add(group);
                                     }
                                 }
-                                List<Group> baseDeviceGroupList = ((GroupHeader) header).getDeviceGroupList();
-                                for (Iterator<Group> it = baseDeviceGroupList.iterator(); it.hasNext(); ) {
-                                    Group baseDeviceGroup = it.next();
+                                List<ViewDeviceGroup> viewDeviceGroupList = ((GroupHeader) header).getDeviceGroupList();
+                                for (Iterator<ViewDeviceGroup> it = viewDeviceGroupList.iterator(); it.hasNext(); ) {
+                                    ViewDeviceGroup viewGroup = it.next();
+                                    Group group = viewGroup.getGroup();
                                     for (Group selectedGroup : selectedDeviceGroupList) {
-                                        if (baseDeviceGroup == selectedGroup) {
+                                        if (group == selectedGroup) {
                                             it.remove();
                                         }
                                     }
@@ -259,7 +260,9 @@ public class DeviceManagementFragment extends BaseListFragment {
                                 group.setVectorId(R.drawable.empty_group_icon);
                                 group.setPortStatus("Port status");
                                 group.setPower("Power");
-                                groupHeader.addGroup(index, group);
+                                ViewDeviceGroup viewDeviceGroup = new ViewDeviceGroup();
+                                viewDeviceGroup.setGroup(group);
+                                groupHeader.addGroup(index, viewDeviceGroup);
                             }
                         }
                         adapter.notifyDataSetChanged();
