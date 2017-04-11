@@ -60,9 +60,9 @@ public class RealmRepository implements Repository {
         return groupList;
     }
 
-    @Override public Group getGroupById(final long id) {
+    @Override public Group getGroupById(final long groupId) {
         final Realm instance = Realm.getDefaultInstance();
-        Group group = instance.copyFromRealm(instance.where(Group.class).equalTo("id", id).findFirst());
+        Group group = instance.copyFromRealm(instance.where(Group.class).equalTo("id", groupId).findFirst());
         instance.close();
         return group;
     }
@@ -177,6 +177,24 @@ public class RealmRepository implements Repository {
         instance.close();
     }
 
+    @Override public void turnOnAlarm(final long alarmId, final boolean turnOn) {
+        final Realm instance = Realm.getDefaultInstance();
+        final Alarm alarm = getAlarmById(alarmId);
+        instance.executeTransaction(new Realm.Transaction() {
+            @Override public void execute(Realm realm) {
+                alarm.setActive(turnOn);
+            }
+        });
+        instance.close();
+    }
+
+    @Override public Alarm getAlarmById(long alarmId) {
+        final Realm instance = Realm.getDefaultInstance();
+        Alarm alarm = instance.where(Alarm.class).equalTo("id", alarmId).findFirst();
+        instance.close();
+        return alarm;
+    }
+
     @Override public boolean lockDevice(long deviceId) {
         final Realm instance = Realm.getDefaultInstance();
         final Device device = getDeviceById(deviceId);
@@ -190,9 +208,9 @@ public class RealmRepository implements Repository {
         return isDeviceLocked;
     }
 
-    @Override public Device getDeviceById(long id) {
+    @Override public Device getDeviceById(long deviceId) {
         final Realm instance = Realm.getDefaultInstance();
-        Device device = instance.where(Device.class).equalTo("id", id).findFirst();
+        Device device = instance.where(Device.class).equalTo("id", deviceId).findFirst();
         instance.close();
         return device;
     }

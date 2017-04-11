@@ -112,7 +112,7 @@ public class Group extends RealmObject {
                 ", portStatus='" + portStatus + '\'' +
                 ", power='" + power + '\'' +
                 ", id=" + id +
-                ", isTurnOn=" + isTurnOn +
+                ", setAlarmTurnOn=" + isTurnOn +
                 ", groupList=" + groupList +
                 ", deviceList=" + deviceList +
                 ", alarmList=" + alarmList +

@@ -96,7 +96,7 @@ public class Device extends RealmObject {
                 "name='" + name + '\'' +
                 ", portTitle='" + portTitle + '\'' +
                 ", portId='" + portId + '\'' +
-                ", isTurnOn=" + isTurnOn +
+                ", setAlarmTurnOn=" + isTurnOn +
                 ", isLocked=" + isLocked +
                 '}';
     }

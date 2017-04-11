@@ -84,6 +84,12 @@ public class AlarmListActivity extends BaseActivity implements TurnOnAlarmListen
         }
     }
 
+    @Override public void setAlarmTurnOn(boolean isTurnOn) {
+        for (Device device : group.getDeviceList()) {
+            repository.setDeviceHasAlarm(device.getId(), isTurnOn);
+        }
+    }
+
     @OnClick(R.id.fab)
     public void onFabClick() {
         Intent intent = new Intent(AlarmListActivity.this, AddAlarmActivity.class);
@@ -98,7 +104,7 @@ public class AlarmListActivity extends BaseActivity implements TurnOnAlarmListen
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        alarmAdapter = new AlarmAdapter();
+        alarmAdapter = new AlarmAdapter(repository);
         alarmAdapter.setTurnOnAlarmListener(this);
         recyclerView.setAdapter(alarmAdapter);
 
@@ -136,12 +142,6 @@ public class AlarmListActivity extends BaseActivity implements TurnOnAlarmListen
             showNoDevices();
         } else {
             showDevices();
-        }
-    }
-
-    @Override public void isTurnOn(boolean isTurnOn) {
-        for (Device device : group.getDeviceList()) {
-            repository.setDeviceHasAlarm(device.getId(), isTurnOn);
         }
     }
 }
