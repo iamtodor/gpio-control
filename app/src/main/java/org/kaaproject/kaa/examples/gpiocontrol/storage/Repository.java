@@ -35,4 +35,5 @@ public interface Repository {
     Device getDeviceById(long id);
     void turnOnDevice(long deviceId, boolean turnOn);
     boolean lockDevice(long deviceId);
+    void setDeviceHasAlarm(long deviceId, final boolean hasAlarm);
 }

@@ -6,6 +6,7 @@ import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import org.kaaproject.kaa.examples.gpiocontrol.R;
@@ -21,11 +22,16 @@ class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolderPinGroupI
 
     private LayoutInflater inflater;
     private List<Alarm> alarmList = new ArrayList<>();
+    private TurnOnAlarmListener turnOnAlarmListener;
 
     void updateAdapter(List<Alarm> alarmList) {
         this.alarmList.clear();
         this.alarmList.addAll(alarmList);
         notifyDataSetChanged();
+    }
+
+    void setTurnOnAlarmListener(TurnOnAlarmListener turnOnAlarmListener) {
+        this.turnOnAlarmListener = turnOnAlarmListener;
     }
 
     @Override public AlarmAdapter.ViewHolderPinGroupItem onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -36,13 +42,20 @@ class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolderPinGroupI
     }
 
     @Override public void onBindViewHolder(final ViewHolderPinGroupItem holder, int position) {
-        Alarm alarm = alarmList.get(position);
+        final Alarm alarm = alarmList.get(position);
 
         holder.time.setText(alarm.getTime());
         holder.action.setText(alarm.getAction());
         holder.name.setText(alarm.getName());
         holder.iteration.setText(alarm.getIteration());
         holder.switchCompat.setChecked(alarm.isActive());
+
+        holder.switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                turnOnAlarmListener.isTurnOn(isChecked);
+                alarm.setActive(isChecked);
+            }
+        });
     }
 
     @Override public int getItemCount() {

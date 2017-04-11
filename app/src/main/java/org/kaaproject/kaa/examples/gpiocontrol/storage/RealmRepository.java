@@ -166,6 +166,17 @@ public class RealmRepository implements Repository {
         instance.close();
     }
 
+    @Override public void setDeviceHasAlarm(long deviceId, final boolean hasAlarm) {
+        final Realm instance = Realm.getDefaultInstance();
+        final Device device = getDeviceById(deviceId);
+        instance.executeTransaction(new Realm.Transaction() {
+            @Override public void execute(Realm realm) {
+                device.setHasAlarm(hasAlarm);
+            }
+        });
+        instance.close();
+    }
+
     @Override public boolean lockDevice(long deviceId) {
         final Realm instance = Realm.getDefaultInstance();
         final Device device = getDeviceById(deviceId);

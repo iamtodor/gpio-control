@@ -15,6 +15,8 @@ import android.widget.TextView;
 import org.kaaproject.kaa.examples.gpiocontrol.App;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Alarm;
+import org.kaaproject.kaa.examples.gpiocontrol.model.Device;
+import org.kaaproject.kaa.examples.gpiocontrol.model.Group;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.addAlarm.AddAlarmActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.storage.Repository;
@@ -25,7 +27,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AlarmListActivity extends BaseActivity {
+public class AlarmListActivity extends BaseActivity implements TurnOnAlarmListener {
 
     private static final int UPDATE_ADAPTER = 1111;
     public static final String GROUP_ID = "groupId";
@@ -36,8 +38,9 @@ public class AlarmListActivity extends BaseActivity {
     @BindView(R.id.fab) protected FloatingActionButton fab;
 
     private Repository repository;
-    private AlarmAdapter pinManagementAdapter;
+    private AlarmAdapter alarmAdapter;
     private long groupId;
+    private Group group;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +57,7 @@ public class AlarmListActivity extends BaseActivity {
         }
 
         groupId = (long) getIntent().getExtras().get(GROUP_ID);
+        group = repository.getGroupById(groupId);
 
         setupRecyclerView();
     }
@@ -64,7 +68,7 @@ public class AlarmListActivity extends BaseActivity {
             if (requestCode == UPDATE_ADAPTER) {
                 List<Alarm> alarmList = repository.getAlarmListFromGroup(groupId);
                 hideShowRecyclerView(alarmList);
-                pinManagementAdapter.updateAdapter(alarmList);
+                alarmAdapter.updateAdapter(alarmList);
             }
         }
     }
@@ -94,8 +98,9 @@ public class AlarmListActivity extends BaseActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        pinManagementAdapter = new AlarmAdapter();
-        recyclerView.setAdapter(pinManagementAdapter);
+        alarmAdapter = new AlarmAdapter();
+        alarmAdapter.setTurnOnAlarmListener(this);
+        recyclerView.setAdapter(alarmAdapter);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
@@ -111,7 +116,7 @@ public class AlarmListActivity extends BaseActivity {
         });
 
         List<Alarm> alarmList = repository.getAlarmListFromGroup(groupId);
-        pinManagementAdapter.updateAdapter(alarmList);
+        alarmAdapter.updateAdapter(alarmList);
 
         hideShowRecyclerView(alarmList);
     }
@@ -134,4 +139,9 @@ public class AlarmListActivity extends BaseActivity {
         }
     }
 
+    @Override public void isTurnOn(boolean isTurnOn) {
+        for (Device device : group.getDeviceList()) {
+            repository.setDeviceHasAlarm(device.getId(), isTurnOn);
+        }
+    }
 }
