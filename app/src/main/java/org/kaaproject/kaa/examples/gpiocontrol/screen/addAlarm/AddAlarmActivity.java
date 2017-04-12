@@ -68,10 +68,10 @@ public class AddAlarmActivity extends BaseActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        if(getIntent().getExtras() != null) {
-            if( getIntent().getExtras().get(LIST_ID) != null) {
+        if (getIntent().getExtras() != null) {
+            if (getIntent().getExtras().get(LIST_ID) != null) {
                 groupIdList = (ArrayList<Long>) getIntent().getExtras().get(LIST_ID);
-            } else if(getIntent().getExtras().get(GROUP_ID) != null) {
+            } else if (getIntent().getExtras().get(GROUP_ID) != null) {
                 groupId = (long) getIntent().getExtras().get(GROUP_ID);
             }
         }
@@ -81,11 +81,26 @@ public class AddAlarmActivity extends BaseActivity {
                 if (isChecked) {
                     repeatOptions.setVisibility(View.VISIBLE);
                 } else {
+                    for (CheckBox weekDay : weekDays) {
+                        weekDay.setChecked(false);
+                    }
                     alarmDays.clear();
                     repeatOptions.setVisibility(View.GONE);
                 }
             }
         });
+
+        for (final CheckBox weekDay : weekDays) {
+            weekDay.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        alarmDays.add(weekDay.getTag().toString());
+                    } else {
+                        alarmDays.remove(weekDay.getTag().toString());
+                    }
+                }
+            });
+        }
     }
 
     @Override
@@ -108,21 +123,12 @@ public class AddAlarmActivity extends BaseActivity {
         }, 0, 0, true);
 
         timePickerDialog.show();
-
     }
 
     @OnClick(R.id.add)
     public void addAlarmOnClick() {
         if (!isInfoValid()) {
             return;
-        }
-
-        if (repeat.isChecked()) {
-            for (CheckBox day : weekDays) {
-                if (day.isChecked()) {
-                    alarmDays.add(day.getTag().toString());
-                }
-            }
         }
 
         Repository repository = ((App) (getApplication())).getRealmRepository();
@@ -140,10 +146,9 @@ public class AddAlarmActivity extends BaseActivity {
         alarm.setActive(true);
         alarm.setId(repository.getIdForModel(Alarm.class));
 
-        if(groupIdList != null) {
+        if (groupIdList != null) {
             repository.addAlarmToGroupList(groupIdList, alarm);
-        }
-        else if(groupId != -1) {
+        } else if (groupId != -1) {
             repository.addAlarmToGroup(groupId, alarm);
         }
 
