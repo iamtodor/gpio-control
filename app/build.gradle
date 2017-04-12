@@ -4,6 +4,7 @@ apply plugin: 'realm-android'
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
+    useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "org.kaaproject.kaa.examples.gpiocontrol"
         minSdkVersion 15
@@ -48,6 +49,5 @@ dependencies {
     compile('com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.10.5@aar') {
         transitive = true
     }
-    compile files('libs/kaa-android-ep-sdk.jar')
 }
 apply plugin: 'com.google.gms.google-services'

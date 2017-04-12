@@ -7,14 +7,16 @@ import android.util.Log;
 import org.kaaproject.kaa.client.AndroidKaaPlatformContext;
 import org.kaaproject.kaa.client.Kaa;
 import org.kaaproject.kaa.client.KaaClient;
+import org.kaaproject.kaa.client.KaaClientStateListener;
 import org.kaaproject.kaa.client.event.registration.UserAttachCallback;
+import org.kaaproject.kaa.client.exceptions.KaaException;
 import org.kaaproject.kaa.common.endpoint.gen.SyncResponseResultType;
 import org.kaaproject.kaa.common.endpoint.gen.UserAttachResponse;
 
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 
-public class KaaManager {
+public class KaaManager implements KaaClientStateListener {
 
     private static final String TAG = KaaManager.class.getSimpleName();
     private KaaClient kaaClient;
@@ -31,7 +33,7 @@ public class KaaManager {
     }
 
     private KaaManager initKaaClient(Context context) throws IOException {
-        kaaClient = Kaa.newClient(new AndroidKaaPlatformContext(context));
+        kaaClient = Kaa.newClient(new AndroidKaaPlatformContext(context), this, false);
 
         kaaClient.start();
         return this;
@@ -82,4 +84,35 @@ public class KaaManager {
         remoteControlECF.sendEventToAll(event);
     }
 
+    @Override public void onStarted() {
+
+    }
+
+    @Override public void onStartFailure(KaaException e) {
+
+    }
+
+    @Override public void onPaused() {
+
+    }
+
+    @Override public void onPauseFailure(KaaException e) {
+
+    }
+
+    @Override public void onResume() {
+
+    }
+
+    @Override public void onResumeFailure(KaaException e) {
+
+    }
+
+    @Override public void onStopped() {
+
+    }
+
+    @Override public void onStopFailure(KaaException e) {
+
+    }
 }
