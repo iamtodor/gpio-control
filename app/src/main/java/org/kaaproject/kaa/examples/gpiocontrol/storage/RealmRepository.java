@@ -56,7 +56,6 @@ public class RealmRepository implements Repository {
     public List<Group> getGroupList() {
         final Realm instance = Realm.getDefaultInstance();
         List<Group> groupList = instance.copyFromRealm(instance.where(Group.class).findAll());
-//        List<Group> groupList = instance.where(Group.class).findAll();
         instance.close();
         return groupList;
     }

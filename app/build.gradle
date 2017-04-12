@@ -45,7 +45,7 @@ dependencies {
 
     compile "com.squareup.picasso:picasso:$picassoVersion"
 
-    compile('com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.10.4@aar') {
+    compile('com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.10.5@aar') {
         transitive = true
     }
     compile files('libs/kaa-android-ep-sdk.jar')
