@@ -180,6 +180,10 @@ public class DeviceManagementFragment extends BaseListFragment implements OnChec
                                 group.setId(repository.getIdForModel(Group.class));
                                 group.setGroupList(selectedDeviceGroupList);
 
+                                for (Group groupToRemove : selectedDeviceGroupList) {
+                                    repository.removeGroup(groupToRemove.getId());
+                                }
+
                                 List<ViewDeviceGroup> viewDeviceGroupList = ((GroupHeader) header).getDeviceGroupList();
                                 for (Iterator<ViewDeviceGroup> it = viewDeviceGroupList.iterator(); it.hasNext(); ) {
                                     ViewDeviceGroup viewGroup = it.next();

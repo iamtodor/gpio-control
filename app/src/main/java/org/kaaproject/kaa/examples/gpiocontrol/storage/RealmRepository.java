@@ -12,6 +12,7 @@ import java.util.List;
 import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmObject;
+import io.realm.RealmResults;
 
 public class RealmRepository implements Repository {
 
@@ -72,12 +73,19 @@ public class RealmRepository implements Repository {
         return group;
     }
 
-    @Override public void removeGroup(long groupId) {
-        // TODO: 4/11/17 implement remove group
+    @Override public void removeGroupList(List<Long> groupIdList) {
+        for (Long groupId : groupIdList)
+            removeGroup(groupId);
     }
 
-    @Override public void removeGroupList(List<Long> groupIdList) {
-        // TODO: 4/11/17 implement remove group list
+    @Override public void removeGroup(final long groupId) {
+        final Realm instance = Realm.getDefaultInstance();
+        instance.executeTransaction(new Realm.Transaction() {
+            @Override public void execute(Realm realm) {
+                RealmResults<Group> rows = realm.where(Group.class).equalTo("id", groupId).findAll();
+                rows.deleteAllFromRealm();
+            }
+        });
     }
 
     @Override public void addAlarmToGroupList(List<Long> groupIdList, Alarm alarm) {
