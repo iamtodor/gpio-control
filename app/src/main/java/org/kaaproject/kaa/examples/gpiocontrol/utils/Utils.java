@@ -39,7 +39,7 @@ public class Utils {
     public static List<Group> getMockedGroupList() {
         RealmList<Device> deviceList = getMockedDeviceList();
         List<Group> groupList = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 1; i++) {
             Group group = new Group();
             if (i % 2 == 0) {
                 group.setName("Group" + i);
@@ -63,7 +63,7 @@ public class Utils {
 
     private static RealmList<Device> getMockedDeviceList() {
         RealmList<Device> deviceList = new RealmList<>();
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 100; i++) {
             Device device = new Device();
             if (i % 2 == 0) {
                 device.setName("Device " + i);

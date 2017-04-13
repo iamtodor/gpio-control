@@ -257,13 +257,13 @@ class ExpandableSwitchManagementAdapter
 
             singleDeviceViewHolder.lock.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
-                    // TODO: 3/30/17 lock logic
                     ChangeFieldDialog dialog = DialogFactory.getChangeFieldDialog("Input confirmation password",
                             "Input confirmation password", null, context.getString(R.string.input_password), context.getString(R.string.submit), new ChangeFieldListener() {
                                 @Override public void onChanged(String confirmationPassword) {
                                     if (confirmationPassword.equals(PreferencesImpl.getInstance().getPassword())) {
                                         NetworkManager.toggleLock(device.getId(), confirmationPassword);
                                         boolean isLocked = repository.lockDevice(device.getId());
+                                        device.setLocked(isLocked);
                                         setLockIcon(singleDeviceViewHolder.lock, isLocked);
                                     } else {
                                         DialogFactory.getConfirmationDialog(context, "Passwords aren't equal", context.getString(R.string.ok), null).show();
