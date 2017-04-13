@@ -23,9 +23,9 @@ import static org.codehaus.jackson.map.DeserializationConfig.Feature.FAIL_ON_UNK
 
 public class NetworkManager {
 
+    private static final String HTTP = "http://";
     private static final String HOST = "10.2.2.85";
     private static final String PORT = "8080";
-    private static final String HTTP = "http://";
     private static final String KAA_ADMIN_REST_API = "/kaaAdmin/rest/api/";
     private static final String UPDATE_SP_URL = HTTP + HOST + ":" + PORT + KAA_ADMIN_REST_API + "updateServerProfile";
     private static final String GET_SP_URL = HTTP + HOST + ":" + PORT + KAA_ADMIN_REST_API + "endpointProfileBody";
@@ -71,13 +71,13 @@ public class NetworkManager {
     private static void lockDevice(LockEntry lock, GPIOSlaveSettings currentProfile) throws IOException {
         currentProfile.getLockSettings().add(lock);
         updateSettings(currentProfile);
-        Log.d(TAG, "The lock for id= "+ lock.getId() + " has been set.");
+        Log.d(TAG, "The lock for id= " + lock.getId() + " has been set.");
     }
 
     private static void unlockDevice(LockEntry lock, GPIOSlaveSettings currentProfile) throws IOException {
         currentProfile.getLockSettings().remove(lock);
         updateSettings(currentProfile);
-        System.out.println(String.format("The lock for id=[%s] has been removed.", lock.getId()));
+        Log.d(TAG, "The lock for id= " + lock.getId() + " has been removed.");
     }
 
     private static void updateSettings(GPIOSlaveSettings settings) throws IOException {
@@ -88,7 +88,7 @@ public class NetworkManager {
         List<NameValuePair> urlParameters = new ArrayList<>();
         urlParameters.add(new BasicNameValuePair("endpointProfileKey", EP_KEY_HASH));
         urlParameters.add(new BasicNameValuePair("version", "1"));
-        urlParameters.add(new BasicNameValuePair("serverProfileBody", settings.toString()));
+        urlParameters.add(new BasicNameValuePair("serverProfileBody", MAPPER.writeValueAsString(settings)));
 
         post.setEntity(new UrlEncodedFormEntity(urlParameters));
 
@@ -110,8 +110,8 @@ public class NetworkManager {
         String jsonResp = IOUtils.toString(response.getEntity().getContent());
         String jsonRead1 = jsonResp.replaceAll("\\\\", "");
         String jsonRead2 = jsonRead1.replaceAll("\"\\{", "{");
-        String res = jsonRead2.replace("LockSettings", "lockSettings");
-        Log.d(TAG, "getServerSideProfile: "+res);
+        String jsonRead3 = jsonRead2.replaceAll("\\}\"", "}");
+        String res = jsonRead3.replace("LockSettings", "lockSettings");
 
         return MAPPER.readValue(res, EndpointProfileBody.class).getServerSideProfile();
     }

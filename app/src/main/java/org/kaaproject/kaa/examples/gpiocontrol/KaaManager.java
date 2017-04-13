@@ -33,7 +33,7 @@ public class KaaManager implements KaaClientStateListener {
     }
 
     private KaaManager initKaaClient(Context context) throws IOException {
-        kaaClient = Kaa.newClient(new AndroidKaaPlatformContext(context), this, false);
+        kaaClient = Kaa.newClient(new AndroidKaaPlatformContext(context), this, true);
 
         kaaClient.start();
         return this;
