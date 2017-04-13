@@ -20,6 +20,7 @@ import com.h6ah4i.android.widget.advrecyclerview.expandable.ExpandableItemConsta
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
 
+import org.kaaproject.kaa.examples.gpiocontrol.NetworkManager;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Device;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Group;
@@ -30,8 +31,12 @@ import org.kaaproject.kaa.examples.gpiocontrol.model.ViewDeviceGroup;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.alarmList.AlarmListActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.deviceManagement.OnCheckedDeviceItemListener;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.deviceManagement.OnCheckedGroupItemListener;
+import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChangeFieldDialog;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.main.MainActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.storage.Repository;
+import org.kaaproject.kaa.examples.gpiocontrol.utils.ChangeFieldListener;
+import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
+import org.kaaproject.kaa.examples.gpiocontrol.utils.PreferencesImpl;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.Utils;
 
 import java.util.ArrayList;
@@ -253,8 +258,19 @@ class ExpandableSwitchManagementAdapter
             singleDeviceViewHolder.lock.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
                     // TODO: 3/30/17 lock logic
-                    boolean isLocked = repository.lockDevice(device.getId());
-                    setLockIcon(singleDeviceViewHolder.lock, isLocked);
+                    ChangeFieldDialog dialog = DialogFactory.getChangeFieldDialog("Input confirmation password",
+                            "Input confirmation password", null, context.getString(R.string.input_password), context.getString(R.string.submit), new ChangeFieldListener() {
+                                @Override public void onChanged(String confirmationPassword) {
+                                    if (confirmationPassword.equals(PreferencesImpl.getInstance().getPassword())) {
+                                        NetworkManager.toggleLock(device.getId(), confirmationPassword);
+                                        boolean isLocked = repository.lockDevice(device.getId());
+                                        setLockIcon(singleDeviceViewHolder.lock, isLocked);
+                                    } else {
+                                        DialogFactory.getConfirmationDialog(context, "Passwords aren't equal", context.getString(R.string.ok), null).show();
+                                    }
+                                }
+                            });
+                    dialog.show(context.getSupportFragmentManager());
                 }
             });
         }

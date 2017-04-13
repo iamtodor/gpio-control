@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import org.kaaproject.kaa.examples.gpiocontrol.App;
-import org.kaaproject.kaa.examples.gpiocontrol.NetworkManager;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Group;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseActivity;
@@ -54,8 +53,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        NetworkManager.toggleLock(15, "pass");
         defineApplicationFlow();
+
+        if(TextUtils.isEmpty(PreferencesImpl.getInstance().getPassword())) {
+            String dialogTitle = getString(R.string.create_password_title);
+            String dialogMessage = getString(R.string.create_password_message);
+            showCreatePasswordDialog(dialogTitle, dialogMessage);
+        }
     }
 
     private void defineApplicationFlow() {
@@ -121,6 +125,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             dialogMessage = getString(R.string.change_password_message) + currentPassword;
         }
 
+        showCreatePasswordDialog(dialogTitle, dialogMessage);
+    }
+
+    private void showCreatePasswordDialog(String dialogTitle, String dialogMessage) {
         ChangeFieldDialog dialog = DialogFactory.getChangeFieldDialog(dialogTitle,
                 dialogMessage, null, getString(R.string.input_password), getString(R.string.submit), new ChangeFieldListener() {
                     @Override public void onChanged(String newField) {
