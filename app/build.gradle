@@ -4,7 +4,6 @@ apply plugin: 'realm-android'
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
-    useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "org.kaaproject.kaa.examples.gpiocontrol"
         minSdkVersion 15
@@ -26,6 +25,7 @@ ext {
     butterKnifeVersion = '8.5.1'
     playServicesVersion = '10.2.1'
     picassoVersion = '2.5.2'
+    okHttpVersion='3.6.0'
 }
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -45,6 +45,7 @@ dependencies {
     annotationProcessor "com.jakewharton:butterknife-compiler:$butterKnifeVersion"
 
     compile "com.squareup.picasso:picasso:$picassoVersion"
+    compile "com.squareup.okhttp3:okhttp:$okHttpVersion"
 
     compile('com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.10.5@aar') {
         transitive = true

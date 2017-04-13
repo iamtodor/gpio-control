@@ -2,22 +2,18 @@ package org.kaaproject.kaa.examples.gpiocontrol;
 
 import android.util.Log;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.kaaproject.kaa.examples.gpiocontrol.Network.GPIOSlaveSettings;
 import org.kaaproject.kaa.examples.gpiocontrol.Network.LockEntry;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+
+import okhttp3.HttpUrl;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 import static org.codehaus.jackson.map.DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES;
 
@@ -30,9 +26,11 @@ public class NetworkManager {
     private static final String UPDATE_SP_URL = HTTP + HOST + ":" + PORT + KAA_ADMIN_REST_API + "updateServerProfile";
     private static final String GET_SP_URL = HTTP + HOST + ":" + PORT + KAA_ADMIN_REST_API + "endpointProfileBody";
     private static final String EP_KEY_HASH = "p3J6sYU0EAl9G9rdNpTD6MjBesY=";
+    private static final ObjectMapper MAPPER = new ObjectMapper().configure(FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-    private final static ObjectMapper MAPPER = new ObjectMapper().configure(FAIL_ON_UNKNOWN_PROPERTIES, false);
     private static final String TAG = NetworkManager.class.getSimpleName();
+    private static final OkHttpClient OK_HTTP_CLIENT = new OkHttpClient();
+    private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     public static void toggleLock(final long id, final String password) {
         Thread thread = new Thread(new Runnable() {
@@ -81,39 +79,49 @@ public class NetworkManager {
     }
 
     private static void updateSettings(GPIOSlaveSettings settings) throws IOException {
-        HttpClient client = new DefaultHttpClient();
-        HttpPost post = new HttpPost(UPDATE_SP_URL);
-        post.setHeader("Authorization", "Basic ZGV2dXNlcjpkZXZ1c2VyMTIz");
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(UPDATE_SP_URL).newBuilder();
 
-        List<NameValuePair> urlParameters = new ArrayList<>();
-        urlParameters.add(new BasicNameValuePair("endpointProfileKey", EP_KEY_HASH));
-        urlParameters.add(new BasicNameValuePair("version", "1"));
-        urlParameters.add(new BasicNameValuePair("serverProfileBody", MAPPER.writeValueAsString(settings)));
+        urlBuilder.addQueryParameter("endpointProfileKey", EP_KEY_HASH);
+        urlBuilder.addQueryParameter("version", "1");
+        urlBuilder.addQueryParameter("serverProfileBody", MAPPER.writeValueAsString(settings));
 
-        post.setEntity(new UrlEncodedFormEntity(urlParameters));
+        String url = urlBuilder.build().toString();
+        RequestBody body = RequestBody.create(JSON, MAPPER.writeValueAsString(settings));
 
-        HttpResponse response = client.execute(post);
+        Request request = new Request.Builder()
+                .addHeader("Authorization", "Basic ZGV2dXNlcjpkZXZ1c2VyMTIz")
+                .url(url)
+                .post(body)
+                .build();
+
+        Response response = OK_HTTP_CLIENT.newCall(request).execute();
+
         Log.d(TAG, "\nSending 'POST' request to URL : " + UPDATE_SP_URL);
-        Log.d(TAG, "Post parameters : " + post.getEntity());
-        Log.d(TAG, "Response Code : " + response.getStatusLine().getStatusCode());
+        Log.d(TAG, "Post parameters : " + body);
+        Log.d(TAG, "Response Code : " + response.code());
     }
 
     private static GPIOSlaveSettings getServerSideProfile() throws IOException {
-        HttpClient client = new DefaultHttpClient();
         String uri = GET_SP_URL + "/" + EP_KEY_HASH;
-        HttpGet httpGet = new HttpGet(uri);
-        httpGet.setHeader("Authorization", "Basic ZGV2dXNlcjpkZXZ1c2VyMTIz");
-        HttpResponse response = client.execute(httpGet);
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(uri).newBuilder();
 
-        Log.d(TAG, "Response Code : " + response.getStatusLine().getStatusCode());
+        String url = urlBuilder.build().toString();
 
-        String jsonResp = IOUtils.toString(response.getEntity().getContent());
+        Request request = new Request.Builder()
+                .addHeader("Authorization", "Basic ZGV2dXNlcjpkZXZ1c2VyMTIz")
+                .url(url)
+                .build();
+
+        Response response = OK_HTTP_CLIENT.newCall(request).execute();
+
+        Log.d(TAG, "Response Code : " + response.code());
+
+        String jsonResp = response.body().string();
         String jsonRead1 = jsonResp.replaceAll("\\\\", "");
         String jsonRead2 = jsonRead1.replaceAll("\"\\{", "{");
         String jsonRead3 = jsonRead2.replaceAll("\\}\"", "}");
-        String res = jsonRead3.replace("LockSettings", "lockSettings");
 
-        return MAPPER.readValue(res, EndpointProfileBody.class).getServerSideProfile();
+        return MAPPER.readValue(jsonRead3, EndpointProfileBody.class).getServerSideProfile();
     }
 
 }

@@ -1,11 +1,14 @@
 package org.kaaproject.kaa.examples.gpiocontrol.Network;
 
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class GPIOSlaveSettings {
 
+    @JsonProperty("LockSettings")
     private List<LockEntry> LockSettings = new ArrayList<>();
 
     public GPIOSlaveSettings() {
