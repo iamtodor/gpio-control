@@ -8,6 +8,8 @@ import org.kaaproject.kaa.examples.gpiocontrol.Network.LockEntry;
 
 import java.io.IOException;
 
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -39,28 +41,43 @@ public class NetworkManager {
     private static final String TOKEN = "Basic ZGV2dXNlcjpkZXZ1c2VyMTIz";
 
     public static void toggleLock(final long id, final String password) {
-        Thread thread = new Thread(new Runnable() {
-            @Override public void run() {
-                GPIOSlaveSettings currentProfile;
-                try {
-                    currentProfile = getServerSideProfile();
-                    LockEntry existingLock = findExistingLock(id, currentProfile);
+        String uri = GET_SP_URL + "/" + EP_KEY_HASH;
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(uri).newBuilder();
 
-                    if (null != existingLock) {
+        String url = urlBuilder.build().toString();
 
-                        if (!existingLock.getLockPassword().equals(password)) {
-                            throw new IllegalArgumentException(String.format("The entered password for the lock with id=[%s] is wrong.", id));
-                        }
-                        unlockDevice(existingLock, currentProfile);
-                    } else {
-                        lockDevice(new LockEntry(id, password), currentProfile);
+        Request request = new Request.Builder()
+                .addHeader(AUTHORIZATION, TOKEN)
+                .url(url)
+                .build();
+
+        OK_HTTP_CLIENT.newCall(request).enqueue(new Callback() {
+            @Override public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override public void onResponse(Call call, Response response) throws IOException {
+                Log.d(TAG, "Response Code : " + response.code());
+
+                String jsonResp = response.body().string();
+                String jsonRead1 = jsonResp.replaceAll("\\\\", "");
+                String jsonRead2 = jsonRead1.replaceAll("\"\\{", "{");
+                String jsonRead3 = jsonRead2.replaceAll("\\}\"", "}");
+
+                GPIOSlaveSettings settings = MAPPER.readValue(jsonRead3, EndpointProfileBody.class).getServerSideProfile();
+
+                LockEntry existingLock = findExistingLock(id, settings);
+
+                if (null != existingLock) {
+                    if (!existingLock.getLockPassword().equals(password)) {
+                        throw new IllegalArgumentException(String.format("The entered password for the lock with id=[%s] is wrong.", id));
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    unlockDevice(existingLock, settings);
+                } else {
+                    lockDevice(new LockEntry(id, password), settings);
                 }
             }
         });
-        thread.start();
     }
 
     private static LockEntry findExistingLock(final long id, GPIOSlaveSettings currentProfile) {
@@ -72,16 +89,16 @@ public class NetworkManager {
         return null;
     }
 
-    private static void lockDevice(LockEntry lock, GPIOSlaveSettings currentProfile) throws IOException {
-        currentProfile.getLockSettings().add(lock);
-        updateSettings(currentProfile);
-        Log.d(TAG, "The lock for id= " + lock.getId() + " has been set.");
-    }
-
     private static void unlockDevice(LockEntry lock, GPIOSlaveSettings currentProfile) throws IOException {
         currentProfile.getLockSettings().remove(lock);
         updateSettings(currentProfile);
         Log.d(TAG, "The lock for id= " + lock.getId() + " has been removed.");
+    }
+
+    private static void lockDevice(LockEntry lock, GPIOSlaveSettings currentProfile) throws IOException {
+        currentProfile.getLockSettings().add(lock);
+        updateSettings(currentProfile);
+        Log.d(TAG, "The lock for id= " + lock.getId() + " has been set.");
     }
 
     private static void updateSettings(GPIOSlaveSettings settings) throws IOException {
@@ -100,34 +117,17 @@ public class NetworkManager {
                 .post(body)
                 .build();
 
-        Response response = OK_HTTP_CLIENT.newCall(request).execute();
+        OK_HTTP_CLIENT.newCall(request).enqueue(new Callback() {
+            @Override public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
 
-        Log.d(TAG, "\nSending 'POST' request to URL : " + UPDATE_SP_URL);
-        Log.d(TAG, "Post parameters : " + body);
-        Log.d(TAG, "Response Code : " + response.code());
-    }
-
-    private static GPIOSlaveSettings getServerSideProfile() throws IOException {
-        String uri = GET_SP_URL + "/" + EP_KEY_HASH;
-        HttpUrl.Builder urlBuilder = HttpUrl.parse(uri).newBuilder();
-
-        String url = urlBuilder.build().toString();
-
-        Request request = new Request.Builder()
-                .addHeader(AUTHORIZATION, TOKEN)
-                .url(url)
-                .build();
-
-        Response response = OK_HTTP_CLIENT.newCall(request).execute();
-
-        Log.d(TAG, "Response Code : " + response.code());
-
-        String jsonResp = response.body().string();
-        String jsonRead1 = jsonResp.replaceAll("\\\\", "");
-        String jsonRead2 = jsonRead1.replaceAll("\"\\{", "{");
-        String jsonRead3 = jsonRead2.replaceAll("\\}\"", "}");
-
-        return MAPPER.readValue(jsonRead3, EndpointProfileBody.class).getServerSideProfile();
+            @Override public void onResponse(Call call, Response response) throws IOException {
+                Log.d(TAG, "\nSending 'POST' request to URL : " + UPDATE_SP_URL);
+                Log.d(TAG, "Post parameters : " + response.body());
+                Log.d(TAG, "Response Code : " + response.code());
+            }
+        });
     }
 
 }
