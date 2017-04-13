@@ -32,6 +32,12 @@ public class NetworkManager {
     private static final OkHttpClient OK_HTTP_CLIENT = new OkHttpClient();
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
+    private static final String ENDPOINT_PROFILE_KEY = "endpointProfileKey";
+    private static final String VERSION = "version";
+    private static final String SERVER_PROFILE_BODY = "serverProfileBody";
+    private static final String AUTHORIZATION = "Authorization";
+    private static final String TOKEN = "Basic ZGV2dXNlcjpkZXZ1c2VyMTIz";
+
     public static void toggleLock(final long id, final String password) {
         Thread thread = new Thread(new Runnable() {
             @Override public void run() {
@@ -81,15 +87,15 @@ public class NetworkManager {
     private static void updateSettings(GPIOSlaveSettings settings) throws IOException {
         HttpUrl.Builder urlBuilder = HttpUrl.parse(UPDATE_SP_URL).newBuilder();
 
-        urlBuilder.addQueryParameter("endpointProfileKey", EP_KEY_HASH);
-        urlBuilder.addQueryParameter("version", "1");
-        urlBuilder.addQueryParameter("serverProfileBody", MAPPER.writeValueAsString(settings));
+        urlBuilder.addQueryParameter(ENDPOINT_PROFILE_KEY, EP_KEY_HASH);
+        urlBuilder.addQueryParameter(VERSION, "1");
+        urlBuilder.addQueryParameter(SERVER_PROFILE_BODY, MAPPER.writeValueAsString(settings));
 
         String url = urlBuilder.build().toString();
         RequestBody body = RequestBody.create(JSON, MAPPER.writeValueAsString(settings));
 
         Request request = new Request.Builder()
-                .addHeader("Authorization", "Basic ZGV2dXNlcjpkZXZ1c2VyMTIz")
+                .addHeader(AUTHORIZATION, TOKEN)
                 .url(url)
                 .post(body)
                 .build();
@@ -108,7 +114,7 @@ public class NetworkManager {
         String url = urlBuilder.build().toString();
 
         Request request = new Request.Builder()
-                .addHeader("Authorization", "Basic ZGV2dXNlcjpkZXZ1c2VyMTIz")
+                .addHeader(AUTHORIZATION, TOKEN)
                 .url(url)
                 .build();
 
