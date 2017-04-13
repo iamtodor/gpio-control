@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import org.kaaproject.kaa.examples.gpiocontrol.App;
+import org.kaaproject.kaa.examples.gpiocontrol.NetworkManager;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Group;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseActivity;
@@ -53,7 +54,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
+        NetworkManager.toggleLock(15, "pass");
         defineApplicationFlow();
     }
 

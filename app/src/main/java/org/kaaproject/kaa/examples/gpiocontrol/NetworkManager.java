@@ -39,7 +39,6 @@ public class NetworkManager {
             @Override public void run() {
                 GPIOSlaveSettings currentProfile;
                 try {
-                    Log.d(TAG, "run: before getting SSP");
                     currentProfile = getServerSideProfile();
                     LockEntry existingLock = findExistingLock(id, currentProfile);
 
@@ -48,10 +47,8 @@ public class NetworkManager {
                         if (!existingLock.getLockPassword().equals(password)) {
                             throw new IllegalArgumentException(String.format("The entered password for the lock with id=[%s] is wrong.", id));
                         }
-                        Log.d(TAG, "in unlock device");
                         unlockDevice(existingLock, currentProfile);
                     } else {
-                        Log.d(TAG, "in lock device");
                         lockDevice(new LockEntry(id, password), currentProfile);
                     }
                 } catch (IOException e) {
@@ -114,6 +111,7 @@ public class NetworkManager {
         String jsonRead1 = jsonResp.replaceAll("\\\\", "");
         String jsonRead2 = jsonRead1.replaceAll("\"\\{", "{");
         String res = jsonRead2.replace("LockSettings", "lockSettings");
+        Log.d(TAG, "getServerSideProfile: "+res);
 
         return MAPPER.readValue(res, EndpointProfileBody.class).getServerSideProfile();
     }
