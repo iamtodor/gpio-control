@@ -35,8 +35,6 @@ public interface Repository {
     long getIdForModel(Class<? extends RealmObject> clazz);
 
     Device getDeviceById(long deviceId);
-    void turnOnDevice(long deviceId, boolean turnOn);
-    boolean lockDevice(long deviceId);
     void setDeviceHasAlarm(long deviceId, final boolean hasAlarm);
 
     void turnOnAlarm(long alarmId, boolean turnOn);

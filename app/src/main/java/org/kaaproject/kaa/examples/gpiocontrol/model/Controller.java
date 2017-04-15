@@ -3,6 +3,7 @@ package org.kaaproject.kaa.examples.gpiocontrol.model;
 
 import android.support.annotation.Nullable;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -15,6 +16,7 @@ public class Controller extends RealmObject{
     private boolean isActive;
     @PrimaryKey
     private long id;
+    private RealmList<Device> deviceList;
 
     public String getControllerId() {
         return controllerId;
@@ -62,6 +64,14 @@ public class Controller extends RealmObject{
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public RealmList<Device> getDeviceList() {
+        return deviceList;
+    }
+
+    public void setDeviceList(RealmList<Device> deviceList) {
+        this.deviceList = deviceList;
     }
 
     @Override public String toString() {

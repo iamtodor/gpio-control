@@ -171,17 +171,6 @@ public class RealmRepository implements Repository {
         return nextId;
     }
 
-    @Override public void turnOnDevice(long deviceId, final boolean turnOn) {
-        final Realm instance = Realm.getDefaultInstance();
-        final Device device = getDeviceById(deviceId);
-        instance.executeTransaction(new Realm.Transaction() {
-            @Override public void execute(Realm realm) {
-                device.setTurnOn(turnOn);
-            }
-        });
-        instance.close();
-    }
-
     @Override public void setDeviceHasAlarm(long deviceId, final boolean hasAlarm) {
         final Realm instance = Realm.getDefaultInstance();
         final Device device = getDeviceById(deviceId);
@@ -209,19 +198,6 @@ public class RealmRepository implements Repository {
         Alarm alarm = instance.where(Alarm.class).equalTo("id", alarmId).findFirst();
         instance.close();
         return alarm;
-    }
-
-    @Override public boolean lockDevice(long deviceId) {
-        final Realm instance = Realm.getDefaultInstance();
-        final Device device = getDeviceById(deviceId);
-        instance.executeTransaction(new Realm.Transaction() {
-            @Override public void execute(Realm realm) {
-                device.setLocked(!device.isLocked());
-            }
-        });
-        boolean isDeviceLocked = device.isLocked();
-        instance.close();
-        return isDeviceLocked;
     }
 
     @Override public Device getDeviceById(long deviceId) {

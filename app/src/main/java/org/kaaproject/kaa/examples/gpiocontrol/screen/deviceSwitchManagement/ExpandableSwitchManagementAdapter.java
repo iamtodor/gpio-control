@@ -20,7 +20,10 @@ import com.h6ah4i.android.widget.advrecyclerview.expandable.ExpandableItemConsta
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
 
-import org.kaaproject.kaa.examples.gpiocontrol.NetworkManager;
+import org.kaaproject.kaa.examples.gpiocontrol.GpioStatus;
+import org.kaaproject.kaa.examples.gpiocontrol.GpioToggleRequest;
+import org.kaaproject.kaa.examples.gpiocontrol.KaaManager;
+import org.kaaproject.kaa.examples.gpiocontrol.network.ServerManager;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Device;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Group;
@@ -57,14 +60,16 @@ class ExpandableSwitchManagementAdapter
 
     private final MainActivity context;
     private final List<Header> deviceGroupHeaderList = new ArrayList<>();
+    private final KaaManager kaaManager;
 
     private OnCheckedGroupItemListener onCheckedGroupItemListener;
     private OnCheckedDeviceItemListener onCheckedDeviceItemListener;
     private Repository repository;
 
-    ExpandableSwitchManagementAdapter(Context context, Repository repository) {
+    ExpandableSwitchManagementAdapter(Context context, Repository repository, KaaManager kaaManager) {
         this.context = (MainActivity) context;
         this.repository = repository;
+        this.kaaManager = kaaManager;
         // ExpandableItemAdapter requires stable ID, and also
         // have to implement the getGroupItemId()/getChildItemId() methods appropriately.
         setHasStableIds(true);
@@ -233,13 +238,14 @@ class ExpandableSwitchManagementAdapter
             final DeviceItemViewHolder singleDeviceViewHolder = (DeviceItemViewHolder) holder;
             final ViewDevice viewDevice = (ViewDevice) deviceGroupHeaderList.get(groupPosition).childAt(childPosition);
             final Device device = viewDevice.getDevice();
+            final GpioStatus gpioStatus = device.getGpioStatus();
 
             singleDeviceViewHolder.selection.setChecked(viewDevice.isSelected());
             Utils.loadImage(device, singleDeviceViewHolder.imagePort);
             singleDeviceViewHolder.name.setText(device.getName());
             singleDeviceViewHolder.port.setText(device.getPortId());
             singleDeviceViewHolder.switchCompat.setChecked(device.isTurnOn());
-            setAlarmIcon(singleDeviceViewHolder.alarm, device.hasAlarm());
+            setAlarmIcon(singleDeviceViewHolder.alarm, device.isHasAlarm());
             setLockIcon(singleDeviceViewHolder.lock, device.isLocked());
 
             singleDeviceViewHolder.selection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -251,7 +257,8 @@ class ExpandableSwitchManagementAdapter
             singleDeviceViewHolder.switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     // TODO: 4/6/17 turn on/off device
-                    repository.turnOnDevice(device.getId(), isChecked);
+                    gpioStatus.setStatus(isChecked);
+                    kaaManager.sendRemoteControlEvent(new GpioToggleRequest(gpioStatus));
                 }
             });
 
@@ -261,10 +268,9 @@ class ExpandableSwitchManagementAdapter
                             "Input confirmation password", null, context.getString(R.string.input_password), context.getString(R.string.submit), new ChangeFieldListener() {
                                 @Override public void onChanged(String confirmationPassword) {
                                     if (confirmationPassword.equals(PreferencesImpl.getInstance().getPassword())) {
-                                        NetworkManager.toggleLock(device.getId(), confirmationPassword);
-                                        boolean isLocked = repository.lockDevice(device.getId());
-                                        device.setLocked(isLocked);
-                                        setLockIcon(singleDeviceViewHolder.lock, isLocked);
+                                        ServerManager.toggleLock(device.getId(), confirmationPassword);
+                                        device.setLocked(!device.isLocked());
+                                        setLockIcon(singleDeviceViewHolder.lock, device.isLocked());
                                     } else {
                                         DialogFactory.getConfirmationDialog(context, "Passwords aren't equal", context.getString(R.string.ok), null).show();
                                     }

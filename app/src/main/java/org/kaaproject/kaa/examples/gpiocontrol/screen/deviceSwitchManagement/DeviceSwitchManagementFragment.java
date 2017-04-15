@@ -24,6 +24,7 @@ import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandab
 import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 
 import org.kaaproject.kaa.examples.gpiocontrol.App;
+import org.kaaproject.kaa.examples.gpiocontrol.KaaManager;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Device;
 import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceHeader;
@@ -273,7 +274,9 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
         final Parcelable eimSavedState = (savedInstanceState != null) ? savedInstanceState.getParcelable(SAVED_STATE_EXPANDABLE_ITEM_MANAGER) : null;
         recyclerViewExpandableItemManager = new RecyclerViewExpandableItemManager(eimSavedState);
 
-        adapter = new ExpandableSwitchManagementAdapter(context, repository);
+        final KaaManager kaaManager = ((App) (getBaseActivity().getApplication())).getKaaManager();
+
+        adapter = new ExpandableSwitchManagementAdapter(context, repository, kaaManager);
         deviceGroupHeaderList = Utils.getMockedHeaderList(repository);
 
         adapter.updateAdapter(deviceGroupHeaderList);

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,8 +17,14 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
+import org.kaaproject.kaa.client.event.EndpointKeyHash;
+import org.kaaproject.kaa.client.event.registration.OnAttachEndpointOperationCallback;
+import org.kaaproject.kaa.common.endpoint.gen.SyncResponseResultType;
 import org.kaaproject.kaa.examples.gpiocontrol.App;
+import org.kaaproject.kaa.examples.gpiocontrol.DeviceInfoResponse;
+import org.kaaproject.kaa.examples.gpiocontrol.KaaManager;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
+import org.kaaproject.kaa.examples.gpiocontrol.RemoteControlECF;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChooseImageDialog;
@@ -37,11 +44,25 @@ public class AddControllerActivity extends BaseActivity implements ChooseImageLi
     @BindView(R.id.image_for_ports) protected ImageView imageForPorts;
     private String imagePath;
     private int vectorId = R.drawable.no_image_selected;
+    private KaaManager kaaManager;
 
+    private final RemoteControlECF.Listener mRemoteControlECFListener = new RemoteControlECF.Listener() {
+        @Override
+        public void onEvent(DeviceInfoResponse deviceInfoResponse, String endpointId) {
+            Log.d(TAG, "Got DeviceInfoResponse");
+
+            Log.d(TAG, "onEvent: " + deviceInfoResponse.getModel()+"/"+
+                    deviceInfoResponse.getDeviceName()+"/"+
+                    deviceInfoResponse.getGpioStatus()+"/"+
+                    endpointId);
+        }
+    };
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_controller_activity);
         ButterKnife.bind(this);
+
+        kaaManager = ((App) (getApplication())).getKaaManager();
 
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -49,6 +70,16 @@ public class AddControllerActivity extends BaseActivity implements ChooseImageLi
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         }
+    }
+
+    @Override protected void onResume() {
+        super.onResume();
+        kaaManager.addEventListener(mRemoteControlECFListener);
+    }
+
+    @Override protected void onPause() {
+        super.onPause();
+        kaaManager.removeEventListener(mRemoteControlECFListener);
     }
 
     @Override
@@ -101,9 +132,21 @@ public class AddControllerActivity extends BaseActivity implements ChooseImageLi
             controller.setVectorId(vectorId);
         }
         controller.setId(repository.getIdForModel(Controller.class));
-        repository.saveModel(controller);
-        DialogFactory.getConfirmationDialog(this, getString(R.string.controller_was_added),
-                getString(R.string.ok), null).show();
+//        repository.saveModel(controller);
+
+        kaaManager.attachEndpoint("token", new OnAttachEndpointOperationCallback() {
+            @Override
+            public void onAttach(SyncResponseResultType result, final EndpointKeyHash resultContext) {
+                if(result == SyncResponseResultType.SUCCESS) {
+                    kaaManager.sendDeviceInfoRequestToAll();
+                    Log.d(TAG, "onAttach: "+result.toString()+"; "+resultContext.getKeyHash());
+                    DialogFactory.getConfirmationDialog(AddControllerActivity.this, getString(R.string.controller_was_added),
+                            getString(R.string.ok), null).show();
+                }else {
+                    Log.d(TAG, "onAttach: "+result.toString());
+                }
+            }
+        });
     }
 
     private boolean isInfoValid() {

@@ -1,10 +1,8 @@
-package org.kaaproject.kaa.examples.gpiocontrol;
+package org.kaaproject.kaa.examples.gpiocontrol.network;
 
 import android.util.Log;
 
 import org.codehaus.jackson.map.ObjectMapper;
-import org.kaaproject.kaa.examples.gpiocontrol.Network.GPIOSlaveSettings;
-import org.kaaproject.kaa.examples.gpiocontrol.Network.LockEntry;
 
 import java.io.IOException;
 
@@ -19,7 +17,7 @@ import okhttp3.Response;
 
 import static org.codehaus.jackson.map.DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES;
 
-public class NetworkManager {
+public class ServerManager {
 
     private static final String HTTP = "http://";
     private static final String HOST = "10.2.2.85";
@@ -30,7 +28,7 @@ public class NetworkManager {
     private static final String EP_KEY_HASH = "p3J6sYU0EAl9G9rdNpTD6MjBesY=";
     private static final ObjectMapper MAPPER = new ObjectMapper().configure(FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-    private static final String TAG = NetworkManager.class.getSimpleName();
+    private static final String TAG = ServerManager.class.getSimpleName();
     private static final OkHttpClient OK_HTTP_CLIENT = new OkHttpClient();
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 

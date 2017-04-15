@@ -7,20 +7,26 @@ import android.util.Log;
 import org.kaaproject.kaa.client.AndroidKaaPlatformContext;
 import org.kaaproject.kaa.client.Kaa;
 import org.kaaproject.kaa.client.KaaClient;
-import org.kaaproject.kaa.client.KaaClientStateListener;
+import org.kaaproject.kaa.client.SimpleKaaClientStateListener;
+import org.kaaproject.kaa.client.event.EndpointAccessToken;
+import org.kaaproject.kaa.client.event.EndpointKeyHash;
+import org.kaaproject.kaa.client.event.FindEventListenersCallback;
+import org.kaaproject.kaa.client.event.registration.OnAttachEndpointOperationCallback;
 import org.kaaproject.kaa.client.event.registration.UserAttachCallback;
-import org.kaaproject.kaa.client.exceptions.KaaException;
 import org.kaaproject.kaa.common.endpoint.gen.SyncResponseResultType;
 import org.kaaproject.kaa.common.endpoint.gen.UserAttachResponse;
 
 import java.io.IOException;
-import java.util.concurrent.CountDownLatch;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-public class KaaManager implements KaaClientStateListener {
+public class KaaManager {
 
     private static final String TAG = KaaManager.class.getSimpleName();
     private KaaClient kaaClient;
     private RemoteControlECF remoteControlECF;
+    private final List<RemoteControlECF.Listener> listenerList = new ArrayList<>();
 
     private KaaManager() {
     }
@@ -33,10 +39,44 @@ public class KaaManager implements KaaClientStateListener {
     }
 
     private KaaManager initKaaClient(Context context) throws IOException {
-        kaaClient = Kaa.newClient(new AndroidKaaPlatformContext(context), this, true);
+        kaaClient = Kaa.newClient(new AndroidKaaPlatformContext(context), new SimpleKaaClientStateListener() {
+            @Override public void onStarted() {
+                super.onStarted();
+                Log.d(TAG, "Kaa started");
 
+                Log.d(TAG, "Attaching user...");
+
+                attachUser("userId");
+            }
+        }, true);
         kaaClient.start();
         return this;
+    }
+
+    private void attachUser(String userId) {
+        kaaClient.attachUser(userId,
+                kaaClient.getEndpointAccessToken(), new UserAttachCallback() {
+                    @Override
+                    public void onAttachResult(UserAttachResponse response) {
+                        Log.d(TAG, "User attach result: " + response.toString());
+
+                        if(response.getResult() == SyncResponseResultType.SUCCESS) {
+                            kaaClient.findEventListeners(
+                                    Collections.singletonList("org.kaaproject.kaa.examples.gpiocontrol.DeviceInfoResponse"),
+                                    new FindEventListenersCallback() {
+                                        @Override
+                                        public void onEventListenersReceived(List<String> eventListeners) {
+                                            Log.d(TAG, "onEventListenersReceived: " + eventListeners);
+                                        }
+
+                                        @Override
+                                        public void onRequestFailed() {
+                                            Log.d(TAG, "onEventListenersReceived: failed");
+                                        }
+                                    });
+                        }
+                    }
+                });
     }
 
     private KaaManager initRemoteControl() {
@@ -46,33 +86,14 @@ public class KaaManager implements KaaClientStateListener {
 
     private KaaManager initListeners() {
         remoteControlECF.addListener(new RemoteControlECF.Listener() {
-            @Override public void onEvent(DeviceInfoResponse deviceInfoResponse, String s) {
+            @Override public void onEvent(DeviceInfoResponse event, String source) {
+                Log.d(TAG, "!!! onEvent: " + event + ", " + source);
 
-            }
-        });
-        return this;
-    }
-
-    public KaaManager attachToUser(final String userId, String userAccessToken) {
-        final CountDownLatch attachLatch = new CountDownLatch(1);
-        kaaClient.attachUser(userId, userAccessToken, new UserAttachCallback() {
-            @Override public void onAttachResult(UserAttachResponse userAttachResponse) {
-                //            log.info("Attach to user result: {}", response.getResult());
-                if (userAttachResponse.getResult() == SyncResponseResultType.SUCCESS) {
-                    Log.d(TAG, "Current endpoint have been successfully attached to user [ID=" + userId + "]!");
-                } else {
-                    Log.e(TAG, "Attaching current endpoint to user [ID=" + userId + "] FAILED.");
-                    Log.e(TAG, "Attach response: " + userAttachResponse);
-                    Log.e(TAG, "GenericEventType exchange will be NOT POSSIBLE.");
+                for (RemoteControlECF.Listener listener : listenerList) {
+                    listener.onEvent(event, source);
                 }
-                attachLatch.countDown();
             }
         });
-        try {
-            attachLatch.await();
-        } catch (InterruptedException e) {
-            Log.w(TAG, "Thread interrupted when wait for attach current endpoint to user", e);
-        }
         return this;
     }
 
@@ -84,35 +105,30 @@ public class KaaManager implements KaaClientStateListener {
         remoteControlECF.sendEventToAll(event);
     }
 
-    @Override public void onStarted() {
-
+    public void sendGpioToggleRequest(GpioToggleRequest gpioToggleRequest, String kaaEndpointId) {
+        remoteControlECF.sendEvent(gpioToggleRequest, kaaEndpointId);
     }
 
-    @Override public void onStartFailure(KaaException e) {
+    public void attachEndpoint(String endpoint, final OnAttachEndpointOperationCallback onAttach) {
+        kaaClient.attachEndpoint(new EndpointAccessToken(endpoint), new OnAttachEndpointOperationCallback() {
+            @Override
+            public void onAttach(SyncResponseResultType result, EndpointKeyHash resultContext) {
+                Log.d(TAG, "attachEndpoint result: " + result.toString() + ", endpoint hash:" + resultContext.toString());
 
+                onAttach.onAttach(result, resultContext);
+            }
+        });
     }
 
-    @Override public void onPaused() {
-
+    public void sendDeviceInfoRequestToAll() {
+        remoteControlECF.sendEventToAll(new DeviceInfoRequest());
     }
 
-    @Override public void onPauseFailure(KaaException e) {
-
+    public void addEventListener(RemoteControlECF.Listener callback) {
+        listenerList.add(callback);
     }
 
-    @Override public void onResume() {
-
-    }
-
-    @Override public void onResumeFailure(KaaException e) {
-
-    }
-
-    @Override public void onStopped() {
-
-    }
-
-    @Override public void onStopFailure(KaaException e) {
-
+    public void removeEventListener(RemoteControlECF.Listener callback) {
+        listenerList.remove(callback);
     }
 }

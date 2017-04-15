@@ -3,7 +3,10 @@ package org.kaaproject.kaa.examples.gpiocontrol.model;
 
 import android.support.annotation.Nullable;
 
+import org.kaaproject.kaa.examples.gpiocontrol.GpioStatus;
+
 import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
 
 public class Device extends RealmObject {
@@ -13,11 +16,15 @@ public class Device extends RealmObject {
     private int vectorId;
     private String portTitle;
     private String portId;
+    @Ignore
     private boolean isTurnOn;
     private boolean hasAlarm;
+    @Ignore
     private boolean isLocked;
     @PrimaryKey
     private int id = -1;
+    @Ignore
+    private GpioStatus gpioStatus;
 
     public String getName() {
         return name;
@@ -83,12 +90,20 @@ public class Device extends RealmObject {
         this.id = id;
     }
 
-    public boolean hasAlarm() {
+    public boolean isHasAlarm() {
         return hasAlarm;
     }
 
     public void setHasAlarm(boolean hasAlarm) {
         this.hasAlarm = hasAlarm;
+    }
+
+    public GpioStatus getGpioStatus() {
+        return gpioStatus;
+    }
+
+    public void setGpioStatus(GpioStatus gpioStatus) {
+        this.gpioStatus = gpioStatus;
     }
 
     @Override public String toString() {
@@ -100,4 +115,5 @@ public class Device extends RealmObject {
                 ", isLocked=" + isLocked +
                 '}';
     }
+
 }

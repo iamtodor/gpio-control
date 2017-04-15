@@ -1,8 +1,6 @@
-package org.kaaproject.kaa.examples.gpiocontrol;
+package org.kaaproject.kaa.examples.gpiocontrol.network;
 
-import org.kaaproject.kaa.examples.gpiocontrol.Network.GPIOSlaveSettings;
-
-public class EndpointProfileBody {
+class EndpointProfileBody {
 
     private GPIOSlaveSettings serverSideProfile;
 
@@ -13,7 +11,7 @@ public class EndpointProfileBody {
                 '}';
     }
 
-    public GPIOSlaveSettings getServerSideProfile() {
+    GPIOSlaveSettings getServerSideProfile() {
         return serverSideProfile;
     }
 

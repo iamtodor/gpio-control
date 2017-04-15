@@ -1,7 +1,7 @@
-package org.kaaproject.kaa.examples.gpiocontrol.Network;
+package org.kaaproject.kaa.examples.gpiocontrol.network;
 
 
-public class LockEntry {
+class LockEntry {
 
     private long id;
     private String lockPassword;
@@ -9,7 +9,7 @@ public class LockEntry {
     public LockEntry() {
     }
 
-    public LockEntry(long id, String lockPassword) {
+    LockEntry(long id, String lockPassword) {
         this.id = id;
         this.lockPassword = lockPassword;
     }
@@ -48,7 +48,7 @@ public class LockEntry {
         this.id = id;
     }
 
-    public String getLockPassword() {
+    String getLockPassword() {
         return lockPassword;
     }
 
