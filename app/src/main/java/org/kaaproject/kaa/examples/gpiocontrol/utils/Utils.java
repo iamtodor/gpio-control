@@ -67,15 +67,13 @@ public class Utils {
             Device device = new Device();
             if (i % 2 == 0) {
                 device.setName("Device " + i);
-                device.setPortTitle("Port title " + i + 5);
-                device.setPortId("Port id " + i + 1);
+                device.setVisibleId("Port id " + i + 1);
                 device.setVectorId(R.drawable.kitchen);
                 device.setTurnOn(false);
                 device.setId(i);
             } else {
                 device.setName("Device " + i);
-                device.setPortTitle("Port title " + i + 5);
-                device.setPortId("Port id " + i + 1);
+                device.setVisibleId("Port id " + i + 1);
                 device.setVectorId(R.drawable.fan);
                 device.setTurnOn(true);
                 device.setId(i);
@@ -101,18 +99,18 @@ public class Utils {
         return file;
     }
 
-    public static List<Header> getMockedHeaderList(Repository repository) {
+    public static List<Header> getHeaderList(Repository repository) {
         List<Header> deviceGroupHeaderList = new ArrayList<>();
 
         List<Group> groupList = repository.getGroupList();
         List<ViewDeviceGroup> viewDeviceGroupList = getViewDeviceListFromGroup(groupList);
 
-        List<Device> deviceList = new ArrayList<>();
-        for(Group group : groupList) {
-            for (int i = 0; i < group.getDeviceList().size(); i++) {
-                deviceList.add(group.getDeviceList().get(i));
-            }
-        }
+        List<Device> deviceList = repository.getDeviceList();
+//        for (Group group : groupList) {
+//            for (int i = 0; i < group.getDeviceList().size(); i++) {
+//                deviceList.add(group.getDeviceList().get(i));
+//            }
+//        }
         List<ViewDevice> viewDeviceList = getViewDeviceList(deviceList);
 
         deviceGroupHeaderList.add(new GroupHeader<>("Groups (" + viewDeviceGroupList.size() + ")",
@@ -124,7 +122,7 @@ public class Utils {
 
     private static List<ViewDeviceGroup> getViewDeviceListFromGroup(List<Group> groupList) {
         List<ViewDeviceGroup> viewDeviceGroupList = new ArrayList<>();
-        for(Group group : groupList) {
+        for (Group group : groupList) {
             ViewDeviceGroup viewDeviceGroup = new ViewDeviceGroup();
             viewDeviceGroup.setGroup(group);
             viewDeviceGroupList.add(viewDeviceGroup);
@@ -176,7 +174,7 @@ public class Utils {
 
     /**
      * according to the issue https://github.com/realm/realm-java/issues/575
-     * we worked with the one string where each word is divided by delimiter
+     * we work with the one string where each word is divided by delimiter
      *
      * @param iterationList list of iteration (days)
      * @return single string, that will be stored into alarm model

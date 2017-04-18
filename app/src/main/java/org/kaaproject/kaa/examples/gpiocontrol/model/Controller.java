@@ -82,6 +82,7 @@ public class Controller extends RealmObject{
                 ", portName='" + portName + '\'' +
                 ", isActive=" + isActive +
                 ", id=" + id +
+                ", deviceList=" + deviceList +
                 '}';
     }
 }

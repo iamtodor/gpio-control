@@ -30,19 +30,6 @@ public class RealmRepository implements Repository {
     }
 
     @Override
-    public List<Controller> getControllerList() {
-        final Realm instance = Realm.getDefaultInstance();
-        final List<Controller> controllerList = new ArrayList<>();
-        instance.executeTransaction(new Realm.Transaction() {
-            @Override public void execute(Realm realm) {
-                controllerList.addAll(realm.where(Controller.class).findAll());
-            }
-        });
-        instance.close();
-        return controllerList;
-    }
-
-    @Override
     public <T extends RealmObject> void saveModelList(final List<T> modelList) {
         final Realm instance = Realm.getDefaultInstance();
         instance.executeTransaction(new Realm.Transaction() {
@@ -51,6 +38,36 @@ public class RealmRepository implements Repository {
             }
         });
         instance.close();
+    }
+
+    @Override public Controller getControllerById(long controllerId) {
+        final Realm instance = Realm.getDefaultInstance();
+        Controller controller = instance.copyFromRealm(instance.where(Controller.class).equalTo("id", controllerId).findFirst());
+        instance.close();
+        return controller;
+    }
+
+    @Override
+    public List<Controller> getControllerList() {
+        final Realm instance = Realm.getDefaultInstance();
+        final List<Controller> controllerList = new ArrayList<>();
+        instance.executeTransaction(new Realm.Transaction() {
+            @Override public void execute(Realm realm) {
+                controllerList.addAll(realm.copyFromRealm(instance.where(Controller.class).findAll()));
+            }
+        });
+        instance.close();
+        return controllerList;
+    }
+
+    @Override public void addDeviceListToController(long controllerId, final RealmList<Device> deviceList) {
+        final Controller controller = getControllerById(controllerId);
+        final Realm instance = Realm.getDefaultInstance();
+        instance.executeTransaction(new Realm.Transaction() {
+            @Override public void execute(Realm realm) {
+                controller.setDeviceList(deviceList);
+            }
+        });
     }
 
     @Override
@@ -198,6 +215,13 @@ public class RealmRepository implements Repository {
         Alarm alarm = instance.where(Alarm.class).equalTo("id", alarmId).findFirst();
         instance.close();
         return alarm;
+    }
+
+    @Override public List<Device> getDeviceList() {
+        final Realm instance = Realm.getDefaultInstance();
+        List<Device> deviceList = instance.copyFromRealm(instance.where(Device.class).findAll());
+        instance.close();
+        return deviceList;
     }
 
     @Override public Device getDeviceById(long deviceId) {

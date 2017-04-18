@@ -16,7 +16,9 @@ public interface Repository {
     <T extends RealmObject> void saveModel(final T object);
     <T extends RealmObject> void saveModelList(final List<T> objectList);
 
+    Controller getControllerById(long controllerId);
     List<Controller> getControllerList();
+    void addDeviceListToController(long controllerId, RealmList<Device> deviceList);
 
     List<Group> getGroupList();
     Group getGroupById(long groupId);
@@ -39,4 +41,6 @@ public interface Repository {
 
     void turnOnAlarm(long alarmId, boolean turnOn);
     Alarm getAlarmById(long alarmId);
+
+    List<Device> getDeviceList();
 }

@@ -10,6 +10,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,6 +51,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnLongClick;
 import butterknife.Unbinder;
 
 public class DeviceSwitchManagementFragment extends BaseFragment implements OnDismissDialogListener,
@@ -135,7 +137,7 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == UPDATE_ADAPTER_CODE) {
-                deviceGroupHeaderList = Utils.getMockedHeaderList(repository);
+                deviceGroupHeaderList = Utils.getHeaderList(repository);
                 adapter.updateAdapter(deviceGroupHeaderList);
             }
         }
@@ -192,6 +194,12 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
         AddControllerOrGroupDialog dialog = new AddControllerOrGroupDialog()
                 .setOnDismissListener(this);
         dialog.show(getBaseActivity().getSupportFragmentManager());
+    }
+
+    @OnLongClick(R.id.fab)
+    public boolean onFabLongClick(){
+        Log.d(TAG, "onFabClick: " + repository.getControllerList());
+        return true;
     }
 
     @OnClick(R.id.power_on)
@@ -277,7 +285,7 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
         final KaaManager kaaManager = ((App) (getBaseActivity().getApplication())).getKaaManager();
 
         adapter = new ExpandableSwitchManagementAdapter(context, repository, kaaManager);
-        deviceGroupHeaderList = Utils.getMockedHeaderList(repository);
+        deviceGroupHeaderList = Utils.getHeaderList(repository);
 
         adapter.updateAdapter(deviceGroupHeaderList);
         adapter.setOnCheckedDeviceItemListener(this);
@@ -420,7 +428,7 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
             if (deviceGroupHeader instanceof DeviceHeader) {
                 for (Object object : deviceGroupHeader.getChildList()) {
                     ViewDevice viewDevice = (ViewDevice) object;
-                    if(viewDevice.isSelected()) {
+                    if (viewDevice.isSelected()) {
                         Device device = viewDevice.getDevice();
                         device.setLocked(isLocked);
                     }

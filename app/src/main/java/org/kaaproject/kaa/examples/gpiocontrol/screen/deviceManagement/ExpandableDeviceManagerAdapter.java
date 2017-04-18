@@ -266,7 +266,7 @@ class ExpandableDeviceManagerAdapter
             singleDeviceViewHolder.selection.setChecked(viewDevice.isSelected());
             Utils.loadImage(device, singleDeviceViewHolder.imagePort);
             singleDeviceViewHolder.name.setText(device.getName());
-            singleDeviceViewHolder.port.setText(device.getPortId());
+            singleDeviceViewHolder.port.setText(device.getVisibleId());
             singleDeviceViewHolder.switchCompat.setChecked(device.isTurnOn());
 
             singleDeviceViewHolder.selection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

@@ -67,9 +67,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             navigationView.getMenu().getItem(0).setChecked(true);
             showFragment(new DeviceSwitchManagementFragment());
         } else {
-            Repository repository = ((App) (getApplication())).getRealmRepository();
-            List<Group> mockedGroupList = Utils.getMockedGroupList();
-            repository.saveModelList(mockedGroupList);
             showSignInActivity();
         }
     }
@@ -105,7 +102,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             showFragment(new ResetDevicesFragment());
         } else if (id == R.id.log_out) {
             showLogoutDialog();
-            Log.d(TAG, ((App) (getApplication())).getRealmRepository().getControllerList().toString());
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

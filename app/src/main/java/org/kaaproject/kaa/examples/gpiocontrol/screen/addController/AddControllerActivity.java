@@ -22,19 +22,24 @@ import org.kaaproject.kaa.client.event.registration.OnAttachEndpointOperationCal
 import org.kaaproject.kaa.common.endpoint.gen.SyncResponseResultType;
 import org.kaaproject.kaa.examples.gpiocontrol.App;
 import org.kaaproject.kaa.examples.gpiocontrol.DeviceInfoResponse;
+import org.kaaproject.kaa.examples.gpiocontrol.GpioStatus;
 import org.kaaproject.kaa.examples.gpiocontrol.KaaManager;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.RemoteControlECF;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
+import org.kaaproject.kaa.examples.gpiocontrol.model.Device;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.base.BaseActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChooseImageDialog;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChooseImageListener;
 import org.kaaproject.kaa.examples.gpiocontrol.storage.Repository;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.realm.RealmList;
 
 public class AddControllerActivity extends BaseActivity implements ChooseImageListener {
 
@@ -45,18 +50,32 @@ public class AddControllerActivity extends BaseActivity implements ChooseImageLi
     private String imagePath;
     private int vectorId = R.drawable.no_image_selected;
     private KaaManager kaaManager;
+    private Controller controller;
+    private Repository repository;
 
     private final RemoteControlECF.Listener mRemoteControlECFListener = new RemoteControlECF.Listener() {
         @Override
         public void onEvent(DeviceInfoResponse deviceInfoResponse, String endpointId) {
-            Log.d(TAG, "Got DeviceInfoResponse");
-
-            Log.d(TAG, "onEvent: " + deviceInfoResponse.getModel()+"/"+
-                    deviceInfoResponse.getDeviceName()+"/"+
-                    deviceInfoResponse.getGpioStatus()+"/"+
-                    endpointId);
+            Log.d(TAG, "onEvent() called with: deviceInfoResponse = " + deviceInfoResponse + ", endpointId = " + endpointId);
+            List<GpioStatus> gpioStatusList = deviceInfoResponse.getGpioStatus();
+            RealmList<Device> deviceList = new RealmList<>();
+            for (GpioStatus gpioStatus : gpioStatusList) {
+                Device device = new Device();
+                device.setName(controllerId.getText().toString());
+                if (imagePath != null) {
+                    device.setImagePath(imagePath);
+                } else {
+                    device.setVectorId(vectorId);
+                }
+                device.setVisibleId("Port " + gpioStatus.getId());
+                deviceList.add(device);
+            }
+            repository.addDeviceListToController(controller.getId(), deviceList);
+            DialogFactory.getConfirmationDialog(AddControllerActivity.this, getString(R.string.controller_was_added),
+                    getString(R.string.ok), null).show();
         }
     };
+
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_controller_activity);
@@ -122,8 +141,8 @@ public class AddControllerActivity extends BaseActivity implements ChooseImageLi
     }
 
     private void addController() {
-        Controller controller = new Controller();
-        Repository repository = ((App) (getApplication())).getRealmRepository();
+        controller = new Controller();
+        repository = ((App) (getApplication())).getRealmRepository();
         controller.setControllerId(controllerId.getText().toString());
         controller.setPortName(portsName.getText().toString());
         if (imagePath != null) {
@@ -132,18 +151,16 @@ public class AddControllerActivity extends BaseActivity implements ChooseImageLi
             controller.setVectorId(vectorId);
         }
         controller.setId(repository.getIdForModel(Controller.class));
-//        repository.saveModel(controller);
+        repository.saveModel(controller);
 
         kaaManager.attachEndpoint("token", new OnAttachEndpointOperationCallback() {
             @Override
             public void onAttach(SyncResponseResultType result, final EndpointKeyHash resultContext) {
-                if(result == SyncResponseResultType.SUCCESS) {
+                if (result == SyncResponseResultType.SUCCESS) {
                     kaaManager.sendDeviceInfoRequestToAll();
-                    Log.d(TAG, "onAttach: "+result.toString()+"; "+resultContext.getKeyHash());
-                    DialogFactory.getConfirmationDialog(AddControllerActivity.this, getString(R.string.controller_was_added),
-                            getString(R.string.ok), null).show();
-                }else {
-                    Log.d(TAG, "onAttach: "+result.toString());
+                    Log.d(TAG, "onAttach: " + result.toString() + "; " + resultContext.getKeyHash());
+                } else {
+                    Log.e(TAG, "onAttach: " + result.toString());
                 }
             }
         });

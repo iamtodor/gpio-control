@@ -243,7 +243,7 @@ public class DeviceManagementFragment extends BaseListFragment implements OnChec
 
         //adapter
         Repository repository = ((App) (getBaseActivity().getApplication())).getRealmRepository();
-        deviceGroupHeaderList = Utils.getMockedHeaderList(repository);
+        deviceGroupHeaderList = Utils.getHeaderList(repository);
         adapter = new ExpandableDeviceManagerAdapter(context, deviceGroupHeaderList);
 
         adapter.setOnCheckedGroupItemListener(this);

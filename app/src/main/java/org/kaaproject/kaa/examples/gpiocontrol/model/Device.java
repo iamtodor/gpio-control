@@ -14,8 +14,7 @@ public class Device extends RealmObject {
     private String name;
     private @Nullable String imagePath;
     private int vectorId;
-    private String portTitle;
-    private String portId;
+    private String visibleId;
     @Ignore
     private boolean isTurnOn;
     private boolean hasAlarm;
@@ -50,20 +49,12 @@ public class Device extends RealmObject {
         this.vectorId = vectorId;
     }
 
-    public String getPortTitle() {
-        return portTitle;
+    public String getVisibleId() {
+        return visibleId;
     }
 
-    public void setPortTitle(String portTitle) {
-        this.portTitle = portTitle;
-    }
-
-    public String getPortId() {
-        return portId;
-    }
-
-    public void setPortId(String portId) {
-        this.portId = portId;
+    public void setVisibleId(String visibleId) {
+        this.visibleId = visibleId;
     }
 
     public boolean isTurnOn() {
@@ -109,8 +100,7 @@ public class Device extends RealmObject {
     @Override public String toString() {
         return "BaseDevice{" +
                 "name='" + name + '\'' +
-                ", portTitle='" + portTitle + '\'' +
-                ", portId='" + portId + '\'' +
+                ", visibleId='" + visibleId + '\'' +
                 ", setAlarmTurnOn=" + isTurnOn +
                 ", isLocked=" + isLocked +
                 '}';
