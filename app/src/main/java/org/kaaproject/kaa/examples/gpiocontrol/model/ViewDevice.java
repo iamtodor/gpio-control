@@ -21,4 +21,11 @@ public class ViewDevice {
     public void setSelected(boolean selected) {
         isSelected = selected;
     }
+
+    @Override public String toString() {
+        return "ViewDevice{" +
+                "device=" + device +
+                ", isSelected=" + isSelected +
+                '}';
+    }
 }

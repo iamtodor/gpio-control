@@ -8,6 +8,7 @@ import android.support.design.widget.Snackbar;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.SwitchCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,6 +78,7 @@ class ExpandableSwitchManagementAdapter
     }
 
     void updateAdapter(List<Header> items) {
+        Log.d(TAG, "updateAdapter: "+items);
         deviceGroupHeaderList.clear();
         deviceGroupHeaderList.addAll(items);
         notifyDataSetChanged();

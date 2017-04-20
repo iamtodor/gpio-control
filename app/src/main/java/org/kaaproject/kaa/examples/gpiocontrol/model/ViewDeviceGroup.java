@@ -22,4 +22,10 @@ public class ViewDeviceGroup {
         isSelected = selected;
     }
 
+    @Override public String toString() {
+        return "ViewDeviceGroup{" +
+                "group=" + group +
+                ", isSelected=" + isSelected +
+                '}';
+    }
 }

@@ -66,6 +66,7 @@ public class RealmRepository implements Repository {
         instance.executeTransaction(new Realm.Transaction() {
             @Override public void execute(Realm realm) {
                 controller.setDeviceList(deviceList);
+                realm.insertOrUpdate(controller);
             }
         });
     }

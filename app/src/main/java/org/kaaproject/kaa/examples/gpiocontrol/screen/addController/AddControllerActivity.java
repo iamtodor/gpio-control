@@ -67,12 +67,17 @@ public class AddControllerActivity extends BaseActivity implements ChooseImageLi
                 } else {
                     device.setVectorId(vectorId);
                 }
+                device.setId(gpioStatus.getId());
                 device.setVisibleId("Port " + gpioStatus.getId());
                 deviceList.add(device);
             }
             repository.addDeviceListToController(controller.getId(), deviceList);
-            DialogFactory.getConfirmationDialog(AddControllerActivity.this, getString(R.string.controller_was_added),
-                    getString(R.string.ok), null).show();
+            runOnUiThread(new Runnable() {
+                @Override public void run() {
+                    DialogFactory.getConfirmationDialog(AddControllerActivity.this, getString(R.string.controller_was_added),
+                            getString(R.string.ok), null).show();
+                }
+            });
         }
     };
 

@@ -98,7 +98,7 @@ public class Device extends RealmObject {
     }
 
     @Override public String toString() {
-        return "BaseDevice{" +
+        return "Device{" +
                 "name='" + name + '\'' +
                 ", visibleId='" + visibleId + '\'' +
                 ", setAlarmTurnOn=" + isTurnOn +

@@ -40,14 +40,14 @@ public class DeviceHeader<T> extends Header {
     }
 
     @Override public void cancelSelection() {
-        for (T controllerToCastObject : deviceList) {
-            ViewDevice viewDevice = (ViewDevice) controllerToCastObject;
+        for (T viewDeviceToCastObject : deviceList) {
+            ViewDevice viewDevice = (ViewDevice) viewDeviceToCastObject;
             viewDevice.setSelected(false);
         }
     }
 
     @Override public String toString() {
-        return "GroupPort{" +
+        return "DeviceHeader{" +
                 "name='" + name + '\'' +
                 ", deviceList=" + deviceList +
                 '}';

@@ -24,9 +24,16 @@ import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDec
 import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager;
 import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 
+import org.kaaproject.kaa.client.event.EndpointKeyHash;
+import org.kaaproject.kaa.client.event.registration.OnAttachEndpointOperationCallback;
+import org.kaaproject.kaa.common.endpoint.gen.SyncResponseResultType;
 import org.kaaproject.kaa.examples.gpiocontrol.App;
+import org.kaaproject.kaa.examples.gpiocontrol.DeviceInfoResponse;
+import org.kaaproject.kaa.examples.gpiocontrol.GpioStatus;
 import org.kaaproject.kaa.examples.gpiocontrol.KaaManager;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
+import org.kaaproject.kaa.examples.gpiocontrol.RemoteControlECF;
+import org.kaaproject.kaa.examples.gpiocontrol.model.Controller;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Device;
 import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceHeader;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Group;
@@ -83,6 +90,36 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
     private Unbinder unbinder;
     private List<Header> deviceGroupHeaderList;
     private Repository repository;
+    private KaaManager kaaManager;
+
+    private final RemoteControlECF.Listener mRemoteControlECFListener = new RemoteControlECF.Listener() {
+        @Override
+        public void onEvent(DeviceInfoResponse deviceInfoResponse, String endpointId) {
+            Log.d(TAG, "onEvent() called with: deviceInfoResponse = " + deviceInfoResponse + ", endpointId = " + endpointId);
+            List<Device> deviceList = repository.getDeviceList();
+            List<GpioStatus> gpioStatusList = deviceInfoResponse.getGpioStatus();
+            for (GpioStatus gpioStatus : gpioStatusList) {
+                for (Device device : deviceList) {
+                    device.setGpioStatus(gpioStatus);
+                }
+            }
+            Log.d(TAG, "onEvent: "+deviceList);
+
+            List<ViewDevice> viewDeviceList = new ArrayList<>();
+            for (Device device : deviceList) {
+                ViewDevice viewDevice = new ViewDevice();
+                viewDevice.setDevice(device);
+                viewDeviceList.add(viewDevice);
+            }
+
+            DeviceHeader<ViewDevice> deviceHeader = new DeviceHeader<>("Devices", 1, viewDeviceList);
+            List<Header> deviceGroupHeaderList = new ArrayList<>();
+            deviceGroupHeaderList.add(deviceHeader);
+
+            Log.d(TAG, "onEvent: " + deviceHeader);
+            adapter.updateAdapter(deviceGroupHeaderList);
+        }
+    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -119,6 +156,16 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
         mLayoutManager = null;
         unbinder.unbind();
         super.onDestroyView();
+    }
+
+    @Override public void onResume() {
+        super.onResume();
+        kaaManager.addEventListener(mRemoteControlECFListener);
+    }
+
+    @Override public void onPause() {
+        super.onPause();
+        kaaManager.removeEventListener(mRemoteControlECFListener);
     }
 
     @Override
@@ -197,8 +244,15 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
     }
 
     @OnLongClick(R.id.fab)
-    public boolean onFabLongClick(){
+    public boolean onFabLongClick() {
         Log.d(TAG, "onFabClick: " + repository.getControllerList());
+        for (Controller controller : repository.getControllerList()) {
+            for (Device device : controller.getDeviceList()) {
+                Log.d(TAG, "onFabLongClick: " + device);
+            }
+        }
+        Log.d(TAG, "onFabLongClick: " + repository.getDeviceList());
+        kaaManager.sendDeviceInfoRequestToAll();
         return true;
     }
 
@@ -282,12 +336,23 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
         final Parcelable eimSavedState = (savedInstanceState != null) ? savedInstanceState.getParcelable(SAVED_STATE_EXPANDABLE_ITEM_MANAGER) : null;
         recyclerViewExpandableItemManager = new RecyclerViewExpandableItemManager(eimSavedState);
 
-        final KaaManager kaaManager = ((App) (getBaseActivity().getApplication())).getKaaManager();
+        kaaManager = ((App) (getBaseActivity().getApplication())).getKaaManager();
+        kaaManager.attachEndpoint("token", new OnAttachEndpointOperationCallback() {
+            @Override
+            public void onAttach(SyncResponseResultType result, final EndpointKeyHash resultContext) {
+                if (result == SyncResponseResultType.SUCCESS) {
+                    kaaManager.sendDeviceInfoRequestToAll();
+                    Log.d(TAG, "onAttach: " + result.toString() + "; " + resultContext.getKeyHash());
+                } else {
+                    Log.e(TAG, "onAttach: " + result.toString());
+                }
+            }
+        });
 
         adapter = new ExpandableSwitchManagementAdapter(context, repository, kaaManager);
         deviceGroupHeaderList = Utils.getHeaderList(repository);
 
-        adapter.updateAdapter(deviceGroupHeaderList);
+//        adapter.updateAdapter(deviceGroupHeaderList);
         adapter.setOnCheckedDeviceItemListener(this);
         adapter.setOnCheckedGroupItemListener(this);
 
