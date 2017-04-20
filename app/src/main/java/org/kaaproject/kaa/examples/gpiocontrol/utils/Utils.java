@@ -103,14 +103,9 @@ public class Utils {
         List<Header> deviceGroupHeaderList = new ArrayList<>();
 
         List<Group> groupList = repository.getGroupList();
-        List<ViewDeviceGroup> viewDeviceGroupList = getViewDeviceListFromGroup(groupList);
+        List<ViewDeviceGroup> viewDeviceGroupList = getViewGroupList(groupList);
 
         List<Device> deviceList = repository.getDeviceList();
-//        for (Group group : groupList) {
-//            for (int i = 0; i < group.getDeviceList().size(); i++) {
-//                deviceList.add(group.getDeviceList().get(i));
-//            }
-//        }
         List<ViewDevice> viewDeviceList = getViewDeviceList(deviceList);
 
         deviceGroupHeaderList.add(new GroupHeader<>("Groups (" + viewDeviceGroupList.size() + ")",
@@ -120,7 +115,7 @@ public class Utils {
         return deviceGroupHeaderList;
     }
 
-    private static List<ViewDeviceGroup> getViewDeviceListFromGroup(List<Group> groupList) {
+    private static List<ViewDeviceGroup> getViewGroupList(List<Group> groupList) {
         List<ViewDeviceGroup> viewDeviceGroupList = new ArrayList<>();
         for (Group group : groupList) {
             ViewDeviceGroup viewDeviceGroup = new ViewDeviceGroup();

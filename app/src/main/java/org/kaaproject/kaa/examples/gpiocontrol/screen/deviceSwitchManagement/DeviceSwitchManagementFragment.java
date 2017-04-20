@@ -103,7 +103,6 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
                     device.setGpioStatus(gpioStatus);
                 }
             }
-            Log.d(TAG, "onEvent: "+deviceList);
 
             List<ViewDevice> viewDeviceList = new ArrayList<>();
             for (Device device : deviceList) {
@@ -113,11 +112,14 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
             }
 
             DeviceHeader<ViewDevice> deviceHeader = new DeviceHeader<>("Devices", 1, viewDeviceList);
-            List<Header> deviceGroupHeaderList = new ArrayList<>();
+            final List<Header> deviceGroupHeaderList = new ArrayList<>();
             deviceGroupHeaderList.add(deviceHeader);
 
-            Log.d(TAG, "onEvent: " + deviceHeader);
-            adapter.updateAdapter(deviceGroupHeaderList);
+            getActivity().runOnUiThread(new Runnable() {
+                @Override public void run() {
+                    adapter.updateAdapter(deviceGroupHeaderList);
+                }
+            });
         }
     };
 
@@ -336,20 +338,7 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
         final Parcelable eimSavedState = (savedInstanceState != null) ? savedInstanceState.getParcelable(SAVED_STATE_EXPANDABLE_ITEM_MANAGER) : null;
         recyclerViewExpandableItemManager = new RecyclerViewExpandableItemManager(eimSavedState);
 
-        kaaManager = ((App) (getBaseActivity().getApplication())).getKaaManager();
-        kaaManager.attachEndpoint("token", new OnAttachEndpointOperationCallback() {
-            @Override
-            public void onAttach(SyncResponseResultType result, final EndpointKeyHash resultContext) {
-                if (result == SyncResponseResultType.SUCCESS) {
-                    kaaManager.sendDeviceInfoRequestToAll();
-                    Log.d(TAG, "onAttach: " + result.toString() + "; " + resultContext.getKeyHash());
-                } else {
-                    Log.e(TAG, "onAttach: " + result.toString());
-                }
-            }
-        });
-
-        adapter = new ExpandableSwitchManagementAdapter(context, repository, kaaManager);
+        adapter = new ExpandableSwitchManagementAdapter(context, kaaManager);
         deviceGroupHeaderList = Utils.getHeaderList(repository);
 
 //        adapter.updateAdapter(deviceGroupHeaderList);
@@ -373,6 +362,19 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
         recyclerView.addItemDecoration(new SimpleListDividerDecorator(ContextCompat.getDrawable(context, R.drawable.list_divider_h), true));
 
         recyclerViewExpandableItemManager.attachRecyclerView(recyclerView);
+
+        kaaManager = ((App) (getBaseActivity().getApplication())).getKaaManager();
+        kaaManager.attachEndpoint("token", new OnAttachEndpointOperationCallback() {
+            @Override
+            public void onAttach(SyncResponseResultType result, final EndpointKeyHash resultContext) {
+                if (result == SyncResponseResultType.SUCCESS) {
+                    kaaManager.sendDeviceInfoRequestToAll();
+                    Log.d(TAG, "onAttach: " + result.toString() + "; " + resultContext.getKeyHash());
+                } else {
+                    Log.e(TAG, "onAttach: " + result.toString());
+                }
+            }
+        });
 
         if (deviceGroupHeaderList.isEmpty()) {
             showNoDevices();

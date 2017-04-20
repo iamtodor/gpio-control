@@ -65,11 +65,9 @@ class ExpandableSwitchManagementAdapter
 
     private OnCheckedGroupItemListener onCheckedGroupItemListener;
     private OnCheckedDeviceItemListener onCheckedDeviceItemListener;
-    private Repository repository;
 
-    ExpandableSwitchManagementAdapter(Context context, Repository repository, KaaManager kaaManager) {
+    ExpandableSwitchManagementAdapter(Context context, KaaManager kaaManager) {
         this.context = (MainActivity) context;
-        this.repository = repository;
         this.kaaManager = kaaManager;
         // ExpandableItemAdapter requires stable ID, and also
         // have to implement the getGroupItemId()/getChildItemId() methods appropriately.
@@ -78,7 +76,6 @@ class ExpandableSwitchManagementAdapter
     }
 
     void updateAdapter(List<Header> items) {
-        Log.d(TAG, "updateAdapter: "+items);
         deviceGroupHeaderList.clear();
         deviceGroupHeaderList.addAll(items);
         notifyDataSetChanged();
@@ -217,7 +214,6 @@ class ExpandableSwitchManagementAdapter
             groupViewHolder.switchOn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     // TODO: 4/5/17 turn on/off all devices
-                    repository.turnOnGroup(group.getId(), isChecked);
                 }
             });
 
@@ -225,7 +221,6 @@ class ExpandableSwitchManagementAdapter
                 @Override public void onClick(View v) {
                     // TODO: 3/30/17 swap logic
                     Snackbar.make(groupViewHolder.itemView, "Group was toggled", Snackbar.LENGTH_SHORT).show();
-                    repository.toggleGroup(group.getId());
                 }
             });
 
