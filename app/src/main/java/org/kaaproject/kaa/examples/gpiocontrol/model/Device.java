@@ -24,6 +24,8 @@ public class Device extends RealmObject {
     private int id = -1;
     @Ignore
     private GpioStatus gpioStatus;
+    @Ignore
+    private String endpointId;
 
     public String getName() {
         return name;
@@ -97,13 +99,26 @@ public class Device extends RealmObject {
         this.gpioStatus = gpioStatus;
     }
 
+    public String getEndpointId() {
+        return endpointId;
+    }
+
+    public void setEndpointId(String endpointId) {
+        this.endpointId = endpointId;
+    }
+
     @Override public String toString() {
         return "Device{" +
                 "name='" + name + '\'' +
+                ", imagePath='" + imagePath + '\'' +
+                ", vectorId=" + vectorId +
                 ", visibleId='" + visibleId + '\'' +
-                ", setAlarmTurnOn=" + isTurnOn +
+                ", isTurnOn=" + isTurnOn +
+                ", hasAlarm=" + hasAlarm +
                 ", isLocked=" + isLocked +
+                ", id=" + id +
+                ", gpioStatus=" + gpioStatus +
+                ", endpointId='" + endpointId + '\'' +
                 '}';
     }
-
 }

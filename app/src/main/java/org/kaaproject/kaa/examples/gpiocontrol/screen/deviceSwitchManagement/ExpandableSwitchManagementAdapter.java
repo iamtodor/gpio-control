@@ -255,7 +255,8 @@ class ExpandableSwitchManagementAdapter
                 @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     // TODO: 4/6/17 turn on/off device
                     gpioStatus.setStatus(isChecked);
-                    kaaManager.sendRemoteControlEvent(new GpioToggleRequest(gpioStatus));
+                    kaaManager.sendGpioToggleRequest(new GpioToggleRequest(gpioStatus),
+                            device.getEndpointId());
                 }
             });
 

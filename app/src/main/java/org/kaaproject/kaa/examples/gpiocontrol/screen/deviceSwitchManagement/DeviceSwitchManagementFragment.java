@@ -101,9 +101,9 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
             for (GpioStatus gpioStatus : gpioStatusList) {
                 for (Device device : deviceList) {
                     device.setGpioStatus(gpioStatus);
+                    device.setEndpointId(endpointId);
                 }
             }
-
             List<ViewDevice> viewDeviceList = new ArrayList<>();
             for (Device device : deviceList) {
                 ViewDevice viewDevice = new ViewDevice();
@@ -338,6 +338,7 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
         final Parcelable eimSavedState = (savedInstanceState != null) ? savedInstanceState.getParcelable(SAVED_STATE_EXPANDABLE_ITEM_MANAGER) : null;
         recyclerViewExpandableItemManager = new RecyclerViewExpandableItemManager(eimSavedState);
 
+        kaaManager = ((App) (getBaseActivity().getApplication())).getKaaManager();
         adapter = new ExpandableSwitchManagementAdapter(context, kaaManager);
         deviceGroupHeaderList = Utils.getHeaderList(repository);
 
@@ -363,7 +364,6 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
 
         recyclerViewExpandableItemManager.attachRecyclerView(recyclerView);
 
-        kaaManager = ((App) (getBaseActivity().getApplication())).getKaaManager();
         kaaManager.attachEndpoint("token", new OnAttachEndpointOperationCallback() {
             @Override
             public void onAttach(SyncResponseResultType result, final EndpointKeyHash resultContext) {
