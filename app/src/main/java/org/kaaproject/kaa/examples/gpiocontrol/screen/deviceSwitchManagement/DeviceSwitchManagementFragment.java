@@ -100,8 +100,10 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
             List<GpioStatus> gpioStatusList = deviceInfoResponse.getGpioStatus();
             for (GpioStatus gpioStatus : gpioStatusList) {
                 for (Device device : deviceList) {
-                    device.setGpioStatus(gpioStatus);
-                    device.setEndpointId(endpointId);
+                    if(device.getId() == gpioStatus.getId()) {
+                        device.setGpioStatus(gpioStatus);
+                        device.setEndpointId(endpointId);
+                    }
                 }
             }
             List<ViewDevice> viewDeviceList = new ArrayList<>();

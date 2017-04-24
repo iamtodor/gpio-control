@@ -37,7 +37,6 @@ import org.kaaproject.kaa.examples.gpiocontrol.screen.deviceManagement.OnChecked
 import org.kaaproject.kaa.examples.gpiocontrol.screen.deviceManagement.OnCheckedGroupItemListener;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.dialog.ChangeFieldDialog;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.main.MainActivity;
-import org.kaaproject.kaa.examples.gpiocontrol.storage.Repository;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.ChangeFieldListener;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.DialogFactory;
 import org.kaaproject.kaa.examples.gpiocontrol.utils.PreferencesImpl;
@@ -241,7 +240,7 @@ class ExpandableSwitchManagementAdapter
             Utils.loadImage(device, singleDeviceViewHolder.imagePort);
             singleDeviceViewHolder.name.setText(device.getName());
             singleDeviceViewHolder.port.setText(device.getVisibleId());
-            singleDeviceViewHolder.switchCompat.setChecked(device.isTurnOn());
+            singleDeviceViewHolder.switchCompat.setChecked(device.getGpioStatus().getStatus());
             setAlarmIcon(singleDeviceViewHolder.alarm, device.isHasAlarm());
             setLockIcon(singleDeviceViewHolder.lock, device.isLocked());
 
@@ -253,7 +252,6 @@ class ExpandableSwitchManagementAdapter
 
             singleDeviceViewHolder.switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    // TODO: 4/6/17 turn on/off device
                     gpioStatus.setStatus(isChecked);
                     kaaManager.sendGpioToggleRequest(new GpioToggleRequest(gpioStatus),
                             device.getEndpointId());
