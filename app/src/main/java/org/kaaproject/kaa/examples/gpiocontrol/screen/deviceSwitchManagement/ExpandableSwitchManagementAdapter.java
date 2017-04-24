@@ -8,7 +8,6 @@ import android.support.design.widget.Snackbar;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.SwitchCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +21,7 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemAda
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
 
 import org.kaaproject.kaa.examples.gpiocontrol.GpioStatus;
-import org.kaaproject.kaa.examples.gpiocontrol.GpioToggleRequest;
 import org.kaaproject.kaa.examples.gpiocontrol.KaaManager;
-import org.kaaproject.kaa.examples.gpiocontrol.network.ServerManager;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Device;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Group;
@@ -32,6 +29,7 @@ import org.kaaproject.kaa.examples.gpiocontrol.model.GroupHeader;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Header;
 import org.kaaproject.kaa.examples.gpiocontrol.model.ViewDevice;
 import org.kaaproject.kaa.examples.gpiocontrol.model.ViewDeviceGroup;
+import org.kaaproject.kaa.examples.gpiocontrol.network.ServerManager;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.alarmList.AlarmListActivity;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.deviceManagement.OnCheckedDeviceItemListener;
 import org.kaaproject.kaa.examples.gpiocontrol.screen.deviceManagement.OnCheckedGroupItemListener;
@@ -252,9 +250,7 @@ class ExpandableSwitchManagementAdapter
 
             singleDeviceViewHolder.switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    gpioStatus.setStatus(isChecked);
-                    kaaManager.sendGpioToggleRequest(new GpioToggleRequest(gpioStatus),
-                            device.getEndpointId());
+                    kaaManager.turnOnDevice(device, isChecked);
                 }
             });
 

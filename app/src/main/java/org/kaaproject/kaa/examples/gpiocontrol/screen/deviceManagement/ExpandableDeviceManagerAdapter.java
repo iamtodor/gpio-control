@@ -267,7 +267,7 @@ class ExpandableDeviceManagerAdapter
             Utils.loadImage(device, singleDeviceViewHolder.imagePort);
             singleDeviceViewHolder.name.setText(device.getName());
             singleDeviceViewHolder.port.setText(device.getVisibleId());
-            singleDeviceViewHolder.switchCompat.setChecked(device.isTurnOn());
+            singleDeviceViewHolder.switchCompat.setChecked(device.getGpioStatus().getStatus());
 
             singleDeviceViewHolder.selection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

@@ -15,8 +15,6 @@ public class Device extends RealmObject {
     private @Nullable String imagePath;
     private int vectorId;
     private String visibleId;
-    @Ignore
-    private boolean isTurnOn;
     private boolean hasAlarm;
     @Ignore
     private boolean isLocked;
@@ -57,14 +55,6 @@ public class Device extends RealmObject {
 
     public void setVisibleId(String visibleId) {
         this.visibleId = visibleId;
-    }
-
-    public boolean isTurnOn() {
-        return isTurnOn;
-    }
-
-    public void setTurnOn(boolean turnOn) {
-        isTurnOn = turnOn;
     }
 
     public boolean isLocked() {
@@ -113,7 +103,6 @@ public class Device extends RealmObject {
                 ", imagePath='" + imagePath + '\'' +
                 ", vectorId=" + vectorId +
                 ", visibleId='" + visibleId + '\'' +
-                ", isTurnOn=" + isTurnOn +
                 ", hasAlarm=" + hasAlarm +
                 ", isLocked=" + isLocked +
                 ", id=" + id +

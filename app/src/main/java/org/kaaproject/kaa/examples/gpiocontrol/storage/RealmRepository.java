@@ -130,6 +130,7 @@ public class RealmRepository implements Repository {
         instance.close();
     }
 
+    // TODO: 4/24/17 remove
     @Override public void turnOnGroup(final long groupId, final boolean turnOn) {
         final Realm instance = Realm.getDefaultInstance();
         final Group group = getGroupById(groupId);
@@ -138,20 +139,21 @@ public class RealmRepository implements Repository {
             @Override public void execute(Realm realm) {
                 group.setTurnOn(turnOn);
                 for (Device device : deviceList) {
-                    device.setTurnOn(turnOn);
+//                    device.setTurnOn(turnOn);
                 }
             }
         });
         instance.close();
     }
 
+    // TODO: 4/24/17 remove
     @Override public void toggleGroup(long groupId) {
         final Realm instance = Realm.getDefaultInstance();
         final List<Device> deviceList = getDeviceListFromGroup(groupId);
         instance.executeTransaction(new Realm.Transaction() {
             @Override public void execute(Realm realm) {
                 for (Device device : deviceList) {
-                    device.setTurnOn(device.isTurnOn());
+//                    device.setTurnOn(device.isTurnOn());
                 }
             }
         });

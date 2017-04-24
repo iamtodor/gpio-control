@@ -69,13 +69,11 @@ public class Utils {
                 device.setName("Device " + i);
                 device.setVisibleId("Port id " + i + 1);
                 device.setVectorId(R.drawable.kitchen);
-                device.setTurnOn(false);
                 device.setId(i);
             } else {
                 device.setName("Device " + i);
                 device.setVisibleId("Port id " + i + 1);
                 device.setVectorId(R.drawable.fan);
-                device.setTurnOn(true);
                 device.setId(i);
             }
             deviceList.add(device);

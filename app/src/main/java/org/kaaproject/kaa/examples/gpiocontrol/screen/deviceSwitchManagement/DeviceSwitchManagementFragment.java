@@ -100,7 +100,7 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
             List<GpioStatus> gpioStatusList = deviceInfoResponse.getGpioStatus();
             for (GpioStatus gpioStatus : gpioStatusList) {
                 for (Device device : deviceList) {
-                    if(device.getId() == gpioStatus.getId()) {
+                    if (device.getId() == gpioStatus.getId()) {
                         device.setGpioStatus(gpioStatus);
                         device.setEndpointId(endpointId);
                     }
@@ -279,17 +279,17 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
                     Group group = viewDeviceGroup.getGroup();
                     if (viewDeviceGroup.isSelected()) {
                         group.setTurnOn(!group.isTurnOn());
-                        for (Device device : group.getDeviceList())
-                            device.setTurnOn(!device.isTurnOn());
+//                        for (Device device : group.getDeviceList())
+//                            device.setTurnOn(!device.isTurnOn());
                     }
                 }
             }
             if (deviceGroupHeader instanceof DeviceHeader) {
                 for (Object object : deviceGroupHeader.getChildList()) {
                     ViewDevice viewDevice = (ViewDevice) object;
-                    Device device = viewDevice.getDevice();
                     if (viewDevice.isSelected()) {
-                        device.setTurnOn(!device.isTurnOn());
+                        Device device = viewDevice.getDevice();
+//                        device.setTurnOn(!device.isTurnOn());
                     }
                 }
             }
@@ -466,25 +466,26 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
         }
     }
 
-    private void setIsOn(boolean isOn) {
+    private void setIsOn(boolean turnOn) {
         for (Header deviceGroupHeader : deviceGroupHeaderList) {
             if (deviceGroupHeader instanceof GroupHeader) {
                 for (Object object : deviceGroupHeader.getChildList()) {
                     ViewDeviceGroup viewGroup = (ViewDeviceGroup) object;
                     Group group = viewGroup.getGroup();
                     if (viewGroup.isSelected()) {
-                        group.setTurnOn(isOn);
-                        for (Device device : group.getDeviceList())
-                            device.setTurnOn(isOn);
+                        group.setTurnOn(turnOn);
+                        for (Device device : group.getDeviceList()) {
+                            kaaManager.turnOnDevice(device, turnOn);
+                        }
                     }
                 }
             }
             if (deviceGroupHeader instanceof DeviceHeader) {
                 for (Object object : deviceGroupHeader.getChildList()) {
                     ViewDevice viewDevice = (ViewDevice) object;
-                    Device device = viewDevice.getDevice();
                     if (viewDevice.isSelected()) {
-                        device.setTurnOn(isOn);
+                        Device device = viewDevice.getDevice();
+                        kaaManager.turnOnDevice(device, turnOn);
                     }
                 }
             }

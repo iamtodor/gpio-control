@@ -15,6 +15,7 @@ import org.kaaproject.kaa.client.event.registration.OnAttachEndpointOperationCal
 import org.kaaproject.kaa.client.event.registration.UserAttachCallback;
 import org.kaaproject.kaa.common.endpoint.gen.SyncResponseResultType;
 import org.kaaproject.kaa.common.endpoint.gen.UserAttachResponse;
+import org.kaaproject.kaa.examples.gpiocontrol.model.Device;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -60,7 +61,7 @@ public class KaaManager {
                     public void onAttachResult(UserAttachResponse response) {
                         Log.d(TAG, "User attach result: " + response.toString());
 
-                        if(response.getResult() == SyncResponseResultType.SUCCESS) {
+                        if (response.getResult() == SyncResponseResultType.SUCCESS) {
                             kaaClient.findEventListeners(
                                     Collections.singletonList("org.kaaproject.kaa.examples.gpiocontrol.DeviceInfoResponse"),
                                     new FindEventListenersCallback() {
@@ -130,5 +131,12 @@ public class KaaManager {
 
     public void removeEventListener(RemoteControlECF.Listener callback) {
         listenerList.remove(callback);
+    }
+
+    public void turnOnDevice(Device device, boolean turnOn) {
+        GpioStatus gpioStatus = device.getGpioStatus();
+        gpioStatus.setStatus(turnOn);
+        sendGpioToggleRequest(new GpioToggleRequest(gpioStatus),
+                device.getEndpointId());
     }
 }
