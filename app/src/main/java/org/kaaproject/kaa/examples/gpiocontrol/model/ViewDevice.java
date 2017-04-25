@@ -28,4 +28,21 @@ public class ViewDevice {
                 ", isSelected=" + isSelected +
                 '}';
     }
+
+    @Override public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ViewDevice)) return false;
+
+        ViewDevice that = (ViewDevice) o;
+
+        if (isSelected() != that.isSelected()) return false;
+        return getDevice() != null ? getDevice().equals(that.getDevice()) : that.getDevice() == null;
+
+    }
+
+    @Override public int hashCode() {
+        int result = getDevice() != null ? getDevice().hashCode() : 0;
+        result = 31 * result + (isSelected() ? 1 : 0);
+        return result;
+    }
 }

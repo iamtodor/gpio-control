@@ -231,7 +231,7 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
             if (deviceGroupHeader instanceof DeviceHeader) {
                 for (Object object : deviceGroupHeader.getChildList()) {
                     ViewDevice selectableViewDevice = (ViewDevice) object;
-                    if (currentSelectedDevice == selectableViewDevice) {
+                    if (selectableViewDevice.equals(currentSelectedDevice)) {
                         selectableViewDevice.setSelected(isChecked);
                     }
                 }
