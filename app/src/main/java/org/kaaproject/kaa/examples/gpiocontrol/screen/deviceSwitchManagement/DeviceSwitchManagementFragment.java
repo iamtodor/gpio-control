@@ -247,19 +247,6 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
         dialog.show(getBaseActivity().getSupportFragmentManager());
     }
 
-    @OnLongClick(R.id.fab)
-    public boolean onFabLongClick() {
-        Log.d(TAG, "onFabClick: " + repository.getControllerList());
-        for (Controller controller : repository.getControllerList()) {
-            for (Device device : controller.getDeviceList()) {
-                Log.d(TAG, "onFabLongClick: " + device);
-            }
-        }
-        Log.d(TAG, "onFabLongClick: " + repository.getDeviceList());
-        kaaManager.sendDeviceInfoRequestToAll();
-        return true;
-    }
-
     @OnClick(R.id.power_on)
     public void powerOnClick() {
         setIsOn(true);

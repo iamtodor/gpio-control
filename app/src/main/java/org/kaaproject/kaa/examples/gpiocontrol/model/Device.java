@@ -97,6 +97,33 @@ public class Device extends RealmObject {
         this.endpointId = endpointId;
     }
 
+    @Override public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Device)) return false;
+
+        Device device = (Device) o;
+
+        if (getVectorId() != device.getVectorId()) return false;
+        if (isHasAlarm() != device.isHasAlarm()) return false;
+        if (getId() != device.getId()) return false;
+        if (getName() != null ? !getName().equals(device.getName()) : device.getName() != null)
+            return false;
+        if (getImagePath() != null ? !getImagePath().equals(device.getImagePath()) : device.getImagePath() != null)
+            return false;
+        return getVisibleId() != null ? getVisibleId().equals(device.getVisibleId()) : device.getVisibleId() == null;
+
+    }
+
+    @Override public int hashCode() {
+        int result = getName() != null ? getName().hashCode() : 0;
+        result = 31 * result + (getImagePath() != null ? getImagePath().hashCode() : 0);
+        result = 31 * result + getVectorId();
+        result = 31 * result + (getVisibleId() != null ? getVisibleId().hashCode() : 0);
+        result = 31 * result + (isHasAlarm() ? 1 : 0);
+        result = 31 * result + getId();
+        return result;
+    }
+
     @Override public String toString() {
         return "Device{" +
                 "name='" + name + '\'' +
