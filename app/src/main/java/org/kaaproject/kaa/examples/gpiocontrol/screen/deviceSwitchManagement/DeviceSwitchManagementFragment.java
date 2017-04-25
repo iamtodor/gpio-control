@@ -262,8 +262,8 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
                     Group group = viewDeviceGroup.getGroup();
                     if (viewDeviceGroup.isSelected()) {
                         group.setTurnOn(!group.isTurnOn());
-//                        for (Device device : group.getDeviceList())
-//                            device.setTurnOn(!device.isTurnOn());
+                        for (Device device : group.getDeviceList())
+                            kaaManager.turnOnDevice(device, !device.getGpioStatus().getStatus());
                     }
                 }
             }
@@ -272,7 +272,7 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
                     ViewDevice viewDevice = (ViewDevice) object;
                     if (viewDevice.isSelected()) {
                         Device device = viewDevice.getDevice();
-//                        device.setTurnOn(!device.isTurnOn());
+                        kaaManager.turnOnDevice(device, !device.getGpioStatus().getStatus());
                     }
                 }
             }
