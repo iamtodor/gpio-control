@@ -21,6 +21,7 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemAda
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
 import com.squareup.picasso.Picasso;
 
+import org.kaaproject.kaa.examples.gpiocontrol.KaaManager;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Device;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Group;
@@ -57,9 +58,11 @@ class ExpandableDeviceManagerAdapter
 
     private OnCheckedGroupItemListener onCheckedGroupItemListener;
     private OnCheckedDeviceItemListener onCheckedDeviceItemListener;
+    private KaaManager kaaManager;
 
-    ExpandableDeviceManagerAdapter(Context context, List<Header> deviceGroupHeaderList) {
+    ExpandableDeviceManagerAdapter(Context context, KaaManager kaaManager) {
         this.context = (MainActivity) context;
+        this.kaaManager = kaaManager;
         // ExpandableItemAdapter requires stable ID, and also
         // have to implement the getGroupItemId()/getChildItemId() methods appropriately.
         setHasStableIds(true);
@@ -272,6 +275,12 @@ class ExpandableDeviceManagerAdapter
             singleDeviceViewHolder.selection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     onCheckedDeviceItemListener.onDeviceChecked(isChecked, viewDevice);
+                }
+            });
+
+            singleDeviceViewHolder.switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    kaaManager.turnOnDevice(device, isChecked);
                 }
             });
 

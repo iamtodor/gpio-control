@@ -10,6 +10,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +24,16 @@ import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDec
 import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager;
 import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 
+import org.kaaproject.kaa.client.event.EndpointKeyHash;
+import org.kaaproject.kaa.client.event.registration.OnAttachEndpointOperationCallback;
+import org.kaaproject.kaa.common.endpoint.gen.SyncResponseResultType;
 import org.kaaproject.kaa.examples.gpiocontrol.App;
+import org.kaaproject.kaa.examples.gpiocontrol.DeviceInfoResponse;
+import org.kaaproject.kaa.examples.gpiocontrol.GpioStatus;
+import org.kaaproject.kaa.examples.gpiocontrol.KaaManager;
 import org.kaaproject.kaa.examples.gpiocontrol.R;
+import org.kaaproject.kaa.examples.gpiocontrol.RemoteControlECF;
+import org.kaaproject.kaa.examples.gpiocontrol.model.Device;
 import org.kaaproject.kaa.examples.gpiocontrol.model.DeviceHeader;
 import org.kaaproject.kaa.examples.gpiocontrol.model.Group;
 import org.kaaproject.kaa.examples.gpiocontrol.model.GroupHeader;
@@ -69,6 +78,36 @@ public class DeviceManagementFragment extends BaseListFragment implements OnChec
     private List<Header> deviceGroupHeaderList;
     private Unbinder unbinder;
     private Repository repository;
+    private KaaManager kaaManager;
+
+    private final RemoteControlECF.Listener mRemoteControlECFListener = new RemoteControlECF.Listener() {
+        @Override
+        public void onEvent(DeviceInfoResponse deviceInfoResponse, String endpointId) {
+            Log.d(TAG, "onEvent() called with: deviceInfoResponse = " + deviceInfoResponse + ", endpointId = " + endpointId);
+            List<GpioStatus> gpioStatusList = deviceInfoResponse.getGpioStatus();
+
+            for (GpioStatus gpioStatus : gpioStatusList) {
+                for (Header deviceGroupHeader : deviceGroupHeaderList) {
+                    if (deviceGroupHeader instanceof DeviceHeader) {
+                        for (Object object : deviceGroupHeader.getChildList()) {
+                            ViewDevice selectableViewDevice = (ViewDevice) object;
+                            Device device = selectableViewDevice.getDevice();
+                            if (device.getId() == gpioStatus.getId()) {
+                                device.setGpioStatus(gpioStatus);
+                                device.setEndpointId(endpointId);
+                            }
+                        }
+                    }
+                }
+            }
+
+            getActivity().runOnUiThread(new Runnable() {
+                @Override public void run() {
+                    adapter.updateAdapter(deviceGroupHeaderList);
+                }
+            });
+        }
+    };
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.device_management_fragment, container, false);
@@ -116,6 +155,16 @@ public class DeviceManagementFragment extends BaseListFragment implements OnChec
         mLayoutManager = null;
         unbinder.unbind();
         super.onDestroyView();
+    }
+
+    @Override public void onResume() {
+        super.onResume();
+        kaaManager.addEventListener(mRemoteControlECFListener);
+    }
+
+    @Override public void onPause() {
+        super.onPause();
+        kaaManager.removeEventListener(mRemoteControlECFListener);
     }
 
     @Override public void onGroupChecked(boolean isChecked, ViewDeviceGroup currentGroup) {
@@ -241,10 +290,23 @@ public class DeviceManagementFragment extends BaseListFragment implements OnChec
         final Parcelable eimSavedState = (savedInstanceState != null) ? savedInstanceState.getParcelable(SAVED_STATE_EXPANDABLE_ITEM_MANAGER) : null;
         recyclerViewExpandableItemManager = new RecyclerViewExpandableItemManager(eimSavedState);
 
+        kaaManager = ((App) (getBaseActivity().getApplication())).getKaaManager();
+        kaaManager.attachEndpoint("token", new OnAttachEndpointOperationCallback() {
+            @Override
+            public void onAttach(SyncResponseResultType result, final EndpointKeyHash resultContext) {
+                if (result == SyncResponseResultType.SUCCESS) {
+                    kaaManager.sendDeviceInfoRequestToAll();
+                    Log.d(TAG, "onAttach: " + result.toString() + "; " + resultContext.getKeyHash());
+                } else {
+                    Log.e(TAG, "onAttach: " + result.toString());
+                }
+            }
+        });
+
         //adapter
         Repository repository = ((App) (getBaseActivity().getApplication())).getRealmRepository();
         deviceGroupHeaderList = Utils.getHeaderList(repository);
-        adapter = new ExpandableDeviceManagerAdapter(context, deviceGroupHeaderList);
+        adapter = new ExpandableDeviceManagerAdapter(context, kaaManager);
 
         adapter.setOnCheckedGroupItemListener(this);
         adapter.setOnCheckedDeviceItemListener(this);
