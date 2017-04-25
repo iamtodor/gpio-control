@@ -96,26 +96,22 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
         @Override
         public void onEvent(DeviceInfoResponse deviceInfoResponse, String endpointId) {
             Log.d(TAG, "onEvent() called with: deviceInfoResponse = " + deviceInfoResponse + ", endpointId = " + endpointId);
-            List<Device> deviceList = repository.getDeviceList();
             List<GpioStatus> gpioStatusList = deviceInfoResponse.getGpioStatus();
+
             for (GpioStatus gpioStatus : gpioStatusList) {
-                for (Device device : deviceList) {
-                    if (device.getId() == gpioStatus.getId()) {
-                        device.setGpioStatus(gpioStatus);
-                        device.setEndpointId(endpointId);
+                for (Header deviceGroupHeader : deviceGroupHeaderList) {
+                    if (deviceGroupHeader instanceof DeviceHeader) {
+                        for (Object object : deviceGroupHeader.getChildList()) {
+                            ViewDevice selectableViewDevice = (ViewDevice) object;
+                            Device device = selectableViewDevice.getDevice();
+                            if (device.getId() == gpioStatus.getId()) {
+                                device.setGpioStatus(gpioStatus);
+                                device.setEndpointId(endpointId);
+                            }
+                        }
                     }
                 }
             }
-            List<ViewDevice> viewDeviceList = new ArrayList<>();
-            for (Device device : deviceList) {
-                ViewDevice viewDevice = new ViewDevice();
-                viewDevice.setDevice(device);
-                viewDeviceList.add(viewDevice);
-            }
-
-            DeviceHeader<ViewDevice> deviceHeader = new DeviceHeader<>("Devices", 1, viewDeviceList);
-            final List<Header> deviceGroupHeaderList = new ArrayList<>();
-            deviceGroupHeaderList.add(deviceHeader);
 
             getActivity().runOnUiThread(new Runnable() {
                 @Override public void run() {
