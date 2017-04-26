@@ -64,5 +64,6 @@
     <string name="unlock">Unlock</string>
     <string name="alarm">Alarm</string>
     <string name="alarm_was_added">Alarm was added</string>
+    <string name="controller_adding_error">Error was occurred while adding controller (timeout)</string>
 
 </resources>

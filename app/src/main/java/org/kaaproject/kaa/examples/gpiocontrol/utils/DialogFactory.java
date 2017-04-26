@@ -69,7 +69,7 @@ public class DialogFactory {
     }
 
     public static AlertDialog.Builder getQuestionDialog(final Context context, final String message, final String positiveButtonText,
-                                                            final DialogInterface.OnClickListener listener) {
+                                                        final DialogInterface.OnClickListener listener) {
         return new AlertDialog.Builder(context)
                 .setMessage(message)
                 .setPositiveButton(positiveButtonText, listener)
@@ -85,5 +85,12 @@ public class DialogFactory {
                 .setHint(hint)
                 .setAction(action)
                 .setChangeFieldListener(changeFieldListener);
+    }
+
+    public static AlertDialog.Builder getLoadingDialog(Context context) {
+        View view = LayoutInflater.from(context).inflate(R.layout.dialog_loader_layout, null, false);
+        return new AlertDialog.Builder(context, R.style.TransparentAlertDialog)
+                .setView(view)
+                .setCancelable(false);
     }
 }

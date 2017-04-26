@@ -4,7 +4,9 @@ package org.kaaproject.kaa.examples.gpiocontrol.screen.addController;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.graphics.drawable.VectorDrawableCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -52,10 +54,13 @@ public class AddControllerActivity extends BaseActivity implements ChooseImageLi
     private KaaManager kaaManager;
     private Controller controller;
     private Repository repository;
+    private AlertDialog loader;
+    private Handler handler;
 
     private final RemoteControlECF.Listener mRemoteControlECFListener = new RemoteControlECF.Listener() {
         @Override
         public void onEvent(DeviceInfoResponse deviceInfoResponse, String endpointId) {
+            handler.removeCallbacksAndMessages(null);
             Log.d(TAG, "onEvent() called with: deviceInfoResponse = " + deviceInfoResponse + ", endpointId = " + endpointId);
             List<GpioStatus> gpioStatusList = deviceInfoResponse.getGpioStatus();
             RealmList<Device> deviceList = new RealmList<>();
@@ -74,6 +79,7 @@ public class AddControllerActivity extends BaseActivity implements ChooseImageLi
             repository.addDeviceListToController(controller.getId(), deviceList);
             runOnUiThread(new Runnable() {
                 @Override public void run() {
+                    hideLoader();
                     DialogFactory.getConfirmationDialog(AddControllerActivity.this, getString(R.string.controller_was_added),
                             getString(R.string.ok), null).show();
                 }
@@ -145,7 +151,19 @@ public class AddControllerActivity extends BaseActivity implements ChooseImageLi
         }
     }
 
+    @Override public void onImageChosen(Uri path) {
+        imagePath = path.getPath();
+        Picasso.with(this).load(path).fit().centerCrop().into(imageForPorts);
+    }
+
+    @Override public void onImageChosen(int drawableId) {
+        Drawable drawable = VectorDrawableCompat.create(this.getResources(), drawableId, null);
+        vectorId = drawableId;
+        imageForPorts.setImageDrawable(drawable);
+    }
+
     private void addController() {
+        showLoader();
         controller = new Controller();
         repository = ((App) (getApplication())).getRealmRepository();
         controller.setControllerId(controllerId.getText().toString());
@@ -158,6 +176,15 @@ public class AddControllerActivity extends BaseActivity implements ChooseImageLi
         controller.setId(repository.getIdForModel(Controller.class));
         repository.saveModel(controller);
 
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                hideLoader();
+                DialogFactory.getConfirmationDialog(AddControllerActivity.this, getString(R.string.controller_adding_error),
+                        getString(R.string.ok), null).show();
+            }
+        }, 7000);
         kaaManager.attachEndpoint("token", new OnAttachEndpointOperationCallback() {
             @Override
             public void onAttach(SyncResponseResultType result, final EndpointKeyHash resultContext) {
@@ -182,15 +209,17 @@ public class AddControllerActivity extends BaseActivity implements ChooseImageLi
         return true;
     }
 
-    @Override public void onImageChosen(Uri path) {
-        imagePath = path.getPath();
-        Picasso.with(this).load(path).fit().centerCrop().into(imageForPorts);
+    protected void showLoader() {
+        if (loader == null) {
+            loader = DialogFactory.getLoadingDialog(this).create();
+        }
+        loader.show();
     }
 
-    @Override public void onImageChosen(int drawableId) {
-        Drawable drawable = VectorDrawableCompat.create(this.getResources(), drawableId, null);
-        vectorId = drawableId;
-        imageForPorts.setImageDrawable(drawable);
+    protected void hideLoader() {
+        if (loader != null) {
+            loader.hide();
+        }
     }
 }
 

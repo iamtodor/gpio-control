@@ -26,6 +26,7 @@ ext {
     playServicesVersion = '10.2.1'
     picassoVersion = '2.5.2'
     okHttpVersion='3.6.0'
+    materialishProgressVersion='1.7'
 }
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -50,5 +51,7 @@ dependencies {
     compile('com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.10.5@aar') {
         transitive = true
     }
+
+    compile "com.pnikosis:materialish-progress:$materialishProgressVersion"
 }
 apply plugin: 'com.google.gms.google-services'

@@ -185,6 +185,7 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == UPDATE_ADAPTER_CODE) {
                 deviceGroupHeaderList = Utils.getHeaderList(repository);
+                kaaManager.sendDeviceInfoRequestToAll();
                 adapter.updateAdapter(deviceGroupHeaderList);
             }
         }
@@ -327,7 +328,6 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
         adapter = new ExpandableSwitchManagementAdapter(context, kaaManager);
         deviceGroupHeaderList = Utils.getHeaderList(repository);
 
-//        adapter.updateAdapter(deviceGroupHeaderList);
         adapter.setOnCheckedDeviceItemListener(this);
         adapter.setOnCheckedGroupItemListener(this);
 
