@@ -116,6 +116,7 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
             getActivity().runOnUiThread(new Runnable() {
                 @Override public void run() {
                     adapter.updateAdapter(deviceGroupHeaderList);
+                    showOrHideDeviceList();
                 }
             });
         }
@@ -185,8 +186,17 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == UPDATE_ADAPTER_CODE) {
                 deviceGroupHeaderList = Utils.getHeaderList(repository);
-                kaaManager.sendDeviceInfoRequestToAll();
-                adapter.updateAdapter(deviceGroupHeaderList);
+                kaaManager.attachEndpoint("token", new OnAttachEndpointOperationCallback() {
+                    @Override
+                    public void onAttach(SyncResponseResultType result, final EndpointKeyHash resultContext) {
+                        if (result == SyncResponseResultType.SUCCESS) {
+                            kaaManager.sendDeviceInfoRequestToAll();
+                            Log.d(TAG, "onAttach: " + result.toString() + "; " + resultContext.getKeyHash());
+                        } else {
+                            Log.e(TAG, "onAttach: " + result.toString());
+                        }
+                    }
+                });
             }
         }
     }
@@ -318,6 +328,19 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
         adapter.updateAdapter(deviceGroupHeaderList);
     }
 
+    private void setupSelectionMenuIcons(Context context) {
+        icPowerOn.setColorFilter(ContextCompat.getColor(context, R.color.customGreen),
+                PorterDuff.Mode.SRC_ATOP);
+        icPowerOff.setColorFilter(ContextCompat.getColor(context, R.color.customRed),
+                PorterDuff.Mode.SRC_ATOP);
+        icLock.setColorFilter(ContextCompat.getColor(context, R.color.lightBlueActiveElement),
+                PorterDuff.Mode.SRC_ATOP);
+        icUnlock.setColorFilter(ContextCompat.getColor(context, R.color.lightBlueActiveElement),
+                PorterDuff.Mode.SRC_ATOP);
+        icAlarm.setColorFilter(ContextCompat.getColor(context, R.color.lightBlueActiveElement),
+                PorterDuff.Mode.SRC_ATOP);
+    }
+
     private void setupRecyclerView(Context context, Bundle savedInstanceState) {
         mLayoutManager = new LinearLayoutManager(context);
 
@@ -361,6 +384,10 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
             }
         });
 
+        showOrHideDeviceList();
+    }
+
+    private void showOrHideDeviceList() {
         if (deviceGroupHeaderList.get(1).getChildList().isEmpty()) {
             showNoDevices();
         } else {
@@ -376,19 +403,6 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
     private void showDevices() {
         recyclerView.setVisibility(View.VISIBLE);
         noDeviceMessage.setVisibility(View.GONE);
-    }
-
-    private void setupSelectionMenuIcons(Context context) {
-        icPowerOn.setColorFilter(ContextCompat.getColor(context, R.color.customGreen),
-                PorterDuff.Mode.SRC_ATOP);
-        icPowerOff.setColorFilter(ContextCompat.getColor(context, R.color.customRed),
-                PorterDuff.Mode.SRC_ATOP);
-        icLock.setColorFilter(ContextCompat.getColor(context, R.color.lightBlueActiveElement),
-                PorterDuff.Mode.SRC_ATOP);
-        icUnlock.setColorFilter(ContextCompat.getColor(context, R.color.lightBlueActiveElement),
-                PorterDuff.Mode.SRC_ATOP);
-        icAlarm.setColorFilter(ContextCompat.getColor(context, R.color.lightBlueActiveElement),
-                PorterDuff.Mode.SRC_ATOP);
     }
 
     private void showOrHideGroupSelectionMenu() {

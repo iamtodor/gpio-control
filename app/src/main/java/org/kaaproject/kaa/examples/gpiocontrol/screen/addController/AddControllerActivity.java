@@ -1,6 +1,7 @@
 package org.kaaproject.kaa.examples.gpiocontrol.screen.addController;
 
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -130,6 +131,12 @@ public class AddControllerActivity extends BaseActivity implements ChooseImageLi
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override public void onBackPressed() {
+        Intent intent = new Intent();
+        setResult(RESULT_OK, intent);
+        super.onBackPressed();
     }
 
     @OnClick(R.id.image_for_ports)
