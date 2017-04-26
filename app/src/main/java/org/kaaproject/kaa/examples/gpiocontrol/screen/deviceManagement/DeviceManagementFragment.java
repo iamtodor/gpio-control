@@ -329,7 +329,7 @@ public class DeviceManagementFragment extends BaseListFragment implements OnChec
 
         recyclerViewExpandableItemManager.attachRecyclerView(recyclerView);
 
-        if (deviceGroupHeaderList.isEmpty()) {
+        if (deviceGroupHeaderList.get(1).getChildList().isEmpty()) {
             showNoDevices();
         } else {
             showDevices();

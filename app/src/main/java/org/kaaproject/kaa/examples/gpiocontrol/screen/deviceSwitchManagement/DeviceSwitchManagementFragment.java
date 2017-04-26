@@ -361,7 +361,7 @@ public class DeviceSwitchManagementFragment extends BaseFragment implements OnDi
             }
         });
 
-        if (deviceGroupHeaderList.isEmpty()) {
+        if (deviceGroupHeaderList.get(1).getChildList().isEmpty()) {
             showNoDevices();
         } else {
             showDevices();

@@ -50,6 +50,7 @@ public class DeviceHeader<T> extends Header {
         return "DeviceHeader{" +
                 "name='" + name + '\'' +
                 ", deviceList=" + deviceList +
+                ", id=" + id +
                 '}';
     }
 }
