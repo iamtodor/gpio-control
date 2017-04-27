@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "308239218493",
+    "project_id": "gpio-control"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:308239218493:android:195ac01fb96e9c74",
+        "android_client_info": {
+          "package_name": "org.kaaproject.kaa.examples.gpiocontrol"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "308239218493-0368gmobb40nb35e8mendr20nsiu0o2q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.kaaproject.kaa.examples.gpiocontrol",
+            "certificate_hash": "86b37f6ac358105672dbb20d6cd9bb29a4578ae0"
+          }
+        },
+        {
+          "client_id": "308239218493-0vpf7i0gp40rj3alcloh1o19ji638l9p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClt5HFEsEFdELxe2hckdOVdyClR25ro00"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
