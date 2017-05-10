@@ -3,7 +3,7 @@ apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "25.0.3"
     defaultConfig {
         applicationId "org.kaaproject.kaa.examples.gpiocontrol"
         minSdkVersion 15
@@ -21,9 +21,9 @@ android {
     }
 }
 ext {
-    supportLibraryVersion = '25.3.0'
+    supportLibraryVersion = '25.3.1'
     butterKnifeVersion = '8.5.1'
-    playServicesVersion = '10.2.1'
+    playServicesVersion = '10.2.4'
     picassoVersion = '2.5.2'
     okHttpVersion='3.6.0'
     materialishProgressVersion='1.7'
